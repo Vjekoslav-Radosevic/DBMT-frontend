@@ -6,10 +6,15 @@ export class SuperTypeConnectionShape extends ConnectionShape {
         this.halfCircleRadius = 8;
     }
 
-    draw(start, end) {
+    draw(start, end, lineColor) {
+        this.ctx.save();
+
+        this.ctx.strokeStyle = lineColor;
+
+        // draw line from circle center to the subEntity center
         this.ctx.beginPath();
-        this.ctx.moveTo(start.x, start.y); // Move to the starting point
-        this.ctx.lineTo(end.x, end.y); // Draw a line to the ending point
+        this.ctx.moveTo(start.x, start.y);
+        this.ctx.lineTo(end.x, end.y);
         this.ctx.stroke();
 
         // Calculate one fourth of the line
@@ -31,5 +36,7 @@ export class SuperTypeConnectionShape extends ConnectionShape {
             angle + Math.PI / 2, // End angle (90 degrees to the right of the line)
         );
         this.ctx.stroke();
+
+        this.ctx.restore();
     }
 }
