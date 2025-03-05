@@ -5,6 +5,7 @@
             :newElement="newElement"
             @createEntity="createEntity"
             @createRelationship="createRelationship"
+            @createLabel="createLabel"
             @open-download-dialog="openDownloadDialog"
         ></Toolbar>
     </div>
@@ -42,6 +43,7 @@ import { changeEntityType } from "../utils/changeType";
 
 import { useCanvasStore } from "../stores/index";
 import { mapState } from "pinia";
+import { Label } from "@/erDiagram/models/Label";
 
 export default {
     components: { Header, Toolbar, Details, Canvas, DownloadDialog },
@@ -101,6 +103,10 @@ export default {
                 this.elementWidth,
                 this.elementHeight,
             );
+            this.addingElement = true;
+        },
+        createLabel() {
+            this.newElement = new Label("Label", this.getContext, 0, 0, this.elementWidth, this.elementHeight);
             this.addingElement = true;
         },
         addAttribute() {
