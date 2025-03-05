@@ -14,12 +14,14 @@ export class Attribute extends Element {
             optional: false,
             derived: false,
         };
+        this.textColor = "black";
+        this.backgroundColor = "white";
+        this.borderColor = "black";
     }
 
     draw() {
-        const textColor = "black";
-        const backgroundColor = this.active ? "rgb(52, 235, 219)" : "white";
-        this.shape.draw(this.name, backgroundColor, textColor, this.properties);
+        const backgroundColor = this.active ? "rgb(52, 235, 219)" : this.backgroundColor;
+        this.shape.draw(this.name, this.properties, backgroundColor, this.textColor, this.borderColor);
     }
 
     drag(mouseX, mouseY) {
