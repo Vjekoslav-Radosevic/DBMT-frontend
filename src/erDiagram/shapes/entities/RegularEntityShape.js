@@ -10,14 +10,18 @@ export class RegularEntityShape extends Shape {
         return mouseX >= this.x && mouseX <= this.x + this.width && mouseY >= this.y && mouseY <= this.y + this.height;
     }
 
-    draw(text, backgroundColor, textColor) {
+    draw(text, backgroundColor, textColor, borderColor) {
+        this.ctx.save();
+
+        this.ctx.strokeStyle = borderColor;
+        this.ctx.strokeRect(this.x, this.y, this.width, this.height); // Draw rectangle border
+
         this.ctx.fillStyle = backgroundColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height); // Draw the rectangle
 
-        this.ctx.strokeRect(this.x, this.y, this.width, this.height); // Draw the border
-
-        // Draw the name inside the rectangle
         this.ctx.fillStyle = textColor;
         this.ctx.fillText(text, this.x + this.width / 2, this.y + this.height / 2);
+
+        this.ctx.restore();
     }
 }

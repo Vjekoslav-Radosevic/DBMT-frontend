@@ -10,15 +10,20 @@ export class WeakEntityShape extends Shape {
         return mouseX >= this.x && mouseX <= this.x + this.width && mouseY >= this.y && mouseY <= this.y + this.height;
     }
 
-    draw(text, backgroundColor, textColor) {
-        this.ctx.fillStyle = backgroundColor;
-        this.ctx.fillRect(this.x, this.y, this.width, this.height); // Draw the rectangle
+    draw(text, backgroundColor, textColor, borderColor) {
+        this.ctx.save();
 
+        this.ctx.strokeStyle = borderColor;
         this.ctx.strokeRect(this.x, this.y, this.width, this.height); // Draw the outer border
         this.ctx.strokeRect(this.x + 5, this.y + 5, this.width - 10, this.height - 10); // Draw the inner border
+
+        this.ctx.fillStyle = backgroundColor;
+        this.ctx.fillRect(this.x, this.y, this.width, this.height); // Draw the rectangle
 
         // Draw the name inside the rectangle
         this.ctx.fillStyle = textColor;
         this.ctx.fillText(text, this.x + this.width / 2, this.y + this.height / 2);
+
+        this.ctx.restore();
     }
 }
