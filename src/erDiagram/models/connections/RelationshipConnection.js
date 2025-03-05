@@ -4,7 +4,9 @@ import { Connection } from "../Connection.js";
 export class RelationshipConnection extends Connection {
     constructor(ctx, element1, element2) {
         super(ctx, element1, element2); // element1 is always Relationship
+
         this.connectionShape = new RelationshipConnectionShape(ctx);
+        this.lineColor = "black";
     }
 
     draw() {
@@ -15,6 +17,6 @@ export class RelationshipConnection extends Connection {
 
         if (!entity) return; // if connection is not updated yet
 
-        this.connectionShape.draw(entityNearestPoint, relationshipNearestPoint, entity);
+        this.connectionShape.draw(entityNearestPoint, relationshipNearestPoint, entity, this.lineColor);
     }
 }
