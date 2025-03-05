@@ -34,6 +34,9 @@ export class Relationship extends Element {
                 errorMax: "",
             },
         };
+        this.textColor = "black";
+        this.backgroundColor = "white";
+        this.borderColor = "black";
     }
 
     drag(mouseX, mouseY) {
@@ -41,9 +44,8 @@ export class Relationship extends Element {
     }
 
     draw() {
-        const textColor = "black";
-        const backgroundColor = this.active ? "rgb(52, 235, 219)" : "white";
-        this.shape.draw(this.name, backgroundColor, textColor, this.identifying);
+        const backgroundColor = this.active ? "rgb(52, 235, 219)" : this.backgroundColor;
+        this.shape.draw(this.name, this.identifying, backgroundColor, this.textColor, this.borderColor);
     }
 
     getNearestEndpoint(x, y) {
