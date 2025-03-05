@@ -29,10 +29,16 @@ export class RelationshipShape extends Shape {
         const right = { x: this.x + this.width, y: this.y + this.height / 2 };
 
         // Check if the point is in either of the two triangles forming the diamond
-        return this.isPointInTriangle(mouseX, mouseY, top, left, right) || this.isPointInTriangle(mouseX, mouseY, bottom, left, right);
+        return (
+            this.isPointInTriangle(mouseX, mouseY, top, left, right) ||
+            this.isPointInTriangle(mouseX, mouseY, bottom, left, right)
+        );
     }
 
-    draw(text, backgroundColor, textColor, identifying) {
+    draw(text, identifying, backgroundColor, textColor, borderColor) {
+        this.ctx.save();
+
+        // outer rhombus
         this.ctx.beginPath();
         this.ctx.moveTo(this.x, this.y + this.height / 2);
         this.ctx.lineTo(this.x + this.width / 2, this.y);
@@ -40,11 +46,14 @@ export class RelationshipShape extends Shape {
         this.ctx.lineTo(this.x + this.width / 2, this.y + this.height);
         this.ctx.lineTo(this.x, this.y + this.height / 2);
         this.ctx.closePath();
+
+        this.ctx.strokeStyle = borderColor;
         this.ctx.stroke();
 
         this.ctx.fillStyle = backgroundColor;
         this.ctx.fill();
 
+        // inner rhombus if relationship is identifying
         if (identifying) {
             this.ctx.beginPath();
             this.ctx.moveTo(this.x + 10, this.y + this.height / 2);
@@ -58,6 +67,8 @@ export class RelationshipShape extends Shape {
 
         this.ctx.fillStyle = textColor;
         this.ctx.fillText(text, this.x + this.width / 2, this.y + this.height / 2);
+
+        this.ctx.restore();
     }
 
     getNearestEndpoint(x, y) {
@@ -74,22 +85,34 @@ export class RelationshipShape extends Shape {
         if (!this.endpoints.topTaken) {
             xEndpoint = this.x + this.width / 2;
             yEndpoint = this.y;
-            availableEndpoints.push({ endpoint: { x: xEndpoint, y: yEndpoint, prop: "topTaken" }, distance: distance(x, y, xEndpoint, yEndpoint) });
+            availableEndpoints.push({
+                endpoint: { x: xEndpoint, y: yEndpoint, prop: "topTaken" },
+                distance: distance(x, y, xEndpoint, yEndpoint),
+            });
         }
         if (!this.endpoints.rightTaken) {
             xEndpoint = this.x + this.width;
             yEndpoint = this.y + this.height / 2;
-            availableEndpoints.push({ endpoint: { x: xEndpoint, y: yEndpoint, prop: "rightTaken" }, distance: distance(x, y, xEndpoint, yEndpoint) });
+            availableEndpoints.push({
+                endpoint: { x: xEndpoint, y: yEndpoint, prop: "rightTaken" },
+                distance: distance(x, y, xEndpoint, yEndpoint),
+            });
         }
         if (!this.endpoints.bottomTaken) {
             xEndpoint = this.x + this.width / 2;
             yEndpoint = this.y + this.height;
-            availableEndpoints.push({ endpoint: { x: xEndpoint, y: yEndpoint, prop: "bottomTaken" }, distance: distance(x, y, xEndpoint, yEndpoint) });
+            availableEndpoints.push({
+                endpoint: { x: xEndpoint, y: yEndpoint, prop: "bottomTaken" },
+                distance: distance(x, y, xEndpoint, yEndpoint),
+            });
         }
         if (!this.endpoints.leftTaken) {
             xEndpoint = this.x;
             yEndpoint = this.y + this.height / 2;
-            availableEndpoints.push({ endpoint: { x: xEndpoint, y: yEndpoint, prop: "leftTaken" }, distance: distance(x, y, xEndpoint, yEndpoint) });
+            availableEndpoints.push({
+                endpoint: { x: xEndpoint, y: yEndpoint, prop: "leftTaken" },
+                distance: distance(x, y, xEndpoint, yEndpoint),
+            });
         }
 
         // If no available endpoints, return null
