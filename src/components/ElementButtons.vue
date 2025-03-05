@@ -8,13 +8,16 @@
 <script>
 import { DegenerativeEntity } from "@/erDiagram/models/entities/DegenerativeEntity.js";
 import { Attribute } from "@/erDiagram/models/Attribute.js";
+import { Label } from "@/erDiagram/models/Label.js";
 export default {
     props: ["element"],
     computed: {
         attributesAllowed() {
             if (this.element instanceof Attribute) {
                 if (!this.element.properties.composite) return false;
-            } else if (this.element instanceof DegenerativeEntity) return false;
+            }
+            if (this.element instanceof DegenerativeEntity) return false;
+            if (this.element instanceof Label) return false;
             return true;
         },
     },
