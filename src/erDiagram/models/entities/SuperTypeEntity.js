@@ -17,9 +17,14 @@ export class SuperTypeEntity extends Entity {
     }
 
     draw() {
-        const textColor = "black";
-        const backgroundColor = this.active ? "rgb(52, 235, 219)" : "white";
-        this.shape.draw(this.name, this.specializationType[0].toLowerCase(), backgroundColor, textColor);
+        const backgroundColor = this.active ? "rgb(52, 235, 219)" : this.backgroundColor;
+        this.shape.draw(
+            this.name,
+            this.specializationType[0].toLowerCase(),
+            backgroundColor,
+            this.textColor,
+            this.borderColor,
+        );
     }
 
     drag(mouseX, mouseY) {
