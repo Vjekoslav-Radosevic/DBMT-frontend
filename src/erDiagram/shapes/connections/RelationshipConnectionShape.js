@@ -5,18 +5,28 @@ export class RelationshipConnectionShape extends ConnectionShape {
         super(ctx);
     }
 
-    draw(start, end, entity) {
+    draw(start, end, entity, lineColor) {
+        this.ctx.save();
+
         const min = entity.min;
         const max = entity.max;
 
-        if (entity.errorMin || entity.errorMax) this.ctx.strokeStyle = "red";
+        if (entity.errorMin || entity.errorMax) {
+            this.ctx.strokeStyle = "red";
+        } else {
+            this.ctx.strokeStyle = lineColor;
+        }
 
+        // draw line from Relationship endpoint to the center of Entity
         this.ctx.beginPath();
-        this.ctx.moveTo(start.x, start.y); // Move to the starting point
-        this.ctx.lineTo(end.x, end.y); // Draw a line to the ending point
+        this.ctx.moveTo(start.x, start.y);
+        this.ctx.lineTo(end.x, end.y);
         this.ctx.stroke();
 
-        if (min == "" && max == "") return;
+        if (min == "" && max == "") {
+            this.ctx.restore();
+            return;
+        }
 
         // Calculate the direction vector of the line
         const dx = end.x - start.x;
@@ -39,6 +49,7 @@ export class RelationshipConnectionShape extends ConnectionShape {
         const textHeight = 13; // equal to font size
         const padding = 4;
 
+        // background rectangle behind relationship boundaries
         this.ctx.fillStyle = "white";
         this.ctx.fillRect(
             textStartX - textWidth / 2 - padding,
@@ -46,14 +57,15 @@ export class RelationshipConnectionShape extends ConnectionShape {
             textWidth + 2 * padding,
             textHeight + 2 * padding,
         );
-        this.ctx.fillStyle = "black";
 
-        if (entity.errorMin || entity.errorMax) this.ctx.fillStyle = "red";
+        if (entity.errorMin || entity.errorMax) {
+            this.ctx.fillStyle = "red";
+        } else {
+            this.ctx.fillStyle = lineColor;
+        }
 
-        // Draw the text
         this.ctx.fillText(text, textStartX, textStartY);
 
-        this.ctx.strokeStyle = "black";
-        this.ctx.fillStyle = "black";
+        this.ctx.restore();
     }
 }
