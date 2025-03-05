@@ -8,12 +8,13 @@
         <div class="toolbar-button er-button" :class="{ active: isRelationship }" @click="createRelationship">
             Relationship
         </div>
-        <div class="toolbar-button er-button">Label</div>
+        <div class="toolbar-button er-button" :class="{ active: isLabel }" @click="createLabel">Label</div>
     </div>
 </template>
 
 <script>
 import { Entity } from "@/erDiagram/models/Entity.js";
+import { Label } from "@/erDiagram/models/Label";
 import { Relationship } from "@/erDiagram/models/Relationship.js";
 export default {
     props: ["newElement"],
@@ -24,6 +25,9 @@ export default {
         isRelationship() {
             return this.newElement instanceof Relationship;
         },
+        isLabel() {
+            return this.newElement instanceof Label;
+        },
     },
     methods: {
         createEntity() {
@@ -31,6 +35,9 @@ export default {
         },
         createRelationship() {
             this.$emit("createRelationship");
+        },
+        createLabel() {
+            this.$emit("createLabel");
         },
         openDownloadDialog() {
             this.$emit("open-download-dialog");
