@@ -14,9 +14,6 @@ export class Attribute extends Element {
             optional: false,
             derived: false,
         };
-        this.textColor = "black";
-        this.backgroundColor = "white";
-        this.borderColor = "black";
     }
 
     draw() {

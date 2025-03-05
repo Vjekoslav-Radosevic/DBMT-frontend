@@ -34,9 +34,6 @@ export class Relationship extends Element {
                 errorMax: "",
             },
         };
-        this.textColor = "black";
-        this.backgroundColor = "white";
-        this.borderColor = "black";
     }
 
     drag(mouseX, mouseY) {

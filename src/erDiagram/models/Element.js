@@ -8,12 +8,15 @@ export class Element {
         this.ctx = ctx;
         this.active = false;
         this.shape = new Shape(ctx, x, y, width, height);
+
+        this.textColor = "black";
+        this.backgroundColor = "white";
+        this.borderColor = "black";
     }
 
     draw() {
-        const textColor = "black";
-        const backgroundColor = this.active ? "rgb(52, 235, 219)" : "white";
-        this.shape.draw(this.name, backgroundColor, textColor);
+        const backgroundColor = this.active ? "rgb(52, 235, 219)" : this.backgroundColor;
+        this.shape.draw(this.name, backgroundColor, this.textColor, this.borderColor);
     }
 
     getCenter() {
