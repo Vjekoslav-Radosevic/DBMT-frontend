@@ -29,6 +29,7 @@
 import { useCanvasStore } from "../stores/index.js";
 import { mapActions } from "pinia";
 import { Relationship } from "@/erDiagram/models/Relationship.js";
+import { Attribute } from "@/erDiagram/models/Attribute.js";
 
 export default {
     props: ["elements", "connections", "addingElement"],
@@ -122,6 +123,9 @@ export default {
                 const { offsetX, offsetY } = event;
                 let elementActivated = false;
                 for (let i = this.elements.length - 1; i >= 0; i--) {
+                    // if attribute is part of attribute schema and is not present on canvas
+                    if (this.elements[i] instanceof Attribute && !this.elements[i].willDraw) continue;
+
                     if (this.elements[i].shape.startDragging(offsetX, offsetY)) {
                         this.$emit("activate-element", this.elements[i]);
                         elementActivated = true;
