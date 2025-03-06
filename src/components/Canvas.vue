@@ -32,7 +32,7 @@ import { Relationship } from "@/erDiagram/models/Relationship.js";
 import { Attribute } from "@/erDiagram/models/Attribute.js";
 
 export default {
-    props: ["elements", "connections", "addingElement"],
+    props: ["elements", "connections", "attributeSchemas", "addingElement"],
     data() {
         return {
             pixelRatio: window.devicePixelRatio,
@@ -64,6 +64,12 @@ export default {
             deep: true,
         },
         connectionsLength: "redrawCanvas",
+        attributeSchemas: {
+            handler: function () {
+                this.redrawCanvas();
+            },
+            deep: true,
+        },
     },
     methods: {
         ...mapActions(useCanvasStore, ["setContext", "setCanvasWidth", "setCanvasHeight"]),
@@ -121,13 +127,15 @@ export default {
             } else {
                 this.isMouseDown = true;
                 const { offsetX, offsetY } = event;
-                let elementActivated = false;
-                for (let i = this.elements.length - 1; i >= 0; i--) {
-                    // if attribute is part of attribute schema and is not present on canvas
-                    if (this.elements[i] instanceof Attribute && !this.elements[i].willDraw) continue;
 
-                    if (this.elements[i].shape.startDragging(offsetX, offsetY)) {
-                        this.$emit("activate-element", this.elements[i]);
+                const elementsAndSchemas = this.elements.concat(this.attributeSchemas);
+                let elementActivated = false;
+                for (let i = elementsAndSchemas.length - 1; i >= 0; i--) {
+                    // if attribute is part of attribute schema and is not present on canvas
+                    if (elementsAndSchemas[i] instanceof Attribute && !elementsAndSchemas[i].willDraw) continue;
+
+                    if (elementsAndSchemas[i].shape.startDragging(offsetX, offsetY)) {
+                        this.$emit("activate-element", elementsAndSchemas[i]);
                         elementActivated = true;
                         break;
                     }
@@ -146,6 +154,10 @@ export default {
                 element.drag(offsetX, offsetY);
             });
 
+            this.attributeSchemas.forEach((schema) => {
+                schema.drag(offsetX, offsetY);
+            });
+
             this.redrawCanvas();
         },
 
@@ -153,8 +165,13 @@ export default {
             if (this.addingElement) return;
 
             this.isMouseDown = false;
+
             this.elements.forEach((element) => {
                 element.shape.stopDragging();
+            });
+
+            this.attributeSchemas.forEach((schema) => {
+                schema.shape.stopDragging();
             });
         },
 
@@ -174,6 +191,9 @@ export default {
             this.elements.forEach((element) => {
                 element.draw();
             });
+            this.attributeSchemas.forEach((schema) => {
+                schema.draw();
+            });
         },
         redrawWithWhiteBack() {
             const canvas = this.$refs.canvas;
@@ -192,6 +212,9 @@ export default {
             });
             this.elements.forEach((element) => {
                 element.draw();
+            });
+            this.attributeSchemas.forEach((schema) => {
+                schema.draw();
             });
         },
     },
