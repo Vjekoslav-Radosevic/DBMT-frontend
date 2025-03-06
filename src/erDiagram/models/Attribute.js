@@ -14,9 +14,11 @@ export class Attribute extends Element {
             optional: false,
             derived: false,
         };
+        this.willDraw = true; // if parent entity attribute schema is active, this is false
     }
 
     draw() {
+        if (!this.willDraw) return;
         const backgroundColor = this.active ? "rgb(52, 235, 219)" : this.backgroundColor;
         this.shape.draw(this.name, this.properties, backgroundColor, this.textColor, this.borderColor);
     }
