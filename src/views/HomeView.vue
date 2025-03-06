@@ -15,6 +15,7 @@
             :addingElement="addingElement"
             :elements="elements"
             :connections="connections"
+            :attributeSchemas="attributeSchemas"
             @activate-element="activateElement"
             @deactivate-element="deactivateElement"
             @new-element-added="createElement"
@@ -44,6 +45,7 @@ import { changeEntityType } from "../utils/changeType";
 import { useCanvasStore } from "../stores/index";
 import { mapState } from "pinia";
 import { Label } from "@/erDiagram/models/Label";
+import { AttributeSchema } from "@/erDiagram/models/AttributeSchema";
 
 export default {
     components: { Header, Toolbar, Details, Canvas, DownloadDialog },
@@ -53,6 +55,7 @@ export default {
             elementHeight: 55,
             elements: [],
             connections: [],
+            attributeSchemas: [],
             activeElement: null,
             canvasImage: null,
 
@@ -146,6 +149,18 @@ export default {
                 (connection) => attributes.includes(connection.element1) || attributes.includes(connection.element2),
             );
             connections.forEach((connection) => (connection.willDraw = false));
+
+            const attributeSchema = new AttributeSchema(
+                "AttributeSchema",
+                this.getContext,
+                0,
+                0,
+                this.elementWidth,
+                this.elementHeight,
+                this.activeElement,
+            );
+
+            this.attributeSchemas.push(attributeSchema);
         },
         removeAttributeSchema() {
             // show all entity's attributes
@@ -157,6 +172,10 @@ export default {
                 (connection) => attributes.includes(connection.element1) || attributes.includes(connection.element2),
             );
             connections.forEach((connection) => (connection.willDraw = true));
+
+            this.attributeSchemas = this.attributeSchemas.filter(
+                (attributeSchema) => attributeSchema.entity.id != this.activeElement.id,
+            );
         },
         setNewEntity(change) {
             // set new entity to relationship
