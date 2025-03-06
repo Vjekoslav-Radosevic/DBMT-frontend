@@ -63,8 +63,10 @@ export default {
     created() {
         this.$eventBus.on("set-relationship-entity", (change) => this.setNewEntity(change));
         this.$eventBus.on("remove-all-attributes", () => this.removeAllAttributes());
-        this.$eventBus.on("add-entity", () => this.addEntity());
         this.$eventBus.on("change-entity-type", (type) => this.changeEntityType(type));
+        this.$eventBus.on("add-entity", () => this.addEntity());
+        this.$eventBus.on("create-attribute-schema", () => this.createAttributeSchema());
+        this.$eventBus.on("remove-attribute-schema", () => this.removeAttributeSchema());
         this.$eventBus.on("delete-element", () => this.deleteElement());
         this.$eventBus.on("add-attribute", () => this.addAttribute());
         this.$eventBus.on("download-image", (transparentBack) => this.downloadImage(transparentBack));
@@ -134,6 +136,28 @@ export default {
             this.connections.push(connection);
             this.activateElement(element);
         },
+        createAttributeSchema() {
+            // hide all entity's attributes
+            const attributes = this.activeElement.getAllElementsRecursive(false, true);
+            attributes.forEach((attribute) => (attribute.willDraw = false));
+
+            // hide all connections that connect those attributes
+            const connections = this.connections.filter(
+                (connection) => attributes.includes(connection.element1) || attributes.includes(connection.element2),
+            );
+            connections.forEach((connection) => (connection.willDraw = false));
+        },
+        removeAttributeSchema() {
+            // show all entity's attributes
+            const attributes = this.activeElement.getAllElementsRecursive(false, true);
+            attributes.forEach((attribute) => (attribute.willDraw = true));
+
+            // show all connections that connect those attributes
+            const connections = this.connections.filter(
+                (connection) => attributes.includes(connection.element1) || attributes.includes(connection.element2),
+            );
+            connections.forEach((connection) => (connection.willDraw = true));
+        },
         setNewEntity(change) {
             // set new entity to relationship
             let connection;
@@ -177,7 +201,7 @@ export default {
         removeAllElementsAndConnections(elementsForDeletion) {
             this.elements = this.elements.filter((element) => !elementsForDeletion.includes(element)); // remove all elements marked for deletion
 
-            // remove all connections that connected elements marked for deletion
+            // remove all connections that connect elements that are marked for deletion
             this.connections = this.connections.filter(
                 (connection) =>
                     !elementsForDeletion.includes(connection.element1) &&
