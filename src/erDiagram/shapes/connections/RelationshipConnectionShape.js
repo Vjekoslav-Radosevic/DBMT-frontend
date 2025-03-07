@@ -21,6 +21,7 @@ export class RelationshipConnectionShape extends ConnectionShape {
         this.ctx.beginPath();
         this.ctx.moveTo(start.x, start.y);
         this.ctx.lineTo(end.x, end.y);
+        this.ctx.closePath();
         this.ctx.stroke();
 
         if (min == "" && max == "") {
