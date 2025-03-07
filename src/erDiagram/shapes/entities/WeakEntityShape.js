@@ -20,7 +20,6 @@ export class WeakEntityShape extends Shape {
         this.ctx.fillStyle = backgroundColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height); // Draw the rectangle
 
-        // Draw the name inside the rectangle
         this.ctx.fillStyle = textColor;
         this.ctx.fillText(text, this.x + this.width / 2, this.y + this.height / 2);
 

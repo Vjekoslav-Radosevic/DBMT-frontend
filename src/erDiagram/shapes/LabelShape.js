@@ -12,7 +12,8 @@ export class LabelShape extends Shape {
     draw(text, backgroundColor, textColor, borderColor) {
         this.ctx.save();
 
-        const textLineHeight = 15; // 1px bigger than text alone
+        const canvasFontSize = parseInt(this.ctx.font.match(/\d+/)[0], 10);
+        const textLineHeight = canvasFontSize + 1;
         const textPadding = 10;
 
         const { textLines, maxTextLineWidth } = this.formTextLines(text, textPadding);

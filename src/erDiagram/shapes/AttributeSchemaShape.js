@@ -12,7 +12,8 @@ export class AttributeSchemaShape extends Shape {
     draw(text, attributes, backgroundColor, textColor, borderColor) {
         this.ctx.save();
 
-        const textLineHeight = 16; // 2px bigger than text alone
+        const canvasFontSize = parseInt(this.ctx.font.match(/\d+/)[0], 10);
+        const textLineHeight = canvasFontSize + 2;
         const textPadding = 10;
 
         const attributeLines = this.formAttributeLines(attributes, 0);
