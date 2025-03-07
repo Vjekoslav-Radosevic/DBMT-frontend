@@ -14,7 +14,7 @@ export class RelationshipConnection extends Connection {
 
         let entity = Object.values(this.element1.entities).find((value) => value.entity === this.element2);
 
-        if (!entity) return; // if connection is not updated yet
+        if (!entity) return; // if relationship's entities property is not updated yet
 
         this.connectionShape.draw(entityNearestPoint, relationshipNearestPoint, entity, this.lineColor);
     }

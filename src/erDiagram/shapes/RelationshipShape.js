@@ -128,7 +128,7 @@ export class RelationshipShape extends Shape {
             }
         }
 
-        // Mark the nearest endpoint as taken and return it
+        // Mark the nearest endpoint as taken
         this.endpoints[nearest.endpoint.prop] = true;
         return nearest.endpoint;
     }
