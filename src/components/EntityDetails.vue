@@ -24,7 +24,11 @@
         </div>
         <div @click="addEntity" class="element-button er-button">Add entity</div>
     </div>
-    <div v-if="!element.attributeSchemaActive" class="element-button er-button" @click="createAttributeSchema">
+    <div
+        v-if="!element.attributeSchemaActive && element.attributes.length"
+        class="element-button er-button"
+        @click="createAttributeSchema"
+    >
         Create attribute schema
     </div>
     <div v-if="element.attributeSchemaActive" class="element-button danger-button" @click="removeAttributeSchema">
