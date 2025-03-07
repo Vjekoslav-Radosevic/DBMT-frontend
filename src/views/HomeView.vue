@@ -151,10 +151,10 @@ export default {
             connections.forEach((connection) => (connection.willDraw = false));
 
             const attributeSchema = new AttributeSchema(
-                "AttributeSchema",
+                "Attribute Schema",
                 this.getContext,
-                0,
-                0,
+                this.activeElement.shape.x,
+                this.activeElement.shape.y + this.activeElement.shape.height * 2,
                 this.elementWidth,
                 this.elementHeight,
                 this.activeElement,
