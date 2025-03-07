@@ -6,7 +6,6 @@ export class RelationshipConnection extends Connection {
         super(ctx, element1, element2); // element1 is always Relationship
 
         this.connectionShape = new RelationshipConnectionShape(ctx);
-        this.lineColor = "black";
     }
 
     draw() {

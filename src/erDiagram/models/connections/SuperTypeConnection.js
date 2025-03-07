@@ -6,7 +6,6 @@ export class SuperTypeConnection extends Connection {
         super(ctx, element1, element2);
 
         this.connectionShape = new SuperTypeConnectionShape(ctx);
-        this.lineColor = "black";
     }
 
     draw() {
