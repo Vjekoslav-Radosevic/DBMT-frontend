@@ -8,6 +8,8 @@
 <script>
 import { DegenerativeEntity } from "@/erDiagram/models/entities/DegenerativeEntity.js";
 import { Attribute } from "@/erDiagram/models/Attribute.js";
+import { Entity } from "@/erDiagram/models/Entity.js";
+import { Relationship } from "@/erDiagram/models/Relationship.js";
 import { Label } from "@/erDiagram/models/Label.js";
 export default {
     props: ["element"],
@@ -18,6 +20,9 @@ export default {
             }
             if (this.element instanceof DegenerativeEntity) return false;
             if (this.element instanceof Label) return false;
+            if (this.element instanceof Entity || this.element instanceof Relationship) {
+                if (this.element.attributeSchema) return false;
+            }
             return true;
         },
     },
