@@ -25,13 +25,13 @@
         <div @click="addEntity" class="element-button er-button">Add entity</div>
     </div>
     <div
-        v-if="!element.attributeSchemaActive && element.attributes.length"
+        v-if="!element.attributeSchema && element.attributes.length"
         class="element-button er-button"
         @click="createAttributeSchema"
     >
         Create attribute schema
     </div>
-    <div v-if="element.attributeSchemaActive" class="element-button danger-button" @click="removeAttributeSchema">
+    <div v-if="element.attributeSchema" class="element-button danger-button" @click="removeAttributeSchema">
         Remove attribute schema
     </div>
 </template>
@@ -69,11 +69,9 @@ export default {
         },
         createAttributeSchema() {
             this.$eventBus.emit("create-attribute-schema");
-            this.element.attributeSchemaActive = true;
         },
         removeAttributeSchema() {
             this.$eventBus.emit("remove-attribute-schema");
-            this.element.attributeSchemaActive = false;
         },
     },
 };

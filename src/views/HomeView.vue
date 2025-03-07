@@ -38,6 +38,7 @@ import { Connection } from "@/erDiagram/models/Connection";
 import { RelationshipConnection } from "@/erDiagram/models/connections/RelationshipConnection";
 import { Relationship } from "@/erDiagram/models/Relationship";
 import { Attribute } from "@/erDiagram/models/Attribute";
+import { Entity } from "@/erDiagram/models/Entity";
 import { SuperTypeEntity } from "@/erDiagram/models/entities/SuperTypeEntity";
 
 import { changeEntityType } from "../utils/changeType";
@@ -161,6 +162,7 @@ export default {
             );
 
             this.attributeSchemas.push(attributeSchema);
+            this.activeElement.attributeSchema = attributeSchema;
         },
         removeAttributeSchema() {
             // show all entity's attributes
@@ -173,9 +175,13 @@ export default {
             );
             connections.forEach((connection) => (connection.willDraw = true));
 
+            // remove that attribute schema from list of attribute schemas
             this.attributeSchemas = this.attributeSchemas.filter(
                 (attributeSchema) => attributeSchema.entity.id != this.activeElement.id,
             );
+
+            // remove that attribute schema from currently active entity
+            this.activeElement.attributeSchema = null;
         },
         setNewEntity(change) {
             // set new entity to relationship
@@ -228,15 +234,21 @@ export default {
             );
         },
         activateElement(element) {
-            if (this.activeElement) this.activeElement.active = false; // deactivate current active element
-            this.activeElement = element;
-            this.activeElement.active = true;
+            // deactivate currently active element
+            this.deactivateElement();
+
+            element.active = true;
+            this.activeElement = element instanceof AttributeSchema ? element.entity : element;
         },
         deactivateElement() {
-            if (this.activeElement) {
-                this.activeElement.active = false;
-                this.activeElement = null;
+            if (!this.activeElement) return; // if there is no active element
+
+            this.activeElement.active = false;
+            if (this.activeElement instanceof Entity && this.activeElement.attributeSchema) {
+                this.activeElement.attributeSchema.active = false;
             }
+
+            this.activeElement = null;
         },
         changeEntityType(type) {
             if (this.activeElement instanceof SuperTypeEntity) {

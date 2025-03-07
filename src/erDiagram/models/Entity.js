@@ -8,7 +8,7 @@ export class Entity extends Element {
         this.shape = new RegularEntityShape(ctx, x, y, width, height);
         this.attributes = attributes;
         this.attributes.forEach((attribute) => (attribute.parentElement = this)); // make this Entity the parent of every attribute from it's attributes list
-        this.attributeSchemaActive = false;
+        this.attributeSchema = null;
     }
 
     drag(mouseX, mouseY) {
