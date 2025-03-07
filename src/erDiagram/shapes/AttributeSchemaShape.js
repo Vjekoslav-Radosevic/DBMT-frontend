@@ -14,6 +14,7 @@ export class AttributeSchemaShape extends Shape {
 
         const canvasFontSize = parseInt(this.ctx.font.match(/\d+/)[0], 10);
         const textLineHeight = canvasFontSize + 2;
+        const entityNameLineHeight = canvasFontSize + 5;
         const textPadding = 10;
 
         const attributeLines = this.formAttributeLines(attributes, 0);
@@ -25,7 +26,7 @@ export class AttributeSchemaShape extends Shape {
         });
 
         this.width = maxTextLineWidth + 2 * textPadding;
-        this.height = textLineHeight * attributeLines.length + 2 * textPadding;
+        this.height = 2 * textPadding + entityNameLineHeight + textLineHeight * attributeLines.length;
 
         this.ctx.strokeStyle = borderColor;
         this.ctx.strokeRect(this.x, this.y, this.width, this.height); // Draw rectangle border
@@ -34,7 +35,7 @@ export class AttributeSchemaShape extends Shape {
         this.ctx.fillRect(this.x, this.y, this.width, this.height); // Draw the rectangle
 
         this.ctx.fillStyle = textColor;
-        this.drawText(attributeLines, textPadding, textLineHeight);
+        this.drawText(text, attributeLines, textPadding, entityNameLineHeight, textLineHeight);
 
         this.ctx.restore();
     }
@@ -44,19 +45,31 @@ export class AttributeSchemaShape extends Shape {
         const prefix = "  ".repeat(level);
 
         for (let i = 0; i < attributes.length; i++) {
-            attributeLines.push(prefix + attributes[i].name);
+            let attributeLine = prefix + attributes[i].name;
+            if (attributes[i].properties.unique) attributeLine = attributeLine + " (U)";
+            if (attributes[i].properties.composite) attributeLine = attributeLine + ":";
+            attributeLines.push(attributeLine);
             attributeLines = attributeLines.concat(this.formAttributeLines(attributes[i].attributes, level + 1));
         }
 
         return attributeLines;
     }
 
-    drawText(textLines, textPadding, textLineHeight) {
+    drawText(entityName, textLines, textPadding, entityNameLineHeight, textLineHeight) {
         this.ctx.textAlign = "left";
         this.ctx.textBaseline = "hanging";
 
+        const oldCanvasfont = this.ctx.font;
+        this.ctx.font = "bold " + oldCanvasfont;
+        this.ctx.fillText(entityName, this.x + textPadding, this.y + textPadding);
+        this.ctx.font = oldCanvasfont;
+
         for (let i = 0; i < textLines.length; i++) {
-            this.ctx.fillText(textLines[i], this.x + textPadding, this.y + textPadding + i * textLineHeight);
+            this.ctx.fillText(
+                textLines[i],
+                this.x + textPadding,
+                this.y + textPadding + entityNameLineHeight + i * textLineHeight,
+            );
         }
     }
 }
