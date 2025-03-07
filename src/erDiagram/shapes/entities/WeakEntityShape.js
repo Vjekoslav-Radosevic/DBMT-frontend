@@ -13,12 +13,12 @@ export class WeakEntityShape extends Shape {
     draw(text, backgroundColor, textColor, borderColor) {
         this.ctx.save();
 
+        this.ctx.fillStyle = backgroundColor;
+        this.ctx.fillRect(this.x, this.y, this.width, this.height); // Draw the rectangle
+
         this.ctx.strokeStyle = borderColor;
         this.ctx.strokeRect(this.x, this.y, this.width, this.height); // Draw the outer border
         this.ctx.strokeRect(this.x + 5, this.y + 5, this.width - 10, this.height - 10); // Draw the inner border
-
-        this.ctx.fillStyle = backgroundColor;
-        this.ctx.fillRect(this.x, this.y, this.width, this.height); // Draw the rectangle
 
         this.ctx.fillStyle = textColor;
         this.ctx.fillText(text, this.x + this.width / 2, this.y + this.height / 2);
