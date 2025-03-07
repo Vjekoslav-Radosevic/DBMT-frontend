@@ -34,7 +34,7 @@ export class Relationship extends Element {
                 errorMax: "",
             },
         };
-        this.attributeSchemaActive = false;
+        this.attributeSchema = null;
     }
 
     drag(mouseX, mouseY) {
