@@ -18,12 +18,7 @@ export class AttributeSchemaShape extends Shape {
         const textPadding = 10;
 
         const attributeLines = this.formAttributeLines(attributes, 0);
-
-        let maxTextLineWidth = 0;
-        attributeLines.forEach((attributeLine) => {
-            const lineWidth = this.ctx.measureText(attributeLine).width;
-            if (lineWidth > maxTextLineWidth) maxTextLineWidth = lineWidth;
-        });
+        const maxTextLineWidth = this.measureMaxTextWidth(text, attributeLines);
 
         this.width = maxTextLineWidth + 2 * textPadding;
         this.height = 2 * textPadding + entityNameLineHeight + textLineHeight * attributeLines.length;
@@ -53,6 +48,20 @@ export class AttributeSchemaShape extends Shape {
         }
 
         return attributeLines;
+    }
+
+    measureMaxTextWidth(entityName, attributeLines) {
+        const oldCanvasfont = this.ctx.font;
+        this.ctx.font = "bold " + oldCanvasfont;
+        let maxTextLineWidth = this.ctx.measureText(entityName).width;
+        this.ctx.font = oldCanvasfont;
+
+        attributeLines.forEach((attributeLine) => {
+            const lineWidth = this.ctx.measureText(attributeLine).width;
+            if (lineWidth > maxTextLineWidth) maxTextLineWidth = lineWidth;
+        });
+
+        return maxTextLineWidth;
     }
 
     drawText(entityName, textLines, textPadding, entityNameLineHeight, textLineHeight) {
