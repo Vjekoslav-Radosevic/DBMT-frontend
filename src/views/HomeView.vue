@@ -215,6 +215,12 @@ export default {
             ) {
                 this.activeElement.removeFromParent();
             }
+
+            // remove element's attribute schema from list of attribute schemas (if it exists)
+            this.attributeSchemas = this.attributeSchemas.filter(
+                (attributeSchema) => attributeSchema.entity.id != this.activeElement.id,
+            );
+
             let elementsForDeletion = this.activeElement.getAllElementsRecursive(true, true); // includeMyself = true, includeMyAttributes = true
             this.removeAllElementsAndConnections(elementsForDeletion);
             this.activeElement = null;
@@ -244,7 +250,10 @@ export default {
             if (!this.activeElement) return; // if there is no active element
 
             this.activeElement.active = false;
-            if (this.activeElement instanceof Entity && this.activeElement.attributeSchema) {
+            if (
+                (this.activeElement instanceof Entity || this.activeElement instanceof Relationship) &&
+                this.activeElement.attributeSchema
+            ) {
                 this.activeElement.attributeSchema.active = false;
             }
 
@@ -255,6 +264,8 @@ export default {
                 let elementsForDeletion = this.activeElement.getAllElementsRecursive(false, false); // includeMyself = false, includeMyAttributes = false
                 this.removeAllElementsAndConnections(elementsForDeletion);
             }
+
+            this.removeAttributeSchema();
 
             let element = changeEntityType(this.activeElement, type);
 
