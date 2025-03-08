@@ -186,37 +186,35 @@ export default {
         setNewEntity(change) {
             // set new entity to relationship
             let connection;
-            let { relationship, newEntity, oldEntity, entityText } = change;
+            let { newEntity, oldEntity, entityText } = change;
 
             // if user chose 'None' as new entity
             if (!newEntity) {
-                const targetConnections = this.connections.filter(
-                    (connection) =>
-                        connection.element1 === relationship &&
-                        connection.element2 === oldEntity &&
-                        connection.entityText === entityText,
-                );
-
-                if (targetConnections.length === 0) return; // if user chose 'None' where already was 'None'
-
                 // filter out only one connection from targetConnections because there can be one or two (reflexive relationship)
-                this.connections = this.connections.filter((connection) => connection.id !== targetConnections[0].id);
+                this.connections = this.connections.filter(
+                    (connection) =>
+                        !(
+                            connection.element1.id === this.activeElement.id &&
+                            connection.element2.id === oldEntity.id &&
+                            connection.entityText === entityText
+                        ),
+                );
+                this.activeElement.resetEntity(entityText, true);
                 this.$refs.canvasRef.redrawCanvas();
-
                 return;
             }
 
             if (!oldEntity) {
-                connection = new RelationshipConnection(this.getContext, relationship, newEntity, entityText);
+                connection = new RelationshipConnection(this.getContext, this.activeElement, newEntity, entityText);
                 this.connections.push(connection);
             } else {
                 connection = this.connections.filter(
                     (connection) =>
-                        connection.element1 === relationship &&
-                        connection.element2 === oldEntity &&
+                        connection.element1.id === this.activeElement.id &&
+                        connection.element2.id === oldEntity.id &&
                         connection.entityText === entityText,
                 )[0];
-                connection.updateConnection(relationship, newEntity);
+                connection.updateConnection(this.activeElement, newEntity);
                 this.activeElement.resetEntity(entityText, false);
             }
 
@@ -229,7 +227,7 @@ export default {
                         this.connections = this.connections.filter(
                             (connection) =>
                                 !(
-                                    connection.element1.id === relationship.id &&
+                                    connection.element1.id === this.activeElement.id &&
                                     connection.element2.id === entity.entity.id
                                 ),
                         );
