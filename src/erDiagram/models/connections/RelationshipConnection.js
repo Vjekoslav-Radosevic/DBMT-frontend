@@ -9,8 +9,9 @@ export class RelationshipConnection extends Connection {
     }
 
     draw() {
-        let entityNearestPoint = this.element2.getNearestPoint(this.element1.getCenter());
-        let relationshipNearestPoint = this.element1.getNearestEndpoint(entityNearestPoint.x, entityNearestPoint.y);
+        const entityCenter = this.element2.getCenter();
+        const relationshipNearestPoint = this.element1.getNearestEndpoint(entityCenter.x, entityCenter.y);
+        const entityNearestPoint = this.element2.getNearestPoint(relationshipNearestPoint);
 
         let entity = Object.values(this.element1.entities).find((value) => value.entity === this.element2);
 
