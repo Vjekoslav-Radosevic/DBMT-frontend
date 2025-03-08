@@ -47,7 +47,17 @@ export class Relationship extends Element {
     }
 
     getNearestEndpoint(x, y) {
-        return this.shape.getNearestEndpoint(x, y);
+        let nearestEndpoint = this.shape.getNearestEndpoint(x, y);
+
+        if (this.isReflexive()) {
+            nearestEndpoint = this.shape.getReflexiveEndpoint(nearestEndpoint);
+            this.shape.endpoints[nearestEndpoint.prop] = true;
+        } else {
+            // Mark the nearest endpoint as taken
+            this.shape.endpoints[nearestEndpoint.prop] = true;
+        }
+
+        return nearestEndpoint;
     }
 
     freeEndpoints() {
