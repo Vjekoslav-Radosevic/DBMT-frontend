@@ -54,6 +54,43 @@ export class Relationship extends Element {
         this.shape.freeEndpoints();
     }
 
+    isReflexive() {
+        const counts = {};
+        let entities = Object.values(this.entities).map((value) => value.entity);
+        entities = entities.filter((entity) => entity); // filter out null values
+
+        for (const entity of entities) {
+            if (!counts[entity.id]) {
+                counts[entity.id] = { entity: entity, appearance: 1 };
+            } else {
+                counts[entity.id].appearance++;
+            }
+        }
+
+        const duplicates = Object.values(counts).filter((value) => value.appearance > 1);
+
+        if (duplicates.length) {
+            return duplicates[0];
+        } else {
+            return null;
+        }
+    }
+
+    resetEntity(entityText, resetActualEntity) {
+        Object.values(this.entities).forEach((entity) => {
+            if (entity.text === entityText) {
+                entity.min = "";
+                entity.max = "";
+                entity.errorMin = "";
+                entity.errorMax = "";
+
+                if (resetActualEntity) {
+                    entity.entity = null;
+                }
+            }
+        });
+    }
+
     addAttribute(name, width, height, canvasWidth, canvasHeight) {
         let positions = [
             [0, 0.75 * width],
