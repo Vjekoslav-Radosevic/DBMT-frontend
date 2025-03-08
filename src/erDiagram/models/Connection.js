@@ -6,7 +6,7 @@ export class Connection {
         this.element2 = element2;
         this.connectionShape = new ConnectionShape(ctx);
         this.willDraw = true; // if it connects to attribute that is hidden because of attribute schema
-        this.lineColor = "black";
+        this.lineColor = "gray";
     }
 
     updateConnection(element1, element2) {
