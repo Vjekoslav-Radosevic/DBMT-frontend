@@ -4,37 +4,39 @@
         <label for="identifying">Indentifying</label>
     </div>
     <div v-for="relEntity in element.entities" :key="relEntity" class="entity-container">
-        <div>
-            {{ relEntity.text }}:
-            <select
-                v-model="relEntity.entity"
-                @focus="storeOldEntity(relEntity.text, relEntity)"
-                @change="setNewEntity(relEntity)"
-            >
-                <option v-for="entity in entities(relEntity.entity)" :key="entity" :value="entity">
-                    {{ entity ? entity.name : "None" }}
-                </option>
-            </select>
-        </div>
-        <div class="entity-element">
-            <label :for="relEntity.text + 'min'">Lower bound: </label>
-            <input
-                type="text"
-                :name="relEntity.text + 'min'"
-                v-model="relEntity.min"
-                @input="validateMin(relEntity)"
-                :class="{ invalid: relEntity.errorMin }"
-            />
-        </div>
-        <div class="entity-element">
-            <label :for="relEntity.text + 'max'">Upper bound: </label>
-            <input
-                type="text"
-                :name="relEntity.text + 'max'"
-                v-model="relEntity.max"
-                @input="validateMax(relEntity)"
-                :class="{ invalid: relEntity.errorMax }"
-            />
+        <div v-if="showContainer(relEntity.entity)">
+            <div>
+                {{ relEntity.text }}:
+                <select
+                    v-model="relEntity.entity"
+                    @focus="storeOldEntity(relEntity.text, relEntity)"
+                    @change="setNewEntity(relEntity)"
+                >
+                    <option v-for="entity in entities(relEntity.entity)" :key="entity" :value="entity">
+                        {{ entity ? entity.name : "None" }}
+                    </option>
+                </select>
+            </div>
+            <div class="entity-element">
+                <label :for="relEntity.text + 'min'">Lower bound: </label>
+                <input
+                    type="text"
+                    :name="relEntity.text + 'min'"
+                    v-model="relEntity.min"
+                    @input="validateMin(relEntity)"
+                    :class="{ invalid: relEntity.errorMin }"
+                />
+            </div>
+            <div class="entity-element">
+                <label :for="relEntity.text + 'max'">Upper bound: </label>
+                <input
+                    type="text"
+                    :name="relEntity.text + 'max'"
+                    v-model="relEntity.max"
+                    @input="validateMax(relEntity)"
+                    :class="{ invalid: relEntity.errorMax }"
+                />
+            </div>
         </div>
     </div>
     <AttributeSchemaButtons :element="element" />
@@ -63,6 +65,25 @@ export default {
             const entities = this.elements.filter((element) => element instanceof Entity);
             return [...entities, null];
         },
+        showContainer(entity) {
+            const reflexiveEntity = this.element.isReflexive();
+            if (!reflexiveEntity) {
+                // console.log("RelationshipDetails: NIJE refleksivna veza");
+                return true;
+            }
+
+            if (!entity) {
+                // console.log("veza je refleksivna, entity je null");
+                return false;
+            }
+
+            if (reflexiveEntity.entity.id !== entity.id) {
+                // console.log("veza je refleksivna, entity je neki drugi");
+                return false;
+            }
+
+            return true;
+        },
         storeOldEntity(key, value) {
             this.oldEntities[key] = { ...value };
         },
@@ -71,6 +92,7 @@ export default {
                 relationship: this.element,
                 oldEntity: this.oldEntities[relEntity.text].entity,
                 newEntity: relEntity.entity,
+                entityText: relEntity.text,
             };
             this.$eventBus.emit("set-relationship-entity", change);
             this.storeOldEntity(relEntity.text, relEntity);
