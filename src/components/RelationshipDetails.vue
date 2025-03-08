@@ -3,40 +3,38 @@
         <input type="checkbox" id="identifying" v-model="element.identifying" />
         <label for="identifying">Indentifying</label>
     </div>
-    <div v-for="relEntity in element.entities" :key="relEntity" class="entity-container">
-        <div v-if="showContainer(relEntity.entity)">
-            <div>
-                {{ relEntity.text }}:
-                <select
-                    v-model="relEntity.entity"
-                    @focus="storeOldEntity(relEntity.text, relEntity)"
-                    @change="setNewEntity(relEntity)"
-                >
-                    <option v-for="entity in entities" :key="entity" :value="entity">
-                        {{ entity ? entity.name : "None" }}
-                    </option>
-                </select>
-            </div>
-            <div class="entity-element">
-                <label :for="relEntity.text + 'min'">Lower bound: </label>
-                <input
-                    type="text"
-                    :name="relEntity.text + 'min'"
-                    v-model="relEntity.min"
-                    @input="validateMin(relEntity)"
-                    :class="{ invalid: relEntity.errorMin }"
-                />
-            </div>
-            <div class="entity-element">
-                <label :for="relEntity.text + 'max'">Upper bound: </label>
-                <input
-                    type="text"
-                    :name="relEntity.text + 'max'"
-                    v-model="relEntity.max"
-                    @input="validateMax(relEntity)"
-                    :class="{ invalid: relEntity.errorMax }"
-                />
-            </div>
+    <div v-for="relEntity in eligibleEntities" :key="relEntity" class="entity-container">
+        <div>
+            {{ relEntity.text }}:
+            <select
+                v-model="relEntity.entity"
+                @focus="storeOldEntity(relEntity.text, relEntity)"
+                @change="setNewEntity(relEntity)"
+            >
+                <option v-for="entity in entities" :key="entity" :value="entity">
+                    {{ entity ? entity.name : "None" }}
+                </option>
+            </select>
+        </div>
+        <div class="entity-element">
+            <label :for="relEntity.text + 'min'">Lower bound: </label>
+            <input
+                type="text"
+                :name="relEntity.text + 'min'"
+                v-model="relEntity.min"
+                @input="validateMin(relEntity)"
+                :class="{ invalid: relEntity.errorMin }"
+            />
+        </div>
+        <div class="entity-element">
+            <label :for="relEntity.text + 'max'">Upper bound: </label>
+            <input
+                type="text"
+                :name="relEntity.text + 'max'"
+                v-model="relEntity.max"
+                @input="validateMax(relEntity)"
+                :class="{ invalid: relEntity.errorMax }"
+            />
         </div>
     </div>
     <AttributeSchemaButtons :element="element" />
@@ -53,30 +51,23 @@ export default {
             oldEntities: {},
         };
     },
-    methods: {
+    computed: {
         entities() {
             const entities = this.elements.filter((element) => element instanceof Entity);
             return [...entities, null];
         },
-        showContainer(entity) {
+        eligibleEntities() {
             const reflexiveEntity = this.element.isReflexive();
-            if (!reflexiveEntity) {
-                // console.log("RelationshipDetails: NIJE refleksivna veza");
-                return true;
-            }
 
-            if (!entity) {
-                // console.log("veza je refleksivna, entity je null");
-                return false;
-            }
+            if (!reflexiveEntity) return this.element.entities;
 
-            if (reflexiveEntity.entity.id !== entity.id) {
-                // console.log("veza je refleksivna, entity je neki drugi");
-                return false;
-            }
-
-            return true;
+            // if relationship is reflexsive, return only relationship's entities that store references to that one entity
+            return Object.values(this.element.entities).filter(
+                (relEntity) => relEntity.entity && relEntity.entity.id === reflexiveEntity.entity.id,
+            );
         },
+    },
+    methods: {
         storeOldEntity(key, value) {
             this.oldEntities[key] = { ...value };
         },
