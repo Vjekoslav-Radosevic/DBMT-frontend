@@ -37,34 +37,30 @@
             />
         </div>
     </div>
-    <div
-        v-if="!element.attributeSchema && element.attributes.length"
-        class="element-button er-button"
-        @click="createAttributeSchema"
-    >
-        Create attribute schema
-    </div>
-    <div v-if="element.attributeSchema" class="element-button danger-button" @click="removeAttributeSchema">
-        Remove attribute schema
-    </div>
+    <AttributeSchemaButtons :element="element" />
 </template>
 
 <script>
 import { Entity } from "@/erDiagram/models/Entity.js";
+import AttributeSchemaButtons from "./AttributeSchemaButtons.vue";
 export default {
     props: ["element", "elements"],
+    components: { AttributeSchemaButtons },
     data() {
         return {
             oldEntities: {},
         };
     },
     methods: {
+        // eslint-disable-next-line no-unused-vars
         entities(entity) {
-            let relationEntities = Object.values(this.element.entities).map((value) => value.entity);
-            relationEntities = relationEntities.filter((element) => element != entity);
-            let entities = this.elements.filter(
-                (element) => element instanceof Entity && !relationEntities.includes(element),
-            );
+            // let relationEntities = Object.values(this.element.entities).map((value) => value.entity);
+            // relationEntities = relationEntities.filter((element) => element != entity);
+            // let entities = this.elements.filter(
+            //     (element) => element instanceof Entity && !relationEntities.includes(element),
+            // );
+            // return [...entities, null];
+            const entities = this.elements.filter((element) => element instanceof Entity);
             return [...entities, null];
         },
         storeOldEntity(key, value) {
@@ -104,12 +100,6 @@ export default {
             }
 
             entity.errorMax = "";
-        },
-        createAttributeSchema() {
-            this.$eventBus.emit("create-attribute-schema");
-        },
-        removeAttributeSchema() {
-            this.$eventBus.emit("remove-attribute-schema");
         },
     },
 };
@@ -155,40 +145,5 @@ input[type="text"].invalid {
     background-color: rgb(255, 159, 159);
     border-bottom: 2px solid rgb(201, 0, 0);
     border-radius: 4px 4px 0 0;
-}
-
-.element-button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    padding: 8px;
-    font-size: 12px;
-    border-radius: 3px;
-}
-
-.element-button:hover {
-    cursor: pointer;
-    color: white;
-}
-
-.er-button {
-    color: green;
-    border: 1px solid green;
-}
-
-.er-button:hover {
-    background-color: green;
-}
-
-.danger-button {
-    color: white;
-    border: 1px solid rgb(213, 0, 0);
-    background-color: rgb(213, 0, 0);
-}
-
-.danger-button:hover {
-    border: 1px solid red;
-    background-color: red;
 }
 </style>

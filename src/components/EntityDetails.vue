@@ -24,22 +24,15 @@
         </div>
         <div @click="addEntity" class="element-button er-button">Add entity</div>
     </div>
-    <div
-        v-if="!element.attributeSchema && element.attributes.length"
-        class="element-button er-button"
-        @click="createAttributeSchema"
-    >
-        Create attribute schema
-    </div>
-    <div v-if="element.attributeSchema" class="element-button danger-button" @click="removeAttributeSchema">
-        Remove attribute schema
-    </div>
+    <AttributeSchemaButtons :element="element" />
 </template>
 
 <script>
 import { SuperTypeEntity } from "@/erDiagram/models/entities/SuperTypeEntity";
+import AttributeSchemaButtons from "./AttributeSchemaButtons.vue";
 export default {
     props: ["element"],
+    components: { AttributeSchemaButtons },
     data() {
         return {
             entityTypes: ["Regular", "Degenerative", "Weak", "Associative", "SuperType"],
@@ -66,12 +59,6 @@ export default {
         },
         isDisabled(type) {
             return (type === "Degenerative" || type === "Weak" || type === "Associative") && this.parentIsSuperType;
-        },
-        createAttributeSchema() {
-            this.$eventBus.emit("create-attribute-schema");
-        },
-        removeAttributeSchema() {
-            this.$eventBus.emit("remove-attribute-schema");
         },
     },
 };
@@ -112,16 +99,5 @@ input {
 
 .er-button:hover {
     background-color: green;
-}
-
-.danger-button {
-    color: white;
-    border: 1px solid rgb(213, 0, 0);
-    background-color: rgb(213, 0, 0);
-}
-
-.danger-button:hover {
-    border: 1px solid red;
-    background-color: red;
 }
 </style>
