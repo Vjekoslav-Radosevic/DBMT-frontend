@@ -5,21 +5,21 @@ export class RelationshipConnection extends Connection {
     constructor(ctx, element1, element2, entityText) {
         super(ctx, element1, element2); // element1 is always Relationship
 
-        this.entityText = entityText;
+        this.entityText = entityText; // 'Entity 1' or 'Entity 2' or 'Entity 3'
         this.connectionShape = new RelationshipConnectionShape(ctx);
     }
 
     draw() {
         const entityCenter = this.element2.getCenter();
-        const relationshipNearestPoint = this.element1.getNearestEndpoint(entityCenter.x, entityCenter.y);
-        const entityNearestPoint = this.element2.getNearestPoint(relationshipNearestPoint);
+        const relationshipEndpoint = this.element1.getNearestEndpoint(entityCenter.x, entityCenter.y);
+        const entityNearestPoint = this.element2.getNearestPoint(relationshipEndpoint);
 
-        let entity = Object.values(this.element1.entities).find(
+        const entity = Object.values(this.element1.entities).find(
             (value) => value.entity === this.element2 && value.text === this.entityText,
         );
 
         if (!entity) return; // if relationship's entities property is not updated yet
 
-        this.connectionShape.draw(entityNearestPoint, relationshipNearestPoint, entity, this.lineColor);
+        this.connectionShape.draw(entityNearestPoint, relationshipEndpoint, entity, this.lineColor);
     }
 }
