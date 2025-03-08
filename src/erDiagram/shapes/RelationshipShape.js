@@ -128,9 +128,29 @@ export class RelationshipShape extends Shape {
             }
         }
 
-        // Mark the nearest endpoint as taken
-        this.endpoints[nearest.endpoint.prop] = true;
         return nearest.endpoint;
+    }
+
+    getReflexiveEndpoint(nearestEndpoint) {
+        const vertices = {
+            top: { x: this.x + this.width / 2, y: this.y, prop: "topTaken" },
+            right: { x: this.x + this.width, y: this.y + this.height / 2, prop: "rightTaken" },
+            bottom: { x: this.x + this.width / 2, y: this.y + this.height, prop: "bottomTaken" },
+            left: { x: this.x, y: this.y + this.height / 2, prop: "leftTaken" },
+        };
+
+        switch (nearestEndpoint.prop) {
+            case "topTaken":
+            case "bottomTaken":
+                return this.endpoints.leftTaken ? vertices.right : vertices.left;
+
+            case "rightTaken":
+            case "leftTaken":
+                return this.endpoints.topTaken ? vertices.bottom : vertices.top;
+
+            default:
+                return vertices.top;
+        }
     }
 
     freeEndpoints() {
