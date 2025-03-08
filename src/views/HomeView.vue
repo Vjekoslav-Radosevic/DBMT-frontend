@@ -186,25 +186,60 @@ export default {
         setNewEntity(change) {
             // set new entity to relationship
             let connection;
-            let { relationship, newEntity, oldEntity } = change;
+            let { relationship, newEntity, oldEntity, entityText } = change;
 
+            // if user chose 'None' as new entity
             if (!newEntity) {
-                this.connections = this.connections.filter(
-                    (connection) => !(connection.element1 === relationship && connection.element2 === oldEntity),
+                const targetConnections = this.connections.filter(
+                    (connection) =>
+                        connection.element1 === relationship &&
+                        connection.element2 === oldEntity &&
+                        connection.entityText === entityText,
                 );
+
+                if (targetConnections.length === 0) return; // if user chose 'None' where already was 'None'
+
+                // filter out only one connection from targetConnections because there can be one or two (reflexive relationship)
+                this.connections = this.connections.filter((connection) => connection.id !== targetConnections[0].id);
                 this.$refs.canvasRef.redrawCanvas();
+
                 return;
             }
 
             if (!oldEntity) {
-                connection = new RelationshipConnection(this.getContext, relationship, newEntity);
+                connection = new RelationshipConnection(this.getContext, relationship, newEntity, entityText);
                 this.connections.push(connection);
             } else {
                 connection = this.connections.filter(
-                    (connection) => connection.element1 === relationship && connection.element2 === oldEntity,
+                    (connection) =>
+                        connection.element1 === relationship &&
+                        connection.element2 === oldEntity &&
+                        connection.entityText === entityText,
                 )[0];
                 connection.updateConnection(relationship, newEntity);
+                this.activeElement.resetEntity(entityText, false);
             }
+
+            const reflexiveEntity = this.activeElement.isReflexive();
+            if (reflexiveEntity) {
+                // if relationship is reflexive, remove other connected entity that is connected only once
+                Object.values(this.activeElement.entities).forEach((entity) => {
+                    if (entity.entity && entity.entity.id !== reflexiveEntity.entity.id) {
+                        // remove that entity's connection
+                        this.connections = this.connections.filter(
+                            (connection) =>
+                                !(
+                                    connection.element1.id === relationship.id &&
+                                    connection.element2.id === entity.entity.id
+                                ),
+                        );
+
+                        // reset relationship's entity props
+                        this.activeElement.resetEntity(entity.text, true);
+                    }
+                });
+            }
+
             this.$refs.canvasRef.redrawCanvas();
         },
         deleteElement() {
