@@ -12,7 +12,7 @@
                     @focus="storeOldEntity(relEntity.text, relEntity)"
                     @change="setNewEntity(relEntity)"
                 >
-                    <option v-for="entity in entities(relEntity.entity)" :key="entity" :value="entity">
+                    <option v-for="entity in entities" :key="entity" :value="entity">
                         {{ entity ? entity.name : "None" }}
                     </option>
                 </select>
@@ -54,14 +54,7 @@ export default {
         };
     },
     methods: {
-        // eslint-disable-next-line no-unused-vars
-        entities(entity) {
-            // let relationEntities = Object.values(this.element.entities).map((value) => value.entity);
-            // relationEntities = relationEntities.filter((element) => element != entity);
-            // let entities = this.elements.filter(
-            //     (element) => element instanceof Entity && !relationEntities.includes(element),
-            // );
-            // return [...entities, null];
+        entities() {
             const entities = this.elements.filter((element) => element instanceof Entity);
             return [...entities, null];
         },
@@ -89,7 +82,6 @@ export default {
         },
         setNewEntity(relEntity) {
             let change = {
-                relationship: this.element,
                 oldEntity: this.oldEntities[relEntity.text].entity,
                 newEntity: relEntity.entity,
                 entityText: relEntity.text,
