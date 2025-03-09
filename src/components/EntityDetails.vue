@@ -12,28 +12,18 @@
             <label :for="type">{{ type }}</label>
         </div>
     </div>
-    <div v-if="entityIsSuperType" class="details-container">
-        <div v-for="specializationType in specializationTypes" :key="specializationType" class="type-container">
-            <input
-                type="radio"
-                :id="specializationType"
-                :value="specializationType"
-                v-model="element.specializationType"
-            />
-            <label :for="specializationType">{{ specializationType }}</label>
-        </div>
-        <div @click="addEntity" class="element-button er-button">Add entity</div>
-    </div>
+    <SuperTypeEntityDetails v-if="entityIsSuperType" :element="element" />
     <AttributeSchemaButtons :element="element" />
 </template>
 
 <script>
 import { SuperTypeEntity } from "@/erDiagram/models/entities/SuperTypeEntity";
+import SuperTypeEntityDetails from "./SuperTypeEntityDetails.vue";
 import AttributeSchemaButtons from "./AttributeSchemaButtons.vue";
 export default {
     name: "EntityDetails",
     props: ["element"],
-    components: { AttributeSchemaButtons },
+    components: { SuperTypeEntityDetails, AttributeSchemaButtons },
     data() {
         return {
             entityTypes: ["Regular", "Degenerative", "Weak", "Associative", "SuperType"],
@@ -54,9 +44,6 @@ export default {
     methods: {
         changeEntityType() {
             this.$eventBus.emit("change-entity-type", this.element.type);
-        },
-        addEntity() {
-            this.$eventBus.emit("add-entity");
         },
         isDisabled(type) {
             return (type === "Degenerative" || type === "Weak" || type === "Associative") && this.parentIsSuperType;
