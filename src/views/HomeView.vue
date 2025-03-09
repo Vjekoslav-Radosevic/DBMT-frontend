@@ -130,7 +130,7 @@ export default {
         },
         addEntity() {
             let { element, connection } = this.activeElement.addEntity(
-                "SubEntity",
+                "Sub-Entity",
                 this.elementWidth,
                 this.elementHeight,
                 this.getCanvasWidth,
