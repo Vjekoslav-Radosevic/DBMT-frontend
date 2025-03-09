@@ -5,12 +5,7 @@ export class AttributeSchema extends Element {
     constructor(name, ctx, x, y, width, height, entity) {
         super(name, ctx, x, y, width, height);
         this.shape = new AttributeSchemaShape(ctx, x, y, width, height);
-
         this.entity = entity; // entity to which attributes belong
-
-        this.textColor = "black";
-        this.backgroundColor = "white";
-        this.borderColor = "black";
     }
 
     drag(mouseX, mouseY) {
@@ -18,7 +13,7 @@ export class AttributeSchema extends Element {
     }
 
     draw() {
-        const backgroundColor = this.active ? "rgb(136, 235, 226)" : this.backgroundColor;
+        const backgroundColor = this.active ? this.activeBgColor : this.inactiveBgColor;
         this.shape.draw(this.entity.name, this.entity.attributes, backgroundColor, this.textColor, this.borderColor);
     }
 

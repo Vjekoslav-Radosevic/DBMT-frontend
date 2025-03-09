@@ -10,12 +10,13 @@ export class Element {
         this.shape = new Shape(ctx, x, y, width, height);
 
         this.textColor = "black";
-        this.backgroundColor = "white";
-        this.borderColor = "black";
+        this.borderColor = "gray";
+        this.inactiveBgColor = "white";
+        this.activeBgColor = "rgb(44, 255, 44)";
     }
 
     draw() {
-        const backgroundColor = this.active ? "rgb(52, 235, 219)" : this.backgroundColor;
+        const backgroundColor = this.active ? this.activeBgColor : this.inactiveBgColor;
         this.shape.draw(this.name, backgroundColor, this.textColor, this.borderColor);
     }
 

@@ -4,7 +4,6 @@ import { Connection } from "../Connection.js";
 export class SuperTypeConnection extends Connection {
     constructor(ctx, element1, element2) {
         super(ctx, element1, element2);
-
         this.connectionShape = new SuperTypeConnectionShape(ctx);
     }
 

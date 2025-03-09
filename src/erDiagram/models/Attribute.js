@@ -19,7 +19,7 @@ export class Attribute extends Element {
 
     draw() {
         if (!this.willDraw) return;
-        const backgroundColor = this.active ? "rgb(52, 235, 219)" : this.backgroundColor;
+        const backgroundColor = this.active ? this.activeBgColor : this.inactiveBgColor;
         this.shape.draw(this.name, this.properties, backgroundColor, this.textColor, this.borderColor);
     }
 

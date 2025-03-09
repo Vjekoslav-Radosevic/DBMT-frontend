@@ -8,6 +8,7 @@ export class Relationship extends Element {
         this.shape = new RelationshipShape(ctx, x, y, width, height);
         this.identifying = false;
         this.attributes = [];
+        this.attributeSchema = null;
         this.entities = {
             entity1: {
                 text: "Entity 1",
@@ -34,7 +35,6 @@ export class Relationship extends Element {
                 errorMax: "",
             },
         };
-        this.attributeSchema = null;
     }
 
     drag(mouseX, mouseY) {
@@ -42,7 +42,7 @@ export class Relationship extends Element {
     }
 
     draw() {
-        const backgroundColor = this.active ? "rgb(52, 235, 219)" : this.backgroundColor;
+        const backgroundColor = this.active ? this.activeBgColor : this.inactiveBgColor;
         this.shape.draw(this.name, this.identifying, backgroundColor, this.textColor, this.borderColor);
     }
 

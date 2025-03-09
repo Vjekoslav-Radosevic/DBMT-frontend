@@ -4,7 +4,6 @@ import { Connection } from "../Connection.js";
 export class RelationshipConnection extends Connection {
     constructor(ctx, element1, element2, entityText) {
         super(ctx, element1, element2); // element1 is always Relationship
-
         this.entityText = entityText; // 'Entity 1' or 'Entity 2' or 'Entity 3'
         this.connectionShape = new RelationshipConnectionShape(ctx);
     }

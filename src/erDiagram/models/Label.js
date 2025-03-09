@@ -5,11 +5,7 @@ export class Label extends Element {
     constructor(name, ctx, x, y, width, height) {
         super(name, ctx, x, y, width, height);
         this.shape = new LabelShape(ctx, x, y, width, height);
-
         this.text = "";
-        this.textColor = "black";
-        this.backgroundColor = "white";
-        this.borderColor = "gray";
     }
 
     drag(mouseX, mouseY) {
@@ -17,7 +13,7 @@ export class Label extends Element {
     }
 
     draw() {
-        const backgroundColor = this.active ? "rgb(136, 235, 226)" : this.backgroundColor;
+        const backgroundColor = this.active ? this.activeBgColor : this.inactiveBgColor;
         this.shape.draw(this.text, backgroundColor, this.textColor, this.borderColor);
     }
 
