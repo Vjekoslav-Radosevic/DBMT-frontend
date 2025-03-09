@@ -13,11 +13,11 @@ export class AssociativeEntityShape extends Shape {
     draw(text, backgroundColor, textColor, borderColor) {
         this.ctx.save();
 
-        this.ctx.strokeStyle = borderColor;
-        this.ctx.strokeRect(this.x, this.y, this.width, this.height);
-
         this.ctx.fillStyle = backgroundColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
+
+        this.ctx.strokeStyle = borderColor;
+        this.ctx.strokeRect(this.x, this.y, this.width, this.height);
 
         // draw inner rhombus
         this.ctx.beginPath();

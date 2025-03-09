@@ -47,11 +47,11 @@ export class RelationshipShape extends Shape {
         this.ctx.lineTo(this.x, this.y + this.height / 2);
         this.ctx.closePath();
 
-        this.ctx.strokeStyle = borderColor;
-        this.ctx.stroke();
-
         this.ctx.fillStyle = backgroundColor;
         this.ctx.fill();
+
+        this.ctx.strokeStyle = borderColor;
+        this.ctx.stroke();
 
         // inner rhombus if relationship is identifying
         if (identifying) {

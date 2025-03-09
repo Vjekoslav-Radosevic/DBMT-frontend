@@ -66,6 +66,8 @@ export class AttributeShape extends Shape {
             this.ctx.moveTo(x - textWidth / 2, underlineY);
             this.ctx.lineTo(x + textWidth / 2, underlineY);
             this.ctx.closePath();
+
+            this.ctx.strokeStyle = textColor;
             this.ctx.stroke();
         }
 

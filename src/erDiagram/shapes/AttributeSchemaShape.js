@@ -23,11 +23,11 @@ export class AttributeSchemaShape extends Shape {
         this.width = maxTextLineWidth + 2 * textPadding;
         this.height = 2 * textPadding + entityNameLineHeight + textLineHeight * attributeLines.length;
 
-        this.ctx.strokeStyle = borderColor;
-        this.ctx.strokeRect(this.x, this.y, this.width, this.height); // Draw rectangle border
-
         this.ctx.fillStyle = backgroundColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height); // Draw the rectangle
+
+        this.ctx.strokeStyle = borderColor;
+        this.ctx.strokeRect(this.x, this.y, this.width, this.height); // Draw rectangle border
 
         this.ctx.fillStyle = textColor;
         this.drawText(text, attributeLines, textPadding, entityNameLineHeight, textLineHeight);

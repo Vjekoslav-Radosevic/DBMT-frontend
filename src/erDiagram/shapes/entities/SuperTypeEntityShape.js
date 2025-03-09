@@ -41,11 +41,11 @@ export class SuperTypeEntityShape extends Shape {
     draw(name, type, backgroundColor, textColor, borderColor) {
         this.ctx.save();
 
-        this.ctx.strokeStyle = borderColor;
-        this.ctx.strokeRect(this.x, this.y, this.width, this.height); // Draw rectangle border
-
         this.ctx.fillStyle = backgroundColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height); // Draw the rectangle
+
+        this.ctx.strokeStyle = borderColor;
+        this.ctx.strokeRect(this.x, this.y, this.width, this.height); // Draw rectangle border
 
         this.ctx.fillStyle = textColor;
         this.ctx.fillText(name, this.x + this.width / 2, this.y + this.height / 2);
@@ -64,9 +64,12 @@ export class SuperTypeEntityShape extends Shape {
         //Draw the circle
         this.ctx.beginPath();
         this.ctx.arc(circleX, circleY, this.circleRadius, 0, Math.PI * 2, false);
-        this.ctx.fillStyle = backgroundColor;
         this.ctx.closePath();
+
+        this.ctx.fillStyle = backgroundColor;
         this.ctx.fill(); // Fill the circle
+
+        this.ctx.strokeStyle = borderColor;
         this.ctx.stroke(); // Draw the circle border
 
         this.ctx.fillStyle = textColor;
