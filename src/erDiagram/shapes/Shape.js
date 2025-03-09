@@ -22,19 +22,18 @@ export class Shape {
         return false;
     }
 
-    drag(mouseX, mouseY, attributes) {
-        if (this.isDragging) {
-            const deltaX = mouseX - this.offset.x - this.x;
-            const deltaY = mouseY - this.offset.y - this.y;
+    drag(mouseX, mouseY) {
+        if (!this.isDragging) return null;
 
-            // Update the entity's position
-            this.x = mouseX - this.offset.x;
-            this.y = mouseY - this.offset.y;
+        const newX = mouseX - this.offset.x;
+        const newY = mouseY - this.offset.y;
+        const deltaX = newX - this.x;
+        const deltaY = newY - this.y;
 
-            attributes.forEach((attribute) => {
-                attribute.updatePosition(deltaX, deltaY);
-            });
-        }
+        this.x = newX;
+        this.y = newY;
+
+        return { deltaX, deltaY };
     }
 
     stopDragging() {

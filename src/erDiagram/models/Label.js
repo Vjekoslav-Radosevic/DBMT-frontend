@@ -9,7 +9,7 @@ export class Label extends Element {
     }
 
     drag(mouseX, mouseY) {
-        this.shape.drag(mouseX, mouseY, []);
+        this.shape.drag(mouseX, mouseY);
     }
 
     draw() {

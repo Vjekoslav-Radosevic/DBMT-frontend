@@ -9,17 +9,13 @@ export class AttributeSchema extends Element {
     }
 
     drag(mouseX, mouseY) {
-        this.shape.drag(mouseX, mouseY, []);
+        this.shape.drag(mouseX, mouseY);
     }
 
     draw() {
         const backgroundColor = this.active ? this.activeBgColor : this.inactiveBgColor;
         this.shape.draw(this.entity.name, this.entity.attributes, backgroundColor, this.textColor, this.borderColor);
     }
-
-    // getAllElementsRecursive(includeMyself, includeMyAttributes) {
-    //     return [this];
-    // }
 
     toString() {
         return `AttributeSchema {id: ${this.id}, name: ${this.name}}`;

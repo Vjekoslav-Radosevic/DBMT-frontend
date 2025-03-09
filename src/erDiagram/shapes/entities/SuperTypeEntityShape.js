@@ -19,25 +19,6 @@ export class SuperTypeEntityShape extends Shape {
         return { x: centerX, y: centerY };
     }
 
-    drag(mouseX, mouseY, entities, attributes) {
-        if (this.isDragging) {
-            const deltaX = mouseX - this.offset.x - this.x;
-            const deltaY = mouseY - this.offset.y - this.y;
-
-            // Update the entity's position
-            this.x = mouseX - this.offset.x;
-            this.y = mouseY - this.offset.y;
-
-            entities.forEach((entity) => {
-                entity.updatePosition(deltaX, deltaY);
-            });
-
-            attributes.forEach((attribute) => {
-                attribute.updatePosition(deltaX, deltaY);
-            });
-        }
-    }
-
     draw(name, type, backgroundColor, textColor, borderColor) {
         this.ctx.save();
 

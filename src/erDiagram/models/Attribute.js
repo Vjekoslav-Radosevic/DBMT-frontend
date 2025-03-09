@@ -24,7 +24,9 @@ export class Attribute extends Element {
     }
 
     drag(mouseX, mouseY) {
-        this.shape.drag(mouseX, mouseY, this.attributes);
+        const delta = this.shape.drag(mouseX, mouseY);
+        if (!delta) return;
+        this.attributes.forEach((attr) => attr.updatePosition(delta.deltaX, delta.deltaY));
     }
 
     updatePosition(deltaX, deltaY) {
