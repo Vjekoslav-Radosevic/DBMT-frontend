@@ -1,17 +1,17 @@
 <template>
     <div class="headers">
-        <Header></Header>
-        <Toolbar
+        <AppHeader></AppHeader>
+        <DiagramToolbar
             :newElement="newElement"
             @createEntity="createEntity"
             @createRelationship="createRelationship"
             @createLabel="createLabel"
             @open-download-dialog="openDownloadDialog"
-        ></Toolbar>
+        ></DiagramToolbar>
     </div>
     <div class="container">
-        <Details :element="activeElement" :elements="elements"></Details>
-        <Canvas
+        <ElementDetails :element="activeElement" :elements="elements"></ElementDetails>
+        <DiagramCanvas
             :addingElement="addingElement"
             :elements="elements"
             :connections="connections"
@@ -20,16 +20,16 @@
             @deactivate-element="deactivateElement"
             @new-element-added="createElement"
             ref="canvasRef"
-        ></Canvas>
+        ></DiagramCanvas>
     </div>
     <DownloadDialog :canvasImage="canvasImage" ref="downloadDialogRef"></DownloadDialog>
 </template>
 
 <script>
-import Header from "../components/Header.vue";
-import Toolbar from "../components/Toolbar.vue";
-import Details from "../components/Details.vue";
-import Canvas from "../components/Canvas.vue";
+import AppHeader from "../components/AppHeader.vue";
+import DiagramToolbar from "../components/DiagramToolbar.vue";
+import ElementDetails from "../components/ElementDetails.vue";
+import DiagramCanvas from "../components/DiagramCanvas.vue";
 import DownloadDialog from "../components/DownloadDialog.vue";
 
 import { RegularEntity } from "@/erDiagram/models/entities/RegularEntity";
@@ -40,16 +40,16 @@ import { Relationship } from "@/erDiagram/models/Relationship";
 import { Attribute } from "@/erDiagram/models/Attribute";
 import { Entity } from "@/erDiagram/models/Entity";
 import { SuperTypeEntity } from "@/erDiagram/models/entities/SuperTypeEntity";
-
-import { changeEntityType } from "../utils/changeType";
-
-import { useCanvasStore } from "../stores/index";
-import { mapState } from "pinia";
 import { Label } from "@/erDiagram/models/Label";
 import { AttributeSchema } from "@/erDiagram/models/AttributeSchema";
 
+import { changeEntityType } from "../utils/changeType";
+import { useCanvasStore } from "../stores/index";
+import { mapState } from "pinia";
+
 export default {
-    components: { Header, Toolbar, Details, Canvas, DownloadDialog },
+    name: "HomeView",
+    components: { AppHeader, DiagramToolbar, ElementDetails, DiagramCanvas, DownloadDialog },
     data() {
         return {
             elementWidth: 110,

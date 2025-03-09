@@ -4,6 +4,7 @@
 
 <script>
 export default {
+    name: "LabelDetails",
     props: ["element"],
     data() {
         return {

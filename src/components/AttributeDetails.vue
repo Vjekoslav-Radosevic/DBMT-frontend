@@ -14,6 +14,7 @@
 
 <script>
 export default {
+    name: "AttributeDetails",
     props: ["element"],
     data() {
         return {

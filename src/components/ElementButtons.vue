@@ -12,6 +12,7 @@ import { Entity } from "@/erDiagram/models/Entity.js";
 import { Relationship } from "@/erDiagram/models/Relationship.js";
 import { Label } from "@/erDiagram/models/Label.js";
 export default {
+    name: "ElementButtons",
     props: ["element"],
     computed: {
         attributesAllowed() {

@@ -31,6 +31,7 @@
 import { SuperTypeEntity } from "@/erDiagram/models/entities/SuperTypeEntity";
 import AttributeSchemaButtons from "./AttributeSchemaButtons.vue";
 export default {
+    name: "EntityDetails",
     props: ["element"],
     components: { AttributeSchemaButtons },
     data() {

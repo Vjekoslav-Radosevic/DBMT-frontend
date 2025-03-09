@@ -44,6 +44,7 @@
 import { Entity } from "@/erDiagram/models/Entity.js";
 import AttributeSchemaButtons from "./AttributeSchemaButtons.vue";
 export default {
+    name: "RelationshipDetails",
     props: ["element", "elements"],
     components: { AttributeSchemaButtons },
     data() {

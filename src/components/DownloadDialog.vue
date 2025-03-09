@@ -16,6 +16,7 @@
 
 <script>
 export default {
+    name: "DownloadDialog",
     props: ["canvasImage"],
     data() {
         return {
