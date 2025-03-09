@@ -1,7 +1,7 @@
 <template>
-    <div ref="canvasContainer" class="canvas-container">
+    <div ref="canvasContainerRef" class="canvas-container">
         <canvas
-            ref="canvas"
+            ref="canvasRef"
             @mousedown="startDragging"
             @mousemove="drag"
             @mouseup="stopDragging"
@@ -45,7 +45,7 @@ export default {
         };
     },
     mounted() {
-        const div = this.$refs.canvasContainer;
+        const div = this.$refs.canvasContainerRef;
         this.canvas.width.min = div.clientWidth;
         this.canvas.height.min = div.clientHeight;
         this.setUpCanvas(div.clientWidth, div.clientHeight - 5); // there is some problem with height
@@ -75,7 +75,7 @@ export default {
         ...mapActions(useCanvasStore, ["setContext", "setCanvasWidth", "setCanvasHeight"]),
 
         setUpCanvas(width, height) {
-            const canvas = this.$refs.canvas;
+            const canvas = this.$refs.canvasRef;
 
             canvas.width = width * this.pixelRatio;
             canvas.height = height * this.pixelRatio;
@@ -87,7 +87,7 @@ export default {
             this.setCanvasHeight(canvas.height);
         },
         setUpContext() {
-            const canvas = this.$refs.canvas;
+            const canvas = this.$refs.canvasRef;
             const ctx = canvas.getContext("2d");
 
             ctx.font = "14px Arial";
@@ -176,7 +176,7 @@ export default {
         },
 
         redrawCanvas() {
-            const canvas = this.$refs.canvas;
+            const canvas = this.$refs.canvasRef;
             const ctx = canvas.getContext("2d");
 
             ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
@@ -196,7 +196,7 @@ export default {
             });
         },
         redrawWithWhiteBack() {
-            const canvas = this.$refs.canvas;
+            const canvas = this.$refs.canvasRef;
             const ctx = canvas.getContext("2d");
 
             ctx.fillStyle = "white";

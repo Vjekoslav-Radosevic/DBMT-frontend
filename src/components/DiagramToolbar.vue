@@ -32,13 +32,13 @@ export default {
     },
     methods: {
         createEntity() {
-            this.$emit("createEntity");
+            this.$emit("create-entity");
         },
         createRelationship() {
-            this.$emit("createRelationship");
+            this.$emit("create-relationship");
         },
         createLabel() {
-            this.$emit("createLabel");
+            this.$emit("create-label");
         },
         openDownloadDialog() {
             this.$emit("open-download-dialog");

@@ -3,9 +3,9 @@
         <AppHeader></AppHeader>
         <DiagramToolbar
             :newElement="newElement"
-            @createEntity="createEntity"
-            @createRelationship="createRelationship"
-            @createLabel="createLabel"
+            @create-entity="createEntity"
+            @create-relationship="createRelationship"
+            @create-label="createLabel"
             @open-download-dialog="openDownloadDialog"
         ></DiagramToolbar>
     </div>
@@ -19,7 +19,7 @@
             @activate-element="activateElement"
             @deactivate-element="deactivateElement"
             @new-element-added="createElement"
-            ref="canvasRef"
+            ref="diagramCanvasRef"
         ></DiagramCanvas>
     </div>
     <DownloadDialog :canvasImage="canvasImage" ref="downloadDialogRef"></DownloadDialog>
@@ -200,7 +200,7 @@ export default {
                         ),
                 );
                 this.activeElement.resetEntity(entityText, true);
-                this.$refs.canvasRef.redrawCanvas();
+                this.$refs.diagramCanvasRef.redrawCanvas();
                 return;
             }
 
@@ -238,7 +238,7 @@ export default {
                 });
             }
 
-            this.$refs.canvasRef.redrawCanvas();
+            this.$refs.diagramCanvasRef.redrawCanvas();
         },
         deleteElement() {
             if (
@@ -345,18 +345,18 @@ export default {
         openDownloadDialog() {
             this.deactivateElement();
 
-            const canvasVue = this.$refs.canvasRef;
+            const canvasVue = this.$refs.diagramCanvasRef;
             canvasVue.redrawCanvas();
 
-            const canvasHtml = canvasVue.$refs.canvas; // Access the canvas inside the child component via the $refs property
+            const canvasHtml = canvasVue.$refs.canvasRef;
             this.canvasImage = canvasHtml.toDataURL("image/png");
 
-            this.$refs.downloadDialogRef.$refs.dialog.showModal();
+            this.$refs.downloadDialogRef.$refs.dialogRef.showModal();
         },
         downloadImage(transparentBack) {
-            if (!transparentBack) this.$refs.canvasRef.redrawWithWhiteBack();
+            if (!transparentBack) this.$refs.diagramCanvasRef.redrawWithWhiteBack();
 
-            const canvasHtml = this.$refs.canvasRef.$refs.canvas;
+            const canvasHtml = this.$refs.diagramCanvasRef.$refs.canvasRef;
 
             const imageData = canvasHtml.toDataURL("image/png"); // Get image data from canvas
             const downloadLink = document.createElement("a"); // Create a link for downloading

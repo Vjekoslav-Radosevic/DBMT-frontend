@@ -1,5 +1,5 @@
 <template>
-    <dialog ref="dialog" class="custom-dialog" @click="handleDialogClick">
+    <dialog ref="dialogRef" class="custom-dialog" @click="handleDialogClick">
         <div class="dialog-content">
             <img :src="canvasImage" alt="Canvas Preview" v-if="canvasImage" />
             <div>
@@ -26,7 +26,7 @@ export default {
     methods: {
         closeDialog() {
             this.transparentBack = false;
-            this.$refs.dialog.close();
+            this.$refs.dialogRef.close();
         },
         handleDialogClick(event) {
             // Close the dialog if the click is outside the content
