@@ -1,7 +1,7 @@
 <template>
     <div class="element-buttons-container">
-        <div class="element-button er-button" v-if="attributesAllowed" @click="addAttribute">Add attribute</div>
-        <div class="element-button danger-button" @click="deleteElement">Delete element</div>
+        <div v-if="attributesAllowed" @click="addAttribute" class="element-button er-button">Add attribute</div>
+        <div @click="deleteElement" class="element-button danger-button">Delete element</div>
     </div>
 </template>
 
@@ -16,14 +16,15 @@ export default {
     props: ["element"],
     computed: {
         attributesAllowed() {
-            if (this.element instanceof Attribute) {
-                if (!this.element.properties.composite) return false;
-            }
+            if (this.element instanceof Attribute && !this.element.properties.composite) return false;
             if (this.element instanceof DegenerativeEntity) return false;
             if (this.element instanceof Label) return false;
-            if (this.element instanceof Entity || this.element instanceof Relationship) {
-                if (this.element.attributeSchema) return false;
-            }
+            if (
+                (this.element instanceof Entity || this.element instanceof Relationship) &&
+                this.element.attributeSchema
+            )
+                return false;
+
             return true;
         },
     },
