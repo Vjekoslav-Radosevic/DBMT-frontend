@@ -1,13 +1,13 @@
 <template>
     <div class="details">
         <div v-if="element">
-            <div v-if="!elementIsLabel" class="detail-element">
+            <div v-if="!isLabel" class="detail-element">
                 <input type="text" v-model="element.name" />
             </div>
-            <EntityDetails v-if="elementIsEntity" :element="element" />
-            <AttributeDetails v-if="elementIsAttribute" :element="element" />
-            <RelationshipDetails v-if="elementIsRelationship" :element="element" :elements="elements" />
-            <LabelDetails v-if="elementIsLabel" :element="element" />
+            <EntityDetails v-if="isEntity" :element="element" />
+            <AttributeDetails v-if="isAttribute" :element="element" />
+            <RelationshipDetails v-if="isRelationship" :element="element" :elements="elements" />
+            <LabelDetails v-if="isLabel" :element="element" />
             <ElementButtons :element="element" />
         </div>
     </div>
@@ -28,16 +28,16 @@ export default {
     props: ["element", "elements"],
     components: { EntityDetails, RelationshipDetails, AttributeDetails, LabelDetails, ElementButtons },
     computed: {
-        elementIsEntity() {
+        isEntity() {
             return this.element instanceof Entity;
         },
-        elementIsRelationship() {
+        isRelationship() {
             return this.element instanceof Relationship;
         },
-        elementIsAttribute() {
+        isAttribute() {
             return this.element instanceof Attribute;
         },
-        elementIsLabel() {
+        isLabel() {
             return this.element instanceof Label;
         },
     },
