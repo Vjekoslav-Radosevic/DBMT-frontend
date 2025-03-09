@@ -1,14 +1,9 @@
 {
     "name": "dbmt-frontend",
     "description": "Database Modeling Tool frontend",
-    "keywords": [
-        "database",
-        "diagram",
-        "entity-relationship",
-        "relational"
-    ],
     "author": "Vjekoslav Radošević",
     "version": "1.0.0",
+    "license": "UNLICENSED",
     "private": true,
     "type": "module",
     "scripts": {
