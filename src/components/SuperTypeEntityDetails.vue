@@ -9,7 +9,7 @@
             />
             <label :for="specializationType">{{ specializationType }}</label>
         </div>
-        <div @click="addEntity" class="element-button er-button">Add entity</div>
+        <div @click="addEntity" class="element-button er-button">Add sub-entity</div>
     </div>
 </template>
 
