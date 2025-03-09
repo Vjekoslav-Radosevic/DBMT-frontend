@@ -29,6 +29,7 @@ export default {
     },
     methods: {
         checkCompositeProp(propText) {
+            // if user turned off composite property
             if (!this.element.properties.composite && propText === "Composite") {
                 this.$eventBus.emit("remove-all-attributes");
             }
