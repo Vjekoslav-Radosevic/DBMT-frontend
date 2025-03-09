@@ -140,6 +140,7 @@ export default {
             if (invalidInput) return;
 
             this.setUpCanvas();
+            this.setUpContext(); // have to set up properties again
             this.redrawCanvas();
         },
         startDragging(event) {
