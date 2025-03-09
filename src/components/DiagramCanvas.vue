@@ -9,17 +9,17 @@
         ></canvas>
         <div class="canvas-size">
             <input
-                v-model.number="canvas.width.current"
+                v-model="canvas.width.current"
                 @input="updateCanvasSize"
                 type="text"
-                :class="{ invalid: invalidInput.width }"
+                :class="{ invalid: canvas.width.error }"
             />
             x
             <input
-                v-model.number="canvas.height.current"
+                v-model="canvas.height.current"
                 @input="updateCanvasSize"
                 type="text"
-                :class="{ invalid: invalidInput.height }"
+                :class="{ invalid: canvas.height.error }"
             />
         </div>
     </div>
@@ -38,17 +38,24 @@ export default {
             pixelRatio: window.devicePixelRatio,
             isMouseDown: false,
             canvas: {
-                width: { min: null, current: null },
-                height: { min: null, current: null },
+                width: { min: null, current: null, error: false },
+                height: { min: null, current: null, error: false },
             },
-            invalidInput: { width: false, height: false },
         };
     },
     mounted() {
         const div = this.$refs.canvasContainerRef;
-        this.canvas.width.min = div.clientWidth;
-        this.canvas.height.min = div.clientHeight;
-        this.setUpCanvas(div.clientWidth, div.clientHeight - 5); // there is some problem with height
+
+        const width = Math.round(div.clientWidth * this.pixelRatio);
+        const height = Math.round(div.clientHeight * this.pixelRatio);
+
+        this.canvas.width.min = width;
+        this.canvas.height.min = height;
+
+        this.canvas.width.current = width;
+        this.canvas.height.current = height;
+
+        this.setUpCanvas();
         this.setUpContext();
     },
     computed: {
@@ -74,17 +81,14 @@ export default {
     methods: {
         ...mapActions(useCanvasStore, ["setContext", "setCanvasWidth", "setCanvasHeight"]),
 
-        setUpCanvas(width, height) {
+        setUpCanvas() {
             const canvas = this.$refs.canvasRef;
 
-            canvas.width = width * this.pixelRatio;
-            canvas.height = height * this.pixelRatio;
+            canvas.width = this.canvas.width.current;
+            canvas.height = this.canvas.height.current;
 
-            this.canvas.width.current = canvas.width;
-            this.canvas.height.current = canvas.height;
-
-            this.setCanvasWidth(canvas.width);
-            this.setCanvasHeight(canvas.height);
+            this.setCanvasWidth(this.canvas.width.current);
+            this.setCanvasHeight(this.canvas.height.current);
         },
         setUpContext() {
             const canvas = this.$refs.canvasRef;
@@ -94,56 +98,75 @@ export default {
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.lineWidth = 1;
-            ctx.strokeStyle = "black";
 
             this.setContext(ctx);
         },
         updateCanvasSize() {
-            let invalid = false;
-            if (!Number.isInteger(this.canvas.width.current) || this.canvas.width.current < this.canvas.width.min) {
-                invalid = true;
-                this.invalidInput.width = true;
+            let invalidInput = false;
+
+            let inputWidth = this.canvas.width.current;
+            let inputHeight = this.canvas.height.current;
+
+            // Check if input is a valid number
+            const isValidWidth = !isNaN(inputWidth) && inputWidth !== "";
+            const isValidHeight = !isNaN(inputHeight) && inputHeight !== "";
+
+            if (isValidWidth) {
+                inputWidth = Number(inputWidth);
+                if (inputWidth >= this.canvas.width.min) {
+                    this.canvas.width.error = false;
+                } else {
+                    invalidInput = true;
+                    this.canvas.width.error = true;
+                }
             } else {
-                this.invalidInput.width = false;
+                invalidInput = true;
+                this.canvas.width.error = true;
             }
 
-            if (!Number.isInteger(this.canvas.height.current) || this.canvas.height.current < this.canvas.height.min) {
-                invalid = true;
-                this.invalidInput.height = true;
+            if (isValidHeight) {
+                inputHeight = Number(inputHeight);
+                if (inputHeight >= this.canvas.height.min) {
+                    this.canvas.height.error = false;
+                } else {
+                    invalidInput = true;
+                    this.canvas.height.error = true;
+                }
             } else {
-                this.invalidInput.height = false;
+                invalidInput = true;
+                this.canvas.height.error = true;
             }
 
-            if (invalid) return;
+            if (invalidInput) return;
 
-            this.setUpCanvas(this.canvas.width.current, this.canvas.height.current);
-            this.setUpContext();
+            this.setUpCanvas();
             this.redrawCanvas();
         },
         startDragging(event) {
+            // if the user is in the process of adding new element
             if (this.addingElement) {
-                // if the user is in the process of adding new element
                 this.$emit("new-element-added", event);
-            } else {
-                this.isMouseDown = true;
-                const { offsetX, offsetY } = event;
-
-                const elementsAndSchemas = this.elements.concat(this.attributeSchemas);
-                let elementActivated = false;
-                for (let i = elementsAndSchemas.length - 1; i >= 0; i--) {
-                    // if attribute is part of attribute schema and is not present on canvas
-                    if (elementsAndSchemas[i] instanceof Attribute && !elementsAndSchemas[i].willDraw) continue;
-
-                    if (elementsAndSchemas[i].shape.startDragging(offsetX, offsetY)) {
-                        this.$emit("activate-element", elementsAndSchemas[i]);
-                        elementActivated = true;
-                        break;
-                    }
-                }
-
-                // if neither one element was clicked, deativate currently active element
-                if (!elementActivated) this.$emit("deactivate-element");
+                return;
             }
+
+            this.isMouseDown = true;
+            const { offsetX, offsetY } = event;
+
+            const elementsAndSchemas = this.elements.concat(this.attributeSchemas);
+            let elementActivated = false;
+            for (let i = elementsAndSchemas.length - 1; i >= 0; i--) {
+                // if attribute is part of attribute schema and is not present on canvas
+                if (elementsAndSchemas[i] instanceof Attribute && !elementsAndSchemas[i].willDraw) continue;
+
+                if (elementsAndSchemas[i].shape.startDragging(offsetX, offsetY)) {
+                    this.$emit("activate-element", elementsAndSchemas[i]);
+                    elementActivated = true;
+                    break;
+                }
+            }
+
+            // if neither one element was clicked, deativate currently active element
+            if (!elementActivated) this.$emit("deactivate-element");
         },
 
         drag(event) {
