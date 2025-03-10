@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from "node:url";
-
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
@@ -12,16 +11,19 @@ export default defineConfig({
         vueDevTools(),
         VitePWA({
             strategies: "generateSW", // default, vite-plugin-pwa generates sw.js
-            registerType: "prompt", // default, will prompt user before reloading
+            registerType: "prompt", // default, will prompt user before reloading page
             workbox: {
-                globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+                globPatterns: ["**/*.{js,css,html,ico,png,svg}"], // works globally, not only on /public
+            },
+            devOptions: {
+                enabled: false, // enables service worker in dev mode (only sw, no installation)
             },
             manifest: {
                 name: "Database Modeling Tool",
                 short_name: "DB Modeling Tool",
                 description: "Web application for creating relational and entity-relationship database models",
-                theme_color: "#ffffff",
-                background_color: "#ffffff",
+                theme_color: "rgb(185, 185, 185)",
+                background_color: "rgb(185, 185, 185)",
                 display: "standalone",
                 icons: [
                     {
