@@ -1,6 +1,6 @@
 {
     "name": "dbmt-frontend",
-    "description": "Database Modeling Tool frontend",
+    "description": "Web application for creating relational and entity-relationship database models",
     "author": "Vjekoslav Radošević",
     "version": "1.0.0",
     "license": "UNLICENSED",
@@ -28,6 +28,7 @@
         "eslint-plugin-vue": "^9.32.0",
         "prettier": "^3.5.1",
         "vite": "^6.1.0",
+        "vite-plugin-pwa": "^0.21.1",
         "vite-plugin-vue-devtools": "^7.7.2"
     }
 }
