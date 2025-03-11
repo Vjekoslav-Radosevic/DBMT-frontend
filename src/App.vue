@@ -1,27 +1,38 @@
 <template>
     <router-view />
-    <OfflineModal ref="offlineModal" />
+    <OfflineModal ref="offlineModalRef" />
+    <NewVersionModal ref="newVersionModalRef" @reload-page="handleReload" />
 </template>
 
 <script>
 import OfflineModal from "@/components/OfflineModal.vue";
+import NewVersionModal from "@/components/NewVersionModal.vue";
 import { registerSW } from "virtual:pwa-register";
 
 export default {
     name: "App",
-    components: { OfflineModal },
+    components: { OfflineModal, NewVersionModal },
+    data() {
+        return {
+            updateSW: null,
+        };
+    },
     mounted() {
-        const updateSW = registerSW({
+        this.updateSW = registerSW({
             onNeedRefresh: () => {
-                const userConfirmed = confirm("A new version is available. Reload now?");
-                if (userConfirmed) {
-                    updateSW();
-                }
+                this.$refs.newVersionModalRef.show();
             },
             onOfflineReady: () => {
-                this.$refs.offlineModal.showModal();
+                this.$refs.offlineModalRef.showModal();
             },
         });
+    },
+    methods: {
+        handleReload(reload) {
+            if (reload) {
+                this.updateSW();
+            }
+        },
     },
 };
 </script>
