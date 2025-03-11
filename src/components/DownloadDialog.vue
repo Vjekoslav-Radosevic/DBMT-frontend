@@ -32,7 +32,7 @@ export default {
             // Close the dialog if the click is outside the content
             const dialogContent = event.target.closest(".dialog-content");
             if (!dialogContent) {
-                this.closeDialog(); // Close if clicking outside the dialog content
+                this.closeDialog();
             }
         },
         downloadImage() {
