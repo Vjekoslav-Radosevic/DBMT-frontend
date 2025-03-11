@@ -12,7 +12,7 @@ export default {
     components: { X },
     data() {
         return {
-            visible: true,
+            visible: false,
         };
     },
     methods: {
