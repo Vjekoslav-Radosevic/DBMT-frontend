@@ -1,6 +1,30 @@
 <template>
     <router-view />
+    <OfflineModal ref="offlineModal" />
 </template>
+
+<script>
+import OfflineModal from "@/components/OfflineModal.vue";
+import { registerSW } from "virtual:pwa-register";
+
+export default {
+    name: "App",
+    components: { OfflineModal },
+    mounted() {
+        const updateSW = registerSW({
+            onNeedRefresh: () => {
+                const userConfirmed = confirm("A new version is available. Reload now?");
+                if (userConfirmed) {
+                    updateSW();
+                }
+            },
+            onOfflineReady: () => {
+                this.$refs.offlineModal.showModal();
+            },
+        });
+    },
+};
+</script>
 
 <style>
 html,
