@@ -89,11 +89,11 @@ export default {
         }
 
         &--sys {
-            color: $system-quat;
-            border: 1px solid $system-quat;
+            color: $system-tert;
+            border: 1px solid $system-tert;
 
             &:hover {
-                background-color: $system-quat;
+                background-color: $system-tert;
             }
         }
 
