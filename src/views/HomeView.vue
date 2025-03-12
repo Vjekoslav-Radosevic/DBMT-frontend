@@ -374,11 +374,11 @@ export default {
 <style scoped lang="scss">
 .page-body {
     width: 100vw;
-    height: 88vh;
+    height: 86vh;
     display: flex;
 }
 .page-header {
     width: 100vw;
-    height: 12vh;
+    height: 14vh;
 }
 </style>
