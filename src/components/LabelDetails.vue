@@ -15,6 +15,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .label-textarea {
     width: 90%;
     height: 200px;
@@ -22,7 +24,7 @@ export default {
     padding: 10px;
     font-family: "DM Sans", sans-serif;
     font-size: 15px;
-    border: 1px solid green;
+    border: 1px solid $accept-prim;
     border-radius: 4px;
 }
 </style>

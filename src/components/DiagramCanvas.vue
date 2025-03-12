@@ -248,6 +248,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .canvas {
     width: 85vw;
     height: 100%;
@@ -260,8 +262,7 @@ export default {
         right: 30px;
         padding: 5px;
         border-radius: 4px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-        background-color: rgb(234, 234, 234);
+        background-color: $system-prim;
     }
 
     &__input {
@@ -272,12 +273,12 @@ export default {
         vertical-align: middle;
         line-height: normal;
         border: none;
-        border-bottom: 1px solid black;
-        background-color: rgb(234, 234, 234);
+        border-bottom: 1px solid $system-tert;
+        background-color: $system-prim;
 
         &--invalid {
-            background-color: rgb(255, 159, 159);
-            border-bottom: 2px solid rgb(201, 0, 0);
+            background-color: $danger-tert;
+            border-bottom: 2px solid $danger-prim;
             border-radius: 4px 4px 0 0;
         }
     }

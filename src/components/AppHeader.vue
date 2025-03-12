@@ -13,10 +13,12 @@
 </template>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .header {
     width: 100%;
     height: 60%;
-    background-color: rgb(185, 185, 185);
+    background-color: $system-sec;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,7 +45,7 @@
 
         &:hover {
             cursor: pointer;
-            border-bottom: 2px solid black;
+            border-bottom: 2px solid $system-tert;
         }
     }
 }

@@ -32,8 +32,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .supertype {
-    border: 1px solid green;
+    border: 1px solid $accept-prim;
     border-radius: 4px;
     margin: 10px;
 
@@ -47,8 +49,8 @@ export default {
         margin-right: 10px;
         padding: 8px;
         border: none;
-        border-bottom: 2px solid green;
-        background-color: rgb(234, 234, 234);
+        border-bottom: 2px solid $accept-prim;
+        background-color: $system-prim;
     }
 
     &__button {
@@ -62,15 +64,15 @@ export default {
 
         &:hover {
             cursor: pointer;
-            color: white;
+            color: $text-sec;
         }
 
         &--add {
-            color: green;
-            border: 1px solid green;
+            color: $accept-prim;
+            border: 1px solid $accept-prim;
 
             &:hover {
-                background-color: green;
+                background-color: $accept-prim;
             }
         }
     }

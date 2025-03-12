@@ -115,6 +115,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .relationship {
     margin: 10px;
     padding: 10px;
@@ -126,8 +128,8 @@ export default {
         margin-right: 10px;
         padding: 5px;
         border: none;
-        border-bottom: 2px solid green;
-        background-color: rgb(234, 234, 234);
+        border-bottom: 2px solid $accept-prim;
+        background-color: $system-prim;
     }
 }
 
@@ -137,7 +139,7 @@ export default {
     align-items: baseline;
     margin: 10px;
     padding: 10px;
-    border: 1px solid green;
+    border: 1px solid $accept-prim;
     border-radius: 4px;
 
     &__entity {
@@ -146,9 +148,9 @@ export default {
 
     &__select {
         padding: 5px;
-        border: 0px solid rgb(234, 234, 234);
-        border-bottom: 2px solid green;
-        background-color: rgb(234, 234, 234);
+        border: 0px solid $system-prim;
+        border-bottom: 2px solid $accept-prim;
+        background-color: $system-prim;
         font-size: 14px;
         appearance: none;
         cursor: pointer;
@@ -160,12 +162,12 @@ export default {
         margin-right: 10px;
         padding: 5px;
         border: none;
-        border-bottom: 2px solid green;
-        background-color: rgb(234, 234, 234);
+        border-bottom: 2px solid $accept-prim;
+        background-color: $system-prim;
 
         &--invalid {
-            background-color: rgb(255, 159, 159);
-            border-bottom: 2px solid rgb(201, 0, 0);
+            background-color: $danger-tert;
+            border-bottom: 2px solid $danger-prim;
             border-radius: 4px 4px 0 0;
         }
     }

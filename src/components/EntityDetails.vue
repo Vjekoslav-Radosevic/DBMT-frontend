@@ -54,8 +54,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .entity {
-    border: 1px solid green;
+    border: 1px solid $accept-prim;
     border-radius: 4px;
     margin: 10px;
 
@@ -66,9 +68,9 @@ export default {
     &__input {
         width: auto;
         margin-right: 10px;
-        background-color: rgb(234, 234, 234);
+        background-color: $system-prim;
         border: none;
-        border-bottom: 2px solid green;
+        border-bottom: 2px solid $accept-prim;
         padding: 8px;
         font-size: 15px;
     }

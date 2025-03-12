@@ -40,10 +40,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .attribute {
     margin: 10px;
     border-radius: 4px;
-    border: 1px solid green;
+    border: 1px solid $accept-prim;
 
     &__prop {
         padding: 10px;
@@ -55,8 +57,8 @@ export default {
         margin-right: 10px;
         padding: 8px;
         border: none;
-        border-bottom: 2px solid green;
-        background-color: rgb(234, 234, 234);
+        border-bottom: 2px solid $accept-prim;
+        background-color: $system-prim;
     }
 }
 </style>

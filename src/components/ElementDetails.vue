@@ -43,17 +43,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .details {
     width: 15vw;
     height: 100%;
-    background-color: rgb(234, 234, 234);
+    background-color: $system-prim;
 
     &__input {
         margin: 10px;
         margin-bottom: 0;
-        background-color: rgb(234, 234, 234);
+        background-color: $system-prim;
         border: none;
-        border-bottom: 2px solid green;
+        border-bottom: 2px solid $accept-prim;
         padding: 8px;
         width: 90%;
         font-size: 15px;

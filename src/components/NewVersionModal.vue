@@ -31,12 +31,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .version-dial {
     border: none;
     outline: none;
     border-radius: 5px;
     padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 20%;
     left: 50%;
@@ -73,27 +74,27 @@ export default {
 
         &:hover {
             cursor: pointer;
-            color: white;
+            color: $text-sec;
         }
 
         &--accept {
-            color: white;
-            background-color: green;
-            border: 1px solid green;
+            color: $text-sec;
+            background-color: $accept-prim;
+            border: 1px solid $accept-prim;
 
             &:hover {
-                background-color: rgb(1, 151, 1);
+                background-color: $accept-sec;
             }
         }
 
         &--cancel {
-            color: white;
-            border: 1px solid rgb(213, 0, 0);
-            background-color: rgb(213, 0, 0);
+            color: $text-sec;
+            border: 1px solid $danger-prim;
+            background-color: $danger-prim;
 
             &:hover {
-                border: 1px solid red;
-                background-color: red;
+                border: 1px solid $danger-sec;
+                background-color: $danger-sec;
             }
         }
     }

@@ -42,6 +42,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .container {
     display: flex;
     justify-content: flex-start;
@@ -58,26 +60,26 @@ export default {
 
         &:hover {
             cursor: pointer;
-            color: white;
+            color: $text-sec;
         }
 
         &--add {
-            color: green;
-            border: 1px solid green;
+            color: $accept-prim;
+            border: 1px solid $accept-prim;
 
             &:hover {
-                background-color: green;
+                background-color: $accept-prim;
             }
         }
 
         &--danger {
             color: white;
-            border: 1px solid rgb(213, 0, 0);
-            background-color: rgb(213, 0, 0);
+            border: 1px solid $danger-prim;
+            background-color: $danger-prim;
 
             &:hover {
-                border: 1px solid red;
-                background-color: red;
+                border: 1px solid $danger-sec;
+                background-color: $danger-sec;
             }
         }
     }

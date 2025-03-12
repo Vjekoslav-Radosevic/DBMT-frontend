@@ -27,6 +27,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .offline-dial {
     position: absolute;
     bottom: 12px;
@@ -36,7 +38,7 @@ export default {
     justify-content: center;
     align-items: center;
 
-    background: rgb(185, 185, 185);
+    background: $system-sec;
     padding: 10px;
     border-radius: 5px;
 

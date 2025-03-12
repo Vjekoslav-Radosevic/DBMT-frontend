@@ -64,10 +64,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use "@/assets/styles/variables" as *;
+
 .toolbar {
     width: 100%;
     height: 40%;
-    background-color: rgb(234, 234, 234);
+    background-color: $system-prim;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -83,30 +85,30 @@ export default {
 
         &:hover {
             cursor: pointer;
-            color: white;
+            color: $text-sec;
         }
 
         &--sys {
-            color: rgb(92, 92, 92);
-            border: 1px solid rgb(92, 92, 92);
+            color: $system-quat;
+            border: 1px solid $system-quat;
 
             &:hover {
-                background-color: rgb(92, 92, 92);
+                background-color: $system-quat;
             }
         }
 
         &--add {
-            color: green;
-            border: 1px solid green;
+            color: $accept-prim;
+            border: 1px solid $accept-prim;
 
             &:hover {
-                background-color: green;
+                background-color: $accept-prim;
             }
         }
 
         &--active {
-            color: white;
-            background-color: green;
+            color: $text-sec;
+            background-color: $accept-prim;
         }
     }
 }
