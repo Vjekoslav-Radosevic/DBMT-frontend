@@ -1,11 +1,12 @@
 <template>
-    <div class="details-container">
-        <div v-for="type in entityTypes" :key="type" class="type-container">
+    <div class="entity">
+        <div v-for="type in entityTypes" :key="type" class="entity__prop">
             <input
                 type="radio"
                 :id="type"
                 :value="type"
                 v-model="element.type"
+                class="entity__input"
                 @change="changeEntityType"
                 :disabled="isDisabled(type)"
             />
@@ -52,40 +53,24 @@ export default {
 };
 </script>
 
-<style scoped>
-.details-container {
+<style scoped lang="scss">
+.entity {
     border: 1px solid green;
     border-radius: 4px;
     margin: 10px;
-}
-.type-container {
-    padding: 10px;
-}
-input {
-    width: auto;
-    margin-right: 10px;
-}
-.element-button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    padding: 8px;
-    font-size: 12px;
-    border-radius: 3px;
-}
 
-.element-button:hover {
-    cursor: pointer;
-    color: white;
-}
+    &__prop {
+        padding: 10px;
+    }
 
-.er-button {
-    color: green;
-    border: 1px solid green;
-}
-
-.er-button:hover {
-    background-color: green;
+    &__input {
+        width: auto;
+        margin-right: 10px;
+        background-color: rgb(234, 234, 234);
+        border: none;
+        border-bottom: 2px solid green;
+        padding: 8px;
+        font-size: 15px;
+    }
 }
 </style>

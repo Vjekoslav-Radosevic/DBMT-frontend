@@ -1,5 +1,5 @@
 <template>
-    <div class="headers">
+    <div class="page-header">
         <AppHeader></AppHeader>
         <DiagramToolbar
             :newElement="newElement"
@@ -9,7 +9,7 @@
             @open-download-dialog="openDownloadDialog"
         ></DiagramToolbar>
     </div>
-    <div class="container">
+    <div class="page-body">
         <ElementDetails :element="activeElement" :elements="elements"></ElementDetails>
         <DiagramCanvas
             :addingElement="addingElement"
@@ -371,13 +371,13 @@ export default {
 };
 </script>
 
-<style>
-.container {
+<style scoped lang="scss">
+.page-body {
     width: 100vw;
     height: 88vh;
     display: flex;
 }
-.headers {
+.page-header {
     width: 100vw;
     height: 12vh;
 }

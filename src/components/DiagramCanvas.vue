@@ -1,5 +1,5 @@
 <template>
-    <div ref="canvasContainerRef" class="canvas-container">
+    <div ref="canvasContainerRef" class="canvas">
         <canvas
             ref="canvasRef"
             @mousedown="startDragging"
@@ -7,19 +7,21 @@
             @mouseup="stopDragging"
             @mouseleave="stopDragging"
         ></canvas>
-        <div class="canvas-size">
+        <div class="canvas__dimensions">
             <input
+                type="text"
                 v-model="canvas.width.current"
                 @input="updateCanvasSize"
-                type="text"
-                :class="{ invalid: canvas.width.error }"
+                class="canvas__input"
+                :class="{ 'canvas__input--invalid': canvas.width.error }"
             />
             x
             <input
+                type="text"
                 v-model="canvas.height.current"
                 @input="updateCanvasSize"
-                type="text"
-                :class="{ invalid: canvas.height.error }"
+                class="canvas__input"
+                :class="{ 'canvas__input--invalid': canvas.height.error }"
             />
         </div>
     </div>
@@ -245,37 +247,39 @@ export default {
 };
 </script>
 
-<style scoped>
-.canvas-container {
+<style scoped lang="scss">
+.canvas {
     width: 85vw;
     height: 100%;
     flex: 1;
     overflow: scroll;
-}
 
-.canvas-size {
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
-    padding: 5px;
-    border-radius: 4px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    background-color: rgb(234, 234, 234);
-}
+    &__dimensions {
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+        padding: 5px;
+        border-radius: 4px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        background-color: rgb(234, 234, 234);
+    }
 
-input {
-    width: 55px;
-    padding: 5px;
-    font-size: 14px;
-    text-align: center; /* Center text horizontally */
-    vertical-align: middle; /* Align text vertically (helps slightly) */
-    line-height: normal;
-    background-color: rgb(234, 234, 234);
-    border-bottom: 1px solid black;
-}
-.invalid {
-    background-color: rgb(255, 159, 159);
-    border-bottom: 2px solid rgb(201, 0, 0);
-    border-radius: 4px 4px 0 0;
+    &__input {
+        width: 55px;
+        padding: 5px;
+        font-size: 14px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: normal;
+        border: none;
+        border-bottom: 1px solid black;
+        background-color: rgb(234, 234, 234);
+
+        &--invalid {
+            background-color: rgb(255, 159, 159);
+            border-bottom: 2px solid rgb(201, 0, 0);
+            border-radius: 4px 4px 0 0;
+        }
+    }
 }
 </style>

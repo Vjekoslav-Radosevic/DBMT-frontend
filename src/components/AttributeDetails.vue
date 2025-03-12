@@ -1,8 +1,9 @@
 <template>
-    <div class="detail-element">
-        <div v-for="attributeProp in attributeProps" :key="attributeProp" class="property-container">
+    <div class="attribute">
+        <div v-for="attributeProp in attributeProps" :key="attributeProp" class="attribute__prop">
             <input
                 type="checkbox"
+                class="attribute__input"
                 :id="attributeProp.text"
                 v-model="element.properties[attributeProp.propName]"
                 @change="checkCompositeProp(attributeProp.text)"
@@ -38,17 +39,24 @@ export default {
 };
 </script>
 
-<style scoped>
-.detail-element {
+<style scoped lang="scss">
+.attribute {
     margin: 10px;
     border-radius: 4px;
     border: 1px solid green;
-}
-.property-container {
-    padding: 10px;
-}
-input {
-    width: auto;
-    margin-right: 10px;
+
+    &__prop {
+        padding: 10px;
+    }
+
+    &__input {
+        width: auto;
+        font-size: 15px;
+        margin-right: 10px;
+        padding: 8px;
+        border: none;
+        border-bottom: 2px solid green;
+        background-color: rgb(234, 234, 234);
+    }
 }
 </style>

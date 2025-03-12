@@ -1,39 +1,42 @@
 <template>
-    <div class="detail-element">
-        <input type="checkbox" id="identifying" v-model="element.identifying" />
+    <div class="relationship">
+        <input type="checkbox" id="identifying" v-model="element.identifying" class="relationship__input" />
         <label for="identifying">Indentifying</label>
     </div>
-    <div v-for="relEntity in eligibleEntities" :key="relEntity" class="entity-container">
+    <div v-for="relEntity in eligibleEntities" :key="relEntity" class="connections">
         <div>
             {{ relEntity.text }}:
             <select
                 v-model="relEntity.entity"
                 @focus="storeOldEntity(relEntity.text, relEntity)"
                 @change="setNewEntity(relEntity)"
+                class="connections__select"
             >
                 <option v-for="entity in entities" :key="entity" :value="entity">
                     {{ entity ? entity.name : "None" }}
                 </option>
             </select>
         </div>
-        <div class="entity-element">
+        <div class="connections__entity">
             <label :for="relEntity.text + 'min'">Lower bound: </label>
             <input
                 type="text"
                 :name="relEntity.text + 'min'"
                 v-model="relEntity.min"
                 @input="validateMin(relEntity)"
-                :class="{ invalid: relEntity.errorMin }"
+                class="connections__input"
+                :class="{ 'connections__input--invalid': relEntity.errorMin }"
             />
         </div>
-        <div class="entity-element">
+        <div class="connections__entity">
             <label :for="relEntity.text + 'max'">Upper bound: </label>
             <input
                 type="text"
                 :name="relEntity.text + 'max'"
                 v-model="relEntity.max"
                 @input="validateMax(relEntity)"
-                :class="{ invalid: relEntity.errorMax }"
+                class="connections__input"
+                :class="{ 'connections__input--invalid': relEntity.errorMax }"
             />
         </div>
     </div>
@@ -111,17 +114,24 @@ export default {
 };
 </script>
 
-<style scoped>
-.detail-element {
+<style scoped lang="scss">
+.relationship {
     margin: 10px;
     padding: 10px;
     border-radius: 4px;
+
+    &__input {
+        width: 30px;
+        font-size: 15px;
+        margin-right: 10px;
+        padding: 5px;
+        border: none;
+        border-bottom: 2px solid green;
+        background-color: rgb(234, 234, 234);
+    }
 }
-#identifying {
-    width: auto;
-    margin-right: 10px;
-}
-.entity-container {
+
+.connections {
     display: flex;
     flex-direction: column;
     align-items: baseline;
@@ -129,27 +139,35 @@ export default {
     padding: 10px;
     border: 1px solid green;
     border-radius: 4px;
-}
-.entity-element {
-    margin-top: 10px;
-}
-input[type="text"] {
-    width: 30px;
-    border-bottom: 2px solid green;
-    padding: 5px;
-}
-select {
-    padding: 5px;
-    border: 0px solid rgb(234, 234, 234);
-    border-bottom: 2px solid green;
-    background-color: rgb(234, 234, 234);
-    font-size: 14px;
-    appearance: none; /* Removes default styling for dropdown arrow */
-    cursor: pointer;
-}
-input[type="text"].invalid {
-    background-color: rgb(255, 159, 159);
-    border-bottom: 2px solid rgb(201, 0, 0);
-    border-radius: 4px 4px 0 0;
+
+    &__entity {
+        margin-top: 10px;
+    }
+
+    &__select {
+        padding: 5px;
+        border: 0px solid rgb(234, 234, 234);
+        border-bottom: 2px solid green;
+        background-color: rgb(234, 234, 234);
+        font-size: 14px;
+        appearance: none;
+        cursor: pointer;
+    }
+
+    &__input {
+        width: 30px;
+        font-size: 15px;
+        margin-right: 10px;
+        padding: 5px;
+        border: none;
+        border-bottom: 2px solid green;
+        background-color: rgb(234, 234, 234);
+
+        &--invalid {
+            background-color: rgb(255, 159, 159);
+            border-bottom: 2px solid rgb(201, 0, 0);
+            border-radius: 4px 4px 0 0;
+        }
+    }
 }
 </style>

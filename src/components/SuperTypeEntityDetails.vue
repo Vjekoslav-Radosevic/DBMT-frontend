@@ -1,15 +1,16 @@
 <template>
-    <div class="details-container">
-        <div v-for="specializationType in specializationTypes" :key="specializationType" class="type-container">
+    <div class="supertype">
+        <div v-for="specializationType in specializationTypes" :key="specializationType" class="supertype__type">
             <input
                 type="radio"
                 :id="specializationType"
                 :value="specializationType"
+                class="supertype__input"
                 v-model="element.specializationType"
             />
             <label :for="specializationType">{{ specializationType }}</label>
         </div>
-        <div @click="addEntity" class="element-button er-button">Add sub-entity</div>
+        <div @click="addEntity" class="supertype__button supertype__button--add">Add sub-entity</div>
     </div>
 </template>
 
@@ -30,37 +31,48 @@ export default {
 };
 </script>
 
-<style scoped>
-.details-container {
+<style scoped lang="scss">
+.supertype {
     border: 1px solid green;
     border-radius: 4px;
     margin: 10px;
-}
-.type-container {
-    padding: 10px;
-}
-input {
-    width: auto;
-    margin-right: 10px;
-}
-.element-button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    padding: 8px;
-    font-size: 12px;
-    border-radius: 3px;
-}
-.element-button:hover {
-    cursor: pointer;
-    color: white;
-}
-.er-button {
-    color: green;
-    border: 1px solid green;
-}
-.er-button:hover {
-    background-color: green;
+
+    &__type {
+        padding: 10px;
+    }
+
+    &__input {
+        width: auto;
+        font-size: 15px;
+        margin-right: 10px;
+        padding: 8px;
+        border: none;
+        border-bottom: 2px solid green;
+        background-color: rgb(234, 234, 234);
+    }
+
+    &__button {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+        padding: 8px;
+        font-size: 12px;
+        border-radius: 3px;
+
+        &:hover {
+            cursor: pointer;
+            color: white;
+        }
+
+        &--add {
+            color: green;
+            border: 1px solid green;
+
+            &:hover {
+                background-color: green;
+            }
+        }
+    }
 }
 </style>

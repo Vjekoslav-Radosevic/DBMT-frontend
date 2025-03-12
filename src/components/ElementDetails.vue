@@ -1,9 +1,7 @@
 <template>
     <div class="details">
         <div v-if="element">
-            <div v-if="!isLabel" class="detail-element">
-                <input type="text" v-model="element.name" />
-            </div>
+            <input v-if="!isLabel" type="text" v-model="element.name" class="details__input" />
             <EntityDetails v-if="isEntity" :element="element" />
             <AttributeDetails v-if="isAttribute" :element="element" />
             <RelationshipDetails v-if="isRelationship" :element="element" :elements="elements" />
@@ -44,13 +42,21 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .details {
     width: 15vw;
     height: 100%;
     background-color: rgb(234, 234, 234);
-}
-.detail-element {
-    margin: 10px;
+
+    &__input {
+        margin: 10px;
+        margin-bottom: 0;
+        background-color: rgb(234, 234, 234);
+        border: none;
+        border-bottom: 2px solid green;
+        padding: 8px;
+        width: 90%;
+        font-size: 15px;
+    }
 }
 </style>

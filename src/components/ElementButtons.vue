@@ -1,7 +1,9 @@
 <template>
-    <div class="element-buttons-container">
-        <div v-if="attributesAllowed" @click="addAttribute" class="element-button er-button">Add attribute</div>
-        <div @click="deleteElement" class="element-button danger-button">Delete element</div>
+    <div class="container">
+        <div v-if="attributesAllowed" @click="addAttribute" class="container__button container__button--add">
+            Add attribute
+        </div>
+        <div @click="deleteElement" class="container__button container__button--danger">Delete element</div>
     </div>
 </template>
 
@@ -39,44 +41,45 @@ export default {
 };
 </script>
 
-<style scoped>
-.element-buttons-container {
+<style scoped lang="scss">
+.container {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-}
-.element-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 10px;
-    padding: 8px;
-    font-size: 12px;
-    border-radius: 3px;
-}
 
-.element-button:hover {
-    cursor: pointer;
-    color: white;
-}
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 10px;
+        padding: 8px;
+        font-size: 12px;
+        border-radius: 3px;
 
-.er-button {
-    color: green;
-    border: 1px solid green;
-}
+        &:hover {
+            cursor: pointer;
+            color: white;
+        }
 
-.er-button:hover {
-    background-color: green;
-}
+        &--add {
+            color: green;
+            border: 1px solid green;
 
-.danger-button {
-    color: white;
-    border: 1px solid rgb(213, 0, 0);
-    background-color: rgb(213, 0, 0);
-}
+            &:hover {
+                background-color: green;
+            }
+        }
 
-.danger-button:hover {
-    border: 1px solid red;
-    background-color: red;
+        &--danger {
+            color: white;
+            border: 1px solid rgb(213, 0, 0);
+            background-color: rgb(213, 0, 0);
+
+            &:hover {
+                border: 1px solid red;
+                background-color: red;
+            }
+        }
+    }
 }
 </style>

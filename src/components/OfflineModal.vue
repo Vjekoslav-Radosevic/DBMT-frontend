@@ -1,7 +1,7 @@
 <template>
-    <div v-if="visible" class="modal">
+    <div v-if="visible" class="offline-dial">
         <p>Ready to work offline!</p>
-        <X class="offline-modal-x" @click="closeModal" />
+        <X class="offline-dial__x" @click="closeModal" />
     </div>
 </template>
 
@@ -26,8 +26,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.modal {
+<style scoped lang="scss">
+.offline-dial {
     position: absolute;
     bottom: 12px;
     left: 12px;
@@ -39,13 +39,13 @@ export default {
     background: rgb(185, 185, 185);
     padding: 10px;
     border-radius: 5px;
-}
 
-.offline-modal-x {
-    margin-left: 10px;
-}
+    &__x {
+        margin-left: 10px;
 
-.offline-modal-x:hover {
-    cursor: pointer;
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
 </style>

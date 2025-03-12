@@ -14,7 +14,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .label-textarea {
     width: 90%;
     height: 200px;
