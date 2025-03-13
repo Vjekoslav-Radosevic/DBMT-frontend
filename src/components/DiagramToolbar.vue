@@ -67,8 +67,8 @@ export default {
 @use "@/assets/styles/variables" as *;
 
 .toolbar {
-    width: 100%;
-    height: 40%;
+    width: 100vw;
+    height: 6vh;
     background-color: $system-prim;
     display: flex;
     justify-content: flex-start;
