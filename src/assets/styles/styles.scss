@@ -3,14 +3,13 @@
 
 html,
 body {
-    width: 100vw;
-    height: 100vh;
     font-size: 15px;
     font-weight: 400;
     letter-spacing: 0.1px;
     color: $text-prim;
     font-optical-sizing: auto;
     font-family: "Lexend", sans-serif;
+    background-color: $system-prim;
 }
 
 input,
@@ -28,7 +27,5 @@ select {
 }
 
 #app {
-    width: 100%;
-    height: 100%;
     background-color: $system-prim;
 }
