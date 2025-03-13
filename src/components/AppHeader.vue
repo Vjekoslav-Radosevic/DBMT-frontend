@@ -1,12 +1,15 @@
 <template>
     <div class="header">
         <div class="header__group header__group--left">
-            <div class="header__button">ER Diagram</div>
-            <div class="header__button">Workspace</div>
+            <router-link to="/" class="header__button">
+                <img src="/icons/logo.png" alt="DBMT logo" class="header__logo" />
+                <p class="header__title">Database Modeling Tool</p>
+            </router-link>
+            <div class="header__button header__button--click">Workspace</div>
         </div>
         <div class="header__group header__group--right">
-            <div class="header__button">Profile</div>
-            <div class="header__button">About</div>
+            <div class="header__button header__button--click">Profile</div>
+            <div class="header__button header__button--click">About</div>
         </div>
     </div>
 </template>
@@ -15,16 +18,17 @@
 @use "@/assets/styles/variables" as *;
 
 .header {
-    width: 100%;
-    height: 60%;
+    max-width: 100vw;
+    height: 8vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: $system-prim;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid $system-tert;
 
     &__group {
         display: flex;
+        align-items: center;
 
         &--left {
             justify-content: flex-start;
@@ -44,12 +48,27 @@
         font-size: 16px;
         font-weight: 500;
         letter-spacing: 0.3px;
+        text-decoration: none;
         border: 2px solid $system-prim;
 
         &:hover {
             cursor: pointer;
+        }
+
+        &--click:hover {
             border-bottom: 2px solid $system-tert;
         }
+    }
+
+    &__logo {
+        width: 40px;
+    }
+
+    &__title {
+        width: 60px;
+        margin-left: 5px;
+        font-size: 10px;
+        color: $accept-prim;
     }
 }
 </style>
