@@ -30,7 +30,7 @@ export default {
         },
         handleDialogClick(event) {
             // Close the dialog if the click is outside the content
-            const dialogContent = event.target.closest(".dialog-content");
+            const dialogContent = event.target.closest(".down-dial__content");
             if (!dialogContent) {
                 this.closeDialog();
             }
@@ -48,7 +48,6 @@ export default {
 .down-dial {
     border: none;
     border-radius: 5px;
-    padding: 20px;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -56,6 +55,10 @@ export default {
 
     &::backdrop {
         background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    &__content {
+        padding: 20px;
     }
 
     &__image {
