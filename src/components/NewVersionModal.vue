@@ -1,6 +1,6 @@
 <template>
     <dialog ref="dialogRef" class="version-dial">
-        <div class="dialog-content">
+        <div class="version-dial__content">
             <h2 class="version-dial__title">A new version is available. Reload?</h2>
             <p class="version-dial__parag">Warning: Unsaved diagram progress on all open tabs will be lost.</p>
             <div class="version-dial__buttons">
