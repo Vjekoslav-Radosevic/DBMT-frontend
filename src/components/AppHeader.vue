@@ -1,18 +1,33 @@
 <template>
     <div class="header">
         <div class="header__group header__group--left">
-            <router-link to="/" class="header__button">
+            <router-link to="/" class="header__button header__button--left">
                 <img src="/icons/logo.png" alt="DBMT logo" class="header__logo" />
                 <p class="header__title">Database Modeling Tool</p>
             </router-link>
-            <div class="header__button header__button--click">Workspace</div>
+            <router-link to="/workspace" class="header__button header__button--click header__button--left"
+                >Workspace</router-link
+            >
         </div>
         <div class="header__group header__group--right">
-            <div class="header__button header__button--click">Profile</div>
-            <div class="header__button header__button--click">About</div>
+            <div class="header__button header__button--click header__button--right" @click="showSignUp">Sign Up</div>
         </div>
     </div>
+    <SignUp ref="signUpRef" />
 </template>
+
+<script>
+import SignUp from "./SignUp.vue";
+export default {
+    name: "AppHeader",
+    components: { SignUp },
+    methods: {
+        showSignUp() {
+            this.$refs.signUpRef.showDialog();
+        },
+    },
+};
+</script>
 
 <style scoped lang="scss">
 @use "@/assets/styles/variables" as *;
@@ -20,6 +35,9 @@
 .header {
     max-width: 100vw;
     height: 8vh;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,8 +61,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0px 25px;
         padding: 0;
+        color: $text-prim;
         font-size: 16px;
         font-weight: 500;
         letter-spacing: 0.3px;
@@ -53,6 +71,14 @@
 
         &:hover {
             cursor: pointer;
+        }
+
+        &--left {
+            margin-left: 40px;
+        }
+
+        &--right {
+            margin-right: 40px;
         }
 
         &--click:hover {
