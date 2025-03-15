@@ -57,4 +57,9 @@ export default defineConfig({
             "@": fileURLToPath(new URL("./src", import.meta.url)),
         },
     },
+    server: {
+        port: 8000, // Change this to your desired port
+        strictPort: true, // If true, it will fail if the port is unavailable
+        host: "localhost", // Can also be "0.0.0.0" to allow access from network
+    },
 });
