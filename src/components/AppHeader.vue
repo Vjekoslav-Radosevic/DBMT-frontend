@@ -10,7 +10,14 @@
             >
         </div>
         <div class="header__group header__group--right">
-            <div class="header__button header__button--click header__button--right" @click="showSignUp">Sign Up</div>
+            <div
+                v-if="!this.getUser"
+                class="header__button header__button--click header__button--right"
+                @click="showSignUp"
+            >
+                Sign Up
+            </div>
+            <div v-else>Profile image</div>
         </div>
     </div>
     <SignUp ref="signUpRef" />
@@ -18,12 +25,43 @@
 
 <script>
 import SignUp from "./SignUp.vue";
+import { useAuthStore } from "../stores/auth.js";
+import { mapActions, mapState } from "pinia";
+
 export default {
     name: "AppHeader",
     components: { SignUp },
+    data() {
+        return {
+            backendUrl: "http://localhost:8080/api/auth/me",
+        };
+    },
+    mounted() {
+        // this.checkForUser();
+    },
+    computed: {
+        ...mapState(useAuthStore, ["getUser"]),
+    },
     methods: {
+        ...mapActions(useAuthStore, ["setUser"]),
+
         showSignUp() {
             this.$refs.signUpRef.showDialog();
+        },
+
+        async checkForUser() {
+            try {
+                const response = await fetch(this.backendUrl, { credentials: "include" });
+                if (response.ok) {
+                    const user = await response.json();
+                    console.log(user);
+                    this.setUser(user);
+                } else {
+                    console.log("No valid user session! -> showing sign up button");
+                }
+            } catch (error) {
+                console.error("Failed to fetch user:", error);
+            }
         },
     },
 };
