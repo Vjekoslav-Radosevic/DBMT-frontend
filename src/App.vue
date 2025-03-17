@@ -31,9 +31,7 @@ export default {
     },
     methods: {
         handleReload(reload) {
-            if (reload) {
-                this.updateSW();
-            }
+            if (reload) this.updateSW();
         },
     },
 };
