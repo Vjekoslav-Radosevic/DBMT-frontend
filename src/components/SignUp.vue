@@ -93,14 +93,13 @@ export default {
 @use "@/assets/styles/variables" as *;
 
 .signup {
-    border: none;
-    outline: none;
-    border-radius: 5px;
     position: fixed;
-    top: 20%;
+    top: 30vh;
     left: 50%;
     transform: translate(-50%, -50%);
+    outline: none;
     border: none;
+    border-radius: 5px;
 
     &::backdrop {
         background-color: rgba(0, 0, 0, 0.5);
