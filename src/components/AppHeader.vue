@@ -10,58 +10,53 @@
             >
         </div>
         <div class="header__group header__group--right">
-            <div
-                v-if="!this.getUser"
-                class="header__button header__button--click header__button--right"
-                @click="showSignUp"
-            >
+            <div v-if="!user" class="header__button header__button--click header__button--right" @click="showSignUp">
                 Sign Up
             </div>
             <div v-else>Profile image</div>
         </div>
     </div>
-    <SignUp ref="signUpRef" />
+    <SignUp ref="signUpRef" @sign-up-success="updateUser" />
 </template>
 
 <script>
 import SignUp from "./SignUp.vue";
 import { useAuthStore } from "../stores/auth.js";
-import { mapActions, mapState } from "pinia";
+import { mapActions } from "pinia";
 
 export default {
     name: "AppHeader",
     components: { SignUp },
     data() {
         return {
-            backendUrl: "http://localhost:8080/api/auth/me",
+            apiUrl: import.meta.env.VITE_API_URL + "api/auth/me",
+            user: null,
         };
     },
     mounted() {
-        // this.checkForUser();
-    },
-    computed: {
-        ...mapState(useAuthStore, ["getUser"]),
+        this.checkForUser();
     },
     methods: {
         ...mapActions(useAuthStore, ["setUser"]),
-
         showSignUp() {
             this.$refs.signUpRef.showDialog();
         },
-
         async checkForUser() {
             try {
-                const response = await fetch(this.backendUrl, { credentials: "include" });
+                const response = await fetch(this.apiUrl, { credentials: "include" });
                 if (response.ok) {
-                    const user = await response.json();
-                    console.log(user);
-                    this.setUser(user);
+                    this.user = await response.json();
+                    this.setUser(this.user);
                 } else {
                     console.log("No valid user session! -> showing sign up button");
                 }
             } catch (error) {
                 console.error("Failed to fetch user:", error);
             }
+        },
+        updateUser(user) {
+            this.user = user;
+            this.setUser(user);
         },
     },
 };
