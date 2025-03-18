@@ -1,5 +1,5 @@
 <template>
-    <dialog ref="dialogRef" class="signup" @click="handleDialogClick">
+    <dialog ref="signUpRef" class="signup" @click="handleDialogClick">
         <div class="signup__content">
             <div ref="googleLoginRef"></div>
         </div>
@@ -20,13 +20,16 @@ export default {
     },
     methods: {
         showDialog() {
-            this.$refs.dialogRef.showModal();
+            this.$refs.signUpRef.showModal();
+        },
+        closeDialog() {
+            this.$refs.signUpRef.close();
         },
         handleDialogClick(event) {
             // Close the dialog if the click is outside the content
             const dialogContent = event.target.closest(".signup__content");
             if (!dialogContent) {
-                this.$refs.dialogRef.close();
+                this.$refs.signUpRef.close();
             }
         },
         isGoogleAuthAvailable() {
@@ -46,6 +49,7 @@ export default {
         async handleCredentialResponse(response) {
             const decodedJwt = this.decodeJwtResponse(response.credential);
             const user = {
+                sub: decodedJwt.sub,
                 email: decodedJwt.email,
                 familyName: decodedJwt.family_name,
                 givenName: decodedJwt.given_name,
