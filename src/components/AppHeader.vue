@@ -13,20 +13,28 @@
             <div v-if="!user" class="header__button header__button--click header__button--right" @click="showSignUp">
                 Sign Up
             </div>
-            <div v-else>Profile image</div>
+            <img
+                v-else
+                :src="user.picture"
+                alt="user profile picture"
+                @click="showUserProfile"
+                class="header__picture"
+            />
         </div>
     </div>
     <SignUp ref="signUpRef" @sign-up-success="updateUser" />
+    <UserProfile v-if="user" ref="userProfileRef" :user="user" />
 </template>
 
 <script>
 import SignUp from "./SignUp.vue";
+import UserProfile from "./UserProfile.vue";
 import { useAuthStore } from "../stores/auth.js";
 import { mapActions } from "pinia";
 
 export default {
     name: "AppHeader",
-    components: { SignUp },
+    components: { SignUp, UserProfile },
     data() {
         return {
             apiUrl: import.meta.env.VITE_API_URL + "api/auth/me",
@@ -41,11 +49,15 @@ export default {
         showSignUp() {
             this.$refs.signUpRef.showDialog();
         },
+        showUserProfile() {
+            this.$refs.userProfileRef.showDialog();
+        },
         async checkForUser() {
             try {
                 const response = await fetch(this.apiUrl, { credentials: "include" });
                 if (response.ok) {
                     this.user = await response.json();
+                    console.log(this.user.picture);
                     this.setUser(this.user);
                 } else {
                     console.log("No valid user session! -> showing sign up button");
@@ -121,6 +133,16 @@ export default {
 
     &__logo {
         width: 40px;
+    }
+
+    &__picture {
+        width: 40px;
+        border-radius: 50%;
+        margin-right: 40px;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     &__title {
