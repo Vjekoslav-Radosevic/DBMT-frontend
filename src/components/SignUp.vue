@@ -11,16 +11,12 @@ export default {
     name: "SignUp",
     data() {
         return {
-            backendUrl: "http://localhost:8080/api/users",
+            apiUrl: import.meta.env.VITE_API_URL + "api/users",
+            clientId: import.meta.env.VITE_CLIENT_ID,
         };
     },
     mounted() {
-        const gClientId = "592191942585-v6496s1r4olc6olr0ht938gk6ekg9f9b.apps.googleusercontent.com";
-        window.google.accounts.id.initialize({
-            client_id: gClientId,
-            callback: this.handleCredentialResponse,
-        });
-        window.google.accounts.id.renderButton(this.$refs.googleLoginRef, { theme: "outline", size: "large" });
+        this.isGoogleAuthAvailable();
     },
     methods: {
         showDialog() {
@@ -33,35 +29,47 @@ export default {
                 this.$refs.dialogRef.close();
             }
         },
+        isGoogleAuthAvailable() {
+            if (window.google && window.google.accounts) {
+                this.initializeGoogleAuth();
+            } else {
+                setTimeout(this.isGoogleAuthAvailable, 100); // Retry after 100ms
+            }
+        },
+        initializeGoogleAuth() {
+            window.google.accounts.id.initialize({
+                client_id: this.clientId,
+                callback: this.handleCredentialResponse,
+            });
+            window.google.accounts.id.renderButton(this.$refs.googleLoginRef, { theme: "outline", size: "large" });
+        },
         async handleCredentialResponse(response) {
-            const user = this.decodeJwtResponse(response.credential);
-            const requestBody = {
-                email: user.email,
-                familyName: user.family_name,
-                givenName: user.given_name,
-                picture: user.picture,
+            const decodedJwt = this.decodeJwtResponse(response.credential);
+            const user = {
+                email: decodedJwt.email,
+                familyName: decodedJwt.family_name,
+                givenName: decodedJwt.given_name,
+                picture: decodedJwt.picture,
             };
 
-            console.log(requestBody);
+            try {
+                const response = await fetch(this.apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(user),
+                });
 
-            // try {
-            //     const response = await fetch(this.backendUrl, {
-            //         method: "POST",
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //         },
-            //         body: JSON.stringify(requestBody),
-            //     });
-
-            //     if (response.ok) {
-            //         const responseData = await response.text(); // Convert response to JSON
-            //         console.log("JWT Token:", responseData);
-            //     } else {
-            //         console.error("Request failed with status:", response.status);
-            //     }
-            // } catch (error) {
-            //     console.error("Error occurred:", error);
-            // }
+                if (response.ok) {
+                    this.$emit("sign-up-success", user);
+                } else {
+                    console.error("Request failed with status:", response.status);
+                }
+            } catch (error) {
+                console.error("Error occurred:", error);
+            }
         },
         decodeJwtResponse(token) {
             let base64Url = token.split(".")[1];
