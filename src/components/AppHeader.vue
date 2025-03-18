@@ -57,7 +57,6 @@ export default {
                 const response = await fetch(this.apiUrl, { credentials: "include" });
                 if (response.ok) {
                     this.user = await response.json();
-                    console.log(this.user.picture);
                     this.setUser(this.user);
                 } else {
                     console.log("No valid user session! -> showing sign up button");
@@ -69,6 +68,7 @@ export default {
         updateUser(user) {
             this.user = user;
             this.setUser(user);
+            this.$refs.signUpRef.closeDialog();
         },
     },
 };
