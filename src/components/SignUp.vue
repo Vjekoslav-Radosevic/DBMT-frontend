@@ -47,15 +47,7 @@ export default {
             window.google.accounts.id.renderButton(this.$refs.googleLoginRef, { theme: "outline", size: "large" });
         },
         async handleCredentialResponse(response) {
-            const decodedJwt = this.decodeJwtResponse(response.credential);
-            const user = {
-                sub: decodedJwt.sub,
-                email: decodedJwt.email,
-                familyName: decodedJwt.family_name,
-                givenName: decodedJwt.given_name,
-                picture: decodedJwt.picture,
-            };
-
+            const token = response.credential;
             try {
                 const response = await fetch(this.apiUrl, {
                     method: "POST",
@@ -63,10 +55,11 @@ export default {
                         "Content-Type": "application/json",
                     },
                     credentials: "include",
-                    body: JSON.stringify(user),
+                    body: JSON.stringify({ token }),
                 });
 
                 if (response.ok) {
+                    const user = response.json();
                     this.$emit("sign-up-success", user);
                 } else {
                     console.error("Request failed with status:", response.status);
@@ -74,20 +67,6 @@ export default {
             } catch (error) {
                 console.error("Error occurred:", error);
             }
-        },
-        decodeJwtResponse(token) {
-            let base64Url = token.split(".")[1];
-            let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-            let jsonPayload = decodeURIComponent(
-                atob(base64)
-                    .split("")
-                    .map(function (c) {
-                        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-                    })
-                    .join(""),
-            );
-
-            return JSON.parse(jsonPayload);
         },
     },
 };
