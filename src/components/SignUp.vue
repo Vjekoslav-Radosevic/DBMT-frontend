@@ -1,6 +1,7 @@
 <template>
     <dialog ref="signUpRef" class="signup" @click="handleDialogClick">
         <div class="signup__content">
+            <div class="signup__title">Sign Up</div>
             <div ref="googleLoginRef"></div>
         </div>
     </dialog>
@@ -9,15 +10,6 @@
 <script>
 export default {
     name: "SignUp",
-    data() {
-        return {
-            apiUrl: import.meta.env.VITE_API_URL + "api/users",
-            clientId: import.meta.env.VITE_CLIENT_ID,
-        };
-    },
-    mounted() {
-        this.isGoogleAuthAvailable();
-    },
     methods: {
         showDialog() {
             this.$refs.signUpRef.showModal();
@@ -32,42 +24,6 @@ export default {
                 this.$refs.signUpRef.close();
             }
         },
-        isGoogleAuthAvailable() {
-            if (window.google && window.google.accounts) {
-                this.initializeGoogleAuth();
-            } else {
-                setTimeout(this.isGoogleAuthAvailable, 100); // Retry after 100ms
-            }
-        },
-        initializeGoogleAuth() {
-            window.google.accounts.id.initialize({
-                client_id: this.clientId,
-                callback: this.handleCredentialResponse,
-            });
-            window.google.accounts.id.renderButton(this.$refs.googleLoginRef, { theme: "outline", size: "large" });
-        },
-        async handleCredentialResponse(response) {
-            const token = response.credential;
-            try {
-                const response = await fetch(this.apiUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    credentials: "include",
-                    body: JSON.stringify({ token }),
-                });
-
-                if (response.ok) {
-                    const user = response.json();
-                    this.$emit("sign-up-success", user);
-                } else {
-                    console.error("Request failed with status:", response.status);
-                }
-            } catch (error) {
-                console.error("Error occurred:", error);
-            }
-        },
     },
 };
 </script>
@@ -77,9 +33,8 @@ export default {
 
 .signup {
     position: fixed;
-    top: 30vh;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 9vh;
+    left: 78vw;
     outline: none;
     border: none;
     border-radius: 5px;
@@ -89,8 +44,15 @@ export default {
     }
 
     &__content {
-        width: 40vw;
-        height: 40vh;
+        width: 20vw;
+        padding: 30px;
+    }
+
+    &__title {
+        font-size: 20px;
+        color: $text-prim;
+        margin-bottom: 20px;
+        text-align: center;
     }
 }
 </style>
