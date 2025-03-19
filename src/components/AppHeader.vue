@@ -19,11 +19,12 @@
                 alt="user profile picture"
                 @click="showUserProfile"
                 class="header__picture"
+                referrerpolicy="no-referrer"
             />
         </div>
     </div>
-    <SignUp ref="signUpRef" @sign-up-success="updateUser" />
-    <UserProfile v-if="user" ref="userProfileRef" :user="user" />
+    <SignUp ref="signUpRef" />
+    <UserProfile v-if="user" ref="userProfileRef" :user="user" @sign-out="signOut" @delete-account="deleteAccount" />
 </template>
 
 <script>
@@ -37,12 +38,16 @@ export default {
     components: { SignUp, UserProfile },
     data() {
         return {
-            apiUrl: import.meta.env.VITE_API_URL + "api/auth/me",
+            apiUrl: import.meta.env.VITE_API_URL,
+            clientId: import.meta.env.VITE_CLIENT_ID,
             user: null,
         };
     },
     mounted() {
         this.checkForUser();
+        window.onGoogleLibraryLoad = () => {
+            this.initializeGoogleAuth();
+        };
     },
     methods: {
         ...mapActions(useAuthStore, ["setUser"]),
@@ -54,21 +59,72 @@ export default {
         },
         async checkForUser() {
             try {
-                const response = await fetch(this.apiUrl, { credentials: "include" });
+                const response = await fetch(`${this.apiUrl}/api/auth/me`, { credentials: "include" });
                 if (response.ok) {
                     this.user = await response.json();
                     this.setUser(this.user);
-                } else {
-                    console.log("No valid user session! -> showing sign up button");
                 }
             } catch (error) {
-                console.error("Failed to fetch user:", error);
+                console.error("An error occured while fetching user info: ", error);
             }
         },
-        updateUser(user) {
-            this.user = user;
-            this.setUser(user);
-            this.$refs.signUpRef.closeDialog();
+        initializeGoogleAuth() {
+            window.google.accounts.id.initialize({
+                client_id: this.clientId,
+                callback: this.handleCredentialResponse,
+            });
+            window.google.accounts.id.renderButton(this.$refs.signUpRef.$refs.googleLoginRef, {
+                theme: "outline",
+                size: "large",
+            });
+        },
+        async handleCredentialResponse(response) {
+            const token = response.credential;
+            try {
+                const response = await fetch(`${this.apiUrl}/api/auth/signup`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({ token }),
+                });
+
+                if (response.ok) {
+                    this.user = await response.json();
+                    this.setUser(this.user);
+                    this.$refs.signUpRef.closeDialog();
+                } else {
+                    console.error("Request failed with status:", response.status);
+                }
+            } catch (error) {
+                console.error("Error occurred:", error);
+            }
+        },
+        async signOut() {
+            try {
+                const response = await fetch(`${this.apiUrl}/api/auth/signout`, {
+                    method: "POST",
+                    credentials: "include",
+                });
+                if (response.ok) {
+                    this.user = null;
+                    this.setUser(null);
+                    this.$refs.userProfileRef.closeDialog();
+                    window.google.accounts.id.disableAutoSelect();
+                } else {
+                    console.error("Could not sign out user");
+                }
+            } catch (error) {
+                console.error("An error occured while signing out: ", error);
+            }
+        },
+        deleteAccount() {
+            window.google.accounts.id.revoke(this.user.sub, (done) => {
+                console.log("jabuke");
+                console.log(done);
+            });
+            console.log("nakon poziva");
         },
     },
 };
