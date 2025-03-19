@@ -4,8 +4,8 @@
             <img :src="user.picture" alt="user profile picture" class="profile__picture" />
             <div class="profile__name">{{ user.givenName + " " + user.familyName }}</div>
             <div class="profile__email">{{ user.email }}</div>
-            <div class="profile__button profile__button--margin">Sign out</div>
-            <div class="profile__button">Delete account</div>
+            <div class="profile__button profile__button--margin" @click="signOut">Sign out</div>
+            <div class="profile__button" @click="deleteAccount">Delete account</div>
         </div>
     </dialog>
 </template>
@@ -21,12 +21,21 @@ export default {
         showDialog() {
             this.$refs.userProfileRef.showModal();
         },
+        closeDialog() {
+            this.$refs.userProfileRef.close();
+        },
         handleDialogClick(event) {
             // Close the dialog if the click is outside the content
             const dialogContent = event.target.closest(".profile__content");
             if (!dialogContent) {
                 this.$refs.userProfileRef.close();
             }
+        },
+        signOut() {
+            this.$emit("sign-out");
+        },
+        deleteAccount() {
+            this.$emit("delete-account");
         },
     },
 };
