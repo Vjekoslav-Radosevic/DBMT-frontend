@@ -6,6 +6,7 @@
         @create-label="createLabel"
         @open-download-dialog="openDownloadDialog"
         @export-file="exportFile"
+        @import-diagram="importDiagram"
     ></DiagramToolbar>
     <div class="page-body">
         <ElementDetails :element="activeElement" :elements="elements"></ElementDetails>
@@ -29,8 +30,10 @@ import ElementDetails from "../components/ElementDetails.vue";
 import DiagramCanvas from "../components/DiagramCanvas.vue";
 import DownloadDialog from "../components/DownloadDialog.vue";
 
-import { RegularEntity } from "@/erDiagram/models/entities/RegularEntity";
+import { AssociativeEntity } from "@/erDiagram/models/entities/AssociativeEntity";
 import { DegenerativeEntity } from "@/erDiagram/models/entities/DegenerativeEntity";
+import { RegularEntity } from "@/erDiagram/models/entities/RegularEntity";
+import { WeakEntity } from "@/erDiagram/models/entities/WeakEntity";
 import { Connection } from "@/erDiagram/models/Connection";
 import { RelationshipConnection } from "@/erDiagram/models/connections/RelationshipConnection";
 import { Relationship } from "@/erDiagram/models/Relationship";
@@ -369,6 +372,7 @@ export default {
             this.elements.forEach((element) => {
                 if (element.type !== "Attribute") elements.push(element.stringify());
             });
+            elements = elements.filter((element) => !(element.type === "Entity" && !element.isRoot));
 
             let connections = [];
             this.connections.forEach((connection) => {
@@ -384,6 +388,182 @@ export default {
             link.href = URL.createObjectURL(blob);
             link.download = "er_diagram.json";
             link.click();
+        },
+        importDiagram(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const jsonData = JSON.parse(e.target.result);
+                    this.populateDiagram(jsonData);
+                } catch (error) {
+                    console.error("Invalid JSON file:", error);
+                }
+            };
+            reader.readAsText(file);
+        },
+        populateDiagram(jsonData) {
+            //labele
+            const labels = jsonData.elements.filter((element) => element.type === "Label");
+            labels.forEach((label) => {
+                this.parseLabel(label);
+            });
+
+            //entiteti
+            const entities = jsonData.elements.filter((element) => element.type === "Entity");
+            entities.forEach((entity) => {
+                if (entity.subtype === "SuperType") {
+                    this.parseSuperTypeEntity(entity);
+                } else {
+                    this.parseEntity(entity);
+                }
+            });
+
+            //relationships
+
+            //konekcije
+        },
+        parseEntity(entity) {
+            let newEntity;
+
+            if (entity.subtype === "Associative") {
+                newEntity = new AssociativeEntity(
+                    entity.name,
+                    this.getContext,
+                    entity.shape.x,
+                    entity.shape.y,
+                    entity.shape.width,
+                    entity.shape.height,
+                    [],
+                );
+            } else if (entity.subtype === "Degenerative") {
+                newEntity = new DegenerativeEntity(
+                    entity.name,
+                    this.getContext,
+                    entity.shape.x,
+                    entity.shape.y,
+                    entity.shape.width,
+                    entity.shape.height,
+                );
+            } else if (entity.subtype === "Regular") {
+                newEntity = new RegularEntity(
+                    entity.name,
+                    this.getContext,
+                    entity.shape.x,
+                    entity.shape.y,
+                    entity.shape.width,
+                    entity.shape.height,
+                    [],
+                    null,
+                );
+            } else {
+                newEntity = new WeakEntity(
+                    entity.name,
+                    this.getContext,
+                    entity.shape.x,
+                    entity.shape.y,
+                    entity.shape.width,
+                    entity.shape.height,
+                    [],
+                );
+            }
+
+            newEntity.id = entity.id;
+            newEntity.attributes = this.parseAttributes(entity.attributes);
+            newEntity.setParentRole();
+            if (entity.attributeSchema) {
+                newEntity.attributeSchema = this.parseAttributeSchema(entity.attributeSchema, entity);
+            }
+            this.elements.push(newEntity);
+            return newEntity;
+        },
+        parseSuperTypeEntity(entity) {
+            let newEntity = new SuperTypeEntity(
+                entity.name,
+                this.getContext,
+                entity.shape.x,
+                entity.shape.y,
+                entity.shape.width,
+                entity.shape.height,
+                [],
+                null,
+            );
+            newEntity.id = entity.id;
+            newEntity.specializationType = entity.specializationType;
+            newEntity.attributes = this.parseAttributes(entity.attributes);
+            newEntity.entities = this.parseEntities(entity.entities);
+            newEntity.setParentRole();
+            if (entity.attributeSchema) {
+                newEntity.attributeSchema = this.parseAttributeSchema(entity.attributeSchema, entity);
+            }
+            this.elements.push(newEntity);
+            return newEntity;
+        },
+        parseEntities(entities) {
+            let newEntities = [];
+            entities.forEach((ent) => {
+                let newEntity;
+                if (ent.subtype === "SuperType") {
+                    newEntity = this.parseSuperTypeEntity(ent);
+                } else {
+                    newEntity = this.parseEntity(ent);
+                }
+                newEntities.push(newEntity);
+            });
+            return newEntities;
+        },
+        parseAttributes(attributes) {
+            let newAttributes = [];
+            attributes.forEach((attr) => {
+                let newAttribute = this.parseAttribute(attr);
+                newAttributes.push(newAttribute);
+            });
+            return newAttributes;
+        },
+        parseAttribute(attribute) {
+            let newAttribute = new Attribute(
+                attribute.name,
+                this.getContext,
+                attribute.shape.x,
+                attribute.shape.y,
+                attribute.shape.width,
+                attribute.shape.height,
+                null,
+            );
+            newAttribute.id = attribute.id;
+            newAttribute.attributes = this.parseAttributes(attribute.attributes);
+            newAttribute.setParentRole();
+            this.elements.push(newAttribute);
+            return newAttribute;
+        },
+        parseAttributeSchema(schema, entity) {
+            let newAttributeSchema = new AttributeSchema(
+                schema.name,
+                this.getContext,
+                schema.shape.x,
+                schema.shape.y,
+                schema.shape.width,
+                schema.shape.height,
+                entity,
+            );
+            newAttributeSchema.id = schema.id;
+            this.attributeSchemas.push(newAttributeSchema);
+            return newAttributeSchema;
+        },
+        parseLabel(label) {
+            let newLabel = new Label(
+                label.name,
+                this.getContext,
+                label.shape.x,
+                label.shape.y,
+                label.shape.width,
+                label.shape.height,
+            );
+            newLabel.id = label.id;
+            newLabel.text = label.text;
+            this.elements.push(newLabel);
         },
     },
 };
