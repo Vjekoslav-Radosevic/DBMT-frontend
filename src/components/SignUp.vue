@@ -2,7 +2,7 @@
     <dialog ref="signUpRef" class="signup" @click="handleDialogClick">
         <div class="signup__content">
             <div class="signup__title">Sign Up</div>
-            <div ref="googleLoginRef"></div>
+            <div ref="googleLoginRef" class="signup__button"></div>
         </div>
     </dialog>
 </template>
@@ -53,6 +53,12 @@ export default {
         color: $text-prim;
         margin-bottom: 20px;
         text-align: center;
+    }
+
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 </style>
