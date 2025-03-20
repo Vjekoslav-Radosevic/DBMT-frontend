@@ -365,11 +365,17 @@ export default {
             this.$refs.downloadDialogRef.closeDialog();
         },
         exportFile() {
-            const diagramData = {
-                elements: this.elements,
-                connections: this.connections,
-                attributeSchemas: this.attributeSchemas,
-            };
+            let elements = [];
+            this.elements.forEach((element) => {
+                if (element.type !== "Attribute") elements.push(element.stringify());
+            });
+
+            let connections = [];
+            this.connections.forEach((connection) => {
+                connections.push(connection.stringify());
+            });
+
+            const diagramData = { elements, connections };
 
             const jsonString = JSON.stringify(diagramData, null, 2);
             const blob = new Blob([jsonString], { type: "application/json" });
