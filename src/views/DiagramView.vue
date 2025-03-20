@@ -100,6 +100,13 @@ export default {
             this.addingElement = true;
         },
         createRelationship() {
+            const endpoints = {
+                topTaken: false,
+                rightTaken: false,
+                bottomTaken: false,
+                leftTaken: false,
+            };
+
             this.newElement = new Relationship(
                 "Relationship",
                 this.getContext,
@@ -109,14 +116,22 @@ export default {
                 this.elementHeight,
                 false,
                 { x: 0, y: 0 },
+                endpoints,
             );
             this.addingElement = true;
         },
         createLabel() {
-            this.newElement = new Label("Label", this.getContext, 0, 0, this.elementWidth, this.elementHeight, false, {
-                x: 0,
-                y: 0,
-            });
+            this.newElement = new Label(
+                "Label",
+                this.getContext,
+                0,
+                0,
+                this.elementWidth,
+                this.elementHeight,
+                false,
+                { x: 0, y: 0 },
+                "",
+            );
             this.addingElement = true;
         },
         addAttribute() {
