@@ -3,9 +3,9 @@ import { Attribute } from "./Attribute.js";
 import { RelationshipShape } from "../shapes/RelationshipShape.js";
 
 export class Relationship extends Element {
-    constructor(name, ctx, x, y, width, height, isDragging, offset) {
-        super(name, ctx, x, y, width, height, isDragging, offset);
-        this.shape = new RelationshipShape(ctx, x, y, width, height, isDragging, offset);
+    constructor(name, ctx, x, y, width, height) {
+        super(name, ctx, x, y, width, height);
+        this.shape = new RelationshipShape(ctx, x, y, width, height);
         this.identifying = false;
         this.attributes = [];
         this.attributeSchema = null;
@@ -132,17 +132,7 @@ export class Relationship extends Element {
                 );
 
                 if (!inside) {
-                    let newAttribute = new Attribute(
-                        name,
-                        this.shape.ctx,
-                        x,
-                        y,
-                        width,
-                        height,
-                        false,
-                        { x: 0, y: 0 },
-                        this,
-                    );
+                    let newAttribute = new Attribute(name, this.shape.ctx, x, y, width, height, this);
                     this.attributes.push(newAttribute);
                     return newAttribute;
                 }
@@ -156,8 +146,6 @@ export class Relationship extends Element {
             this.shape.y + positions[0][1],
             width,
             height,
-            false,
-            { x: 0, y: 0 },
             this,
         );
         this.attributes.push(newAttribute);

@@ -1,8 +1,8 @@
 import { Shape } from "../Shape.js";
 
 export class SuperTypeEntityShape extends Shape {
-    constructor(ctx, x, y, width, height, isDragging, offset) {
-        super(ctx, x, y, width, height, isDragging, offset);
+    constructor(ctx, x, y, width, height) {
+        super(ctx, x, y, width, height);
 
         this.circleRadius = 15;
         this.entityToCircleDistance = 20;

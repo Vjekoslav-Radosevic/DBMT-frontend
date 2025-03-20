@@ -3,9 +3,9 @@ import { Element } from "./Element.js";
 import { Attribute } from "./Attribute.js";
 
 export class Entity extends Element {
-    constructor(name, ctx, x, y, width, height, isDragging, offset, attributes = []) {
-        super(name, ctx, x, y, width, height, isDragging, offset);
-        this.shape = new RegularEntityShape(ctx, x, y, width, height, isDragging, offset);
+    constructor(name, ctx, x, y, width, height, attributes = []) {
+        super(name, ctx, x, y, width, height);
+        this.shape = new RegularEntityShape(ctx, x, y, width, height);
         this.attributes = attributes;
         this.attributes.forEach((attribute) => (attribute.parentElement = this)); // make this Entity the parent of every attribute from it's attributes list
         this.attributeSchema = null;
@@ -57,8 +57,6 @@ export class Entity extends Element {
                         y,
                         width,
                         height,
-                        false,
-                        { x: 0, y: 0 },
                         this,
                     );
                     this.attributes.push(newAttribute);
@@ -74,8 +72,6 @@ export class Entity extends Element {
             this.shape.y + positions[0][1],
             width,
             height,
-            false,
-            { x: 0, y: 0 },
             this,
         );
         this.attributes.push(newAttribute);

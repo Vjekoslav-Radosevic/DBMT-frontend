@@ -7,10 +7,10 @@ import { DegenerativeEntity } from "./DegenerativeEntity.js";
 import { SuperTypeConnection } from "../connections/SuperTypeConnection.js";
 
 export class SuperTypeEntity extends Entity {
-    constructor(name, ctx, x, y, width, height, isDragging, offset, attributes, parentElement) {
-        super(name, ctx, x, y, width, height, isDragging, offset, attributes);
+    constructor(name, ctx, x, y, width, height, attributes, parentElement) {
+        super(name, ctx, x, y, width, height, attributes);
         this.type = "SuperType";
-        this.shape = new SuperTypeEntityShape(ctx, x, y, width, height, isDragging, offset);
+        this.shape = new SuperTypeEntityShape(ctx, x, y, width, height);
         this.parentElement = parentElement;
         this.specializationType = "Disjointed";
         this.entities = [];
@@ -59,8 +59,6 @@ export class SuperTypeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
             this.attributes,
             this.parentElement,
         );
@@ -74,8 +72,6 @@ export class SuperTypeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
         );
     }
 
@@ -87,8 +83,6 @@ export class SuperTypeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
             this.attributes,
         );
     }
@@ -101,8 +95,6 @@ export class SuperTypeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
             this.attributes,
         );
     }
@@ -133,8 +125,6 @@ export class SuperTypeEntity extends Entity {
                         y,
                         width,
                         height,
-                        false,
-                        { x: 0, y: 0 },
                         [],
                         this,
                     );
@@ -160,8 +150,6 @@ export class SuperTypeEntity extends Entity {
             fallbackY,
             width,
             height,
-            false,
-            { x: 0, y: 0 },
             [],
             this,
         );

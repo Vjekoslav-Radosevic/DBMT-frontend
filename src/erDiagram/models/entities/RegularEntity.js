@@ -6,10 +6,10 @@ import { DegenerativeEntity } from "./DegenerativeEntity.js";
 import { SuperTypeEntity } from "./SuperTypeEntity.js";
 
 export class RegularEntity extends Entity {
-    constructor(name, ctx, x, y, width, height, isDragging, offset, attributes, parentElement) {
-        super(name, ctx, x, y, width, isDragging, offset, height, attributes);
+    constructor(name, ctx, x, y, width, height, attributes, parentElement) {
+        super(name, ctx, x, y, width, height, attributes);
         this.type = "Regular";
-        this.shape = new RegularEntityShape(ctx, x, y, width, height, isDragging, offset);
+        this.shape = new RegularEntityShape(ctx, x, y, width, height);
         this.parentElement = parentElement;
     }
 
@@ -29,8 +29,6 @@ export class RegularEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
         );
     }
 
@@ -42,8 +40,6 @@ export class RegularEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
             this.attributes,
         );
     }
@@ -56,8 +52,6 @@ export class RegularEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
             this.attributes,
         );
     }
@@ -70,8 +64,6 @@ export class RegularEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
             this.attributes,
             this.parentElement,
         );

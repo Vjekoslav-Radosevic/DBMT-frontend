@@ -92,8 +92,6 @@ export default {
                 0,
                 this.elementWidth,
                 this.elementHeight,
-                false,
-                { x: 0, y: 0 },
                 [],
                 null,
             );
@@ -107,16 +105,11 @@ export default {
                 0,
                 this.elementWidth,
                 this.elementHeight,
-                false,
-                { x: 0, y: 0 },
             );
             this.addingElement = true;
         },
         createLabel() {
-            this.newElement = new Label("Label", this.getContext, 0, 0, this.elementWidth, this.elementHeight, false, {
-                x: 0,
-                y: 0,
-            });
+            this.newElement = new Label("Label", this.getContext, 0, 0, this.elementWidth, this.elementHeight);
             this.addingElement = true;
         },
         addAttribute() {
@@ -162,8 +155,6 @@ export default {
                 this.activeElement.shape.y + this.activeElement.shape.height * 2,
                 this.elementWidth,
                 this.elementHeight,
-                false,
-                { x: 0, y: 0 },
                 this.activeElement,
             );
 

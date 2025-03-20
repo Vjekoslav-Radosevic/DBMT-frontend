@@ -3,7 +3,7 @@ import { Connection } from "../Connection.js";
 
 export class SuperTypeConnection extends Connection {
     constructor(ctx, element1, element2) {
-        super(ctx, element1, element2);
+        super(ctx, element1, element2); // element1 is alwasy SuperTypeEntity
         this.connectionShape = new SuperTypeConnectionShape(ctx);
     }
 

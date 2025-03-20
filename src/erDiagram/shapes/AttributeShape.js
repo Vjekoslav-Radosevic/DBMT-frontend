@@ -1,8 +1,8 @@
 import { Shape } from "./Shape.js";
 
 export class AttributeShape extends Shape {
-    constructor(ctx, x, y, width, height, isDragging, offset) {
-        super(ctx, x, y, width, height, isDragging, offset);
+    constructor(ctx, x, y, width, height) {
+        super(ctx, x, y, width, height);
 
         this.radiusX = this.width / 2;
         this.radiusY = this.height / 2;

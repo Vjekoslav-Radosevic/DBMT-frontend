@@ -6,10 +6,10 @@ import { DegenerativeEntity } from "./DegenerativeEntity.js";
 import { SuperTypeEntity } from "./SuperTypeEntity.js";
 
 export class AssociativeEntity extends Entity {
-    constructor(name, ctx, x, y, width, height, isDragging, offset, attributes) {
-        super(name, ctx, x, y, width, height, isDragging, offset, attributes);
+    constructor(name, ctx, x, y, width, height, attributes) {
+        super(name, ctx, x, y, width, height, attributes);
         this.type = "Associative";
-        this.shape = new AssociativeEntityShape(ctx, x, y, width, height, isDragging, offset);
+        this.shape = new AssociativeEntityShape(ctx, x, y, width, height);
     }
 
     turnToRegularEntity() {
@@ -20,8 +20,6 @@ export class AssociativeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
             this.attributes,
             null,
         );
@@ -35,8 +33,6 @@ export class AssociativeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
         );
     }
 
@@ -48,8 +44,6 @@ export class AssociativeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
             this.attributes,
         );
     }
@@ -62,8 +56,6 @@ export class AssociativeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
-            this.shape.isDragging,
-            this.shape.offset,
             this.attributes,
             null,
         );
