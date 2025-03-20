@@ -159,7 +159,7 @@ export class SuperTypeEntity extends Entity {
                         this,
                     );
                     this.entities.push(newEntity);
-                    const newConnection = new SuperTypeConnection(this.shape.ctx, this, newEntity);
+                    const newConnection = new SuperTypeConnection(this.shape.ctx, this, newEntity, true);
 
                     return {
                         element: newEntity,

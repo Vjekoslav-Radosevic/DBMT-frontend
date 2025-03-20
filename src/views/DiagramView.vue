@@ -144,7 +144,7 @@ export default {
                 this.getCanvasHeight,
             );
             this.elements.push(attribute);
-            let connection = new Connection(this.getContext, this.activeElement, attribute);
+            let connection = new Connection(this.getContext, this.activeElement, attribute, true);
             this.connections.push(connection);
             this.activateElement(attribute);
         },
@@ -227,7 +227,7 @@ export default {
             }
 
             if (!oldEntity) {
-                connection = new RelationshipConnection(this.getContext, this.activeElement, newEntity, entityText);
+                connection = new RelationshipConnection(this.getContext, this.activeElement, true, newEntity, entityText);
                 this.connections.push(connection);
             } else {
                 connection = this.connections.filter(

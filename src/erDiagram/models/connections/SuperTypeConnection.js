@@ -2,8 +2,8 @@ import { SuperTypeConnectionShape } from "../../shapes/connections/SuperTypeConn
 import { Connection } from "../Connection.js";
 
 export class SuperTypeConnection extends Connection {
-    constructor(ctx, element1, element2) {
-        super(ctx, element1, element2); //element1 is always SuperTypeEntity
+    constructor(ctx, element1, element2, willDraw) {
+        super(ctx, element1, element2, willDraw); //element1 is always SuperTypeEntity
         this.connectionShape = new SuperTypeConnectionShape(ctx);
     }
 

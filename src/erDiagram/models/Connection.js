@@ -2,12 +2,12 @@ import { ConnectionShape } from "../shapes/ConnectionShape.js";
 import { v4 as uuidv4 } from "uuid";
 
 export class Connection {
-    constructor(ctx, element1, element2) {
+    constructor(ctx, element1, element2, willDraw) {
         this.id = uuidv4();
         this.element1 = element1;
         this.element2 = element2;
         this.connectionShape = new ConnectionShape(ctx);
-        this.willDraw = true; // if it connects to attribute that is hidden because of attribute schema
+        this.willDraw = willDraw; // if it connects to attribute that is hidden because of attribute schema
         this.lineColor = "gray";
     }
 
