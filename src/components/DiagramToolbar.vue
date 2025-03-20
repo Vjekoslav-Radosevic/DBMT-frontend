@@ -1,6 +1,7 @@
 <template>
     <div class="toolbar">
         <div class="toolbar__button toolbar__button--sys" @click="openDownloadDialog">Download</div>
+        <div class="toolbar__button toolbar__button--sys" @click="exportFile">Export file</div>
         <div class="toolbar__button toolbar__button--sys">Save</div>
         <div class="toolbar__button toolbar__button--sys">Undo</div>
         <div class="toolbar__button toolbar__button--sys">Redo</div>
@@ -58,6 +59,9 @@ export default {
         },
         openDownloadDialog() {
             this.$emit("open-download-dialog");
+        },
+        exportFile() {
+            this.$emit("export-file");
         },
     },
 };

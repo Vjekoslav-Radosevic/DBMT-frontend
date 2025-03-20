@@ -5,6 +5,7 @@
         @create-relationship="createRelationship"
         @create-label="createLabel"
         @open-download-dialog="openDownloadDialog"
+        @export-file="exportFile"
     ></DiagramToolbar>
     <div class="page-body">
         <ElementDetails :element="activeElement" :elements="elements"></ElementDetails>
@@ -362,6 +363,21 @@ export default {
             downloadLink.click(); // Simulate a click to download
 
             this.$refs.downloadDialogRef.closeDialog();
+        },
+        exportFile() {
+            const diagramData = {
+                elements: this.elements,
+                connections: this.connections,
+                attributeSchemas: this.attributeSchemas,
+            };
+
+            const jsonString = JSON.stringify(diagramData, null, 2);
+            const blob = new Blob([jsonString], { type: "application/json" });
+            const link = document.createElement("a");
+
+            link.href = URL.createObjectURL(blob);
+            link.download = "er_diagram.json";
+            link.click();
         },
     },
 };
