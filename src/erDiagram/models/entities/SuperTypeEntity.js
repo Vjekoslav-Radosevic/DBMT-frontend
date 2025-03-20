@@ -7,10 +7,10 @@ import { DegenerativeEntity } from "./DegenerativeEntity.js";
 import { SuperTypeConnection } from "../connections/SuperTypeConnection.js";
 
 export class SuperTypeEntity extends Entity {
-    constructor(name, ctx, x, y, width, height, attributes, parentElement) {
-        super(name, ctx, x, y, width, height, attributes);
+    constructor(name, ctx, x, y, width, height, isDragging, offset, attributes, parentElement) {
+        super(name, ctx, x, y, width, height, isDragging, offset, attributes);
         this.type = "SuperType";
-        this.shape = new SuperTypeEntityShape(ctx, x, y, width, height);
+        this.shape = new SuperTypeEntityShape(ctx, x, y, width, height, isDragging, offset);
         this.parentElement = parentElement;
         this.specializationType = "Disjointed";
         this.entities = [];
@@ -59,6 +59,8 @@ export class SuperTypeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
+            this.shape.isDragging,
+            this.shape.offset,
             this.attributes,
             this.parentElement,
         );
@@ -72,6 +74,8 @@ export class SuperTypeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
+            this.shape.isDragging,
+            this.shape.offset,
         );
     }
 
@@ -83,6 +87,8 @@ export class SuperTypeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
+            this.shape.isDragging,
+            this.shape.offset,
             this.attributes,
         );
     }
@@ -95,6 +101,8 @@ export class SuperTypeEntity extends Entity {
             this.shape.y,
             this.shape.width,
             this.shape.height,
+            this.shape.isDragging,
+            this.shape.offset,
             this.attributes,
         );
     }
@@ -118,7 +126,18 @@ export class SuperTypeEntity extends Entity {
                 );
 
                 if (!inside) {
-                    const newEntity = new RegularEntity(name, this.shape.ctx, x, y, width, height, [], this);
+                    const newEntity = new RegularEntity(
+                        name,
+                        this.shape.ctx,
+                        x,
+                        y,
+                        width,
+                        height,
+                        false,
+                        { x: 0, y: 0 },
+                        [],
+                        this,
+                    );
                     this.entities.push(newEntity);
                     const newConnection = new SuperTypeConnection(this.shape.ctx, this, newEntity);
 
@@ -134,7 +153,18 @@ export class SuperTypeEntity extends Entity {
         const fallbackX = this.shape.x + positions[0];
         const fallbackY = this.shape.y + this.shape.height + (height + this.shape.entityToCircleDistance);
 
-        const newEntity = new RegularEntity(name, this.shape.ctx, fallbackX, fallbackY, width, height, [], this);
+        const newEntity = new RegularEntity(
+            name,
+            this.shape.ctx,
+            fallbackX,
+            fallbackY,
+            width,
+            height,
+            false,
+            { x: 0, y: 0 },
+            [],
+            this,
+        );
         this.entities.push(newEntity);
         const newConnection = new SuperTypeConnection(this.shape.ctx, this, newEntity);
 

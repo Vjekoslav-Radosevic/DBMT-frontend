@@ -1,13 +1,13 @@
 export class Shape {
-    constructor(ctx, x, y, width, height) {
+    constructor(ctx, x, y, width, height, isDragging, offset) {
         this.x = x;
         this.y = y;
 
         this.width = width; // Width of the rectangle
         this.height = height; // Height of the rectangle
 
-        this.isDragging = false; // To track if the rectangle is being dragged
-        this.offset = { x: 0, y: 0 }; // Offset to calculate the drag position
+        this.isDragging = isDragging; // To track if the rectangle is being dragged
+        this.offset = { x: offset.x, y: offset.y }; // Offset to calculate the drag position
 
         this.ctx = ctx;
     }

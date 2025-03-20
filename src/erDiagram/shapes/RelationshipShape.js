@@ -2,8 +2,8 @@ import { Shape } from "./Shape.js";
 import { markRaw } from "vue";
 
 export class RelationshipShape extends Shape {
-    constructor(ctx, x, y, width, height) {
-        super(ctx, x, y, width, height);
+    constructor(ctx, x, y, width, height, isDragging, offset) {
+        super(ctx, x, y, width, height, isDragging, offset);
 
         this.endpoints = markRaw({
             topTaken: false,

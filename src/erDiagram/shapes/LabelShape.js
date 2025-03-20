@@ -1,8 +1,8 @@
 import { Shape } from "./Shape";
 
 export class LabelShape extends Shape {
-    constructor(ctx, x, y, width, height) {
-        super(ctx, x, y, width, height);
+    constructor(ctx, x, y, width, height, isDragging, offset) {
+        super(ctx, x, y, width, height, isDragging, offset);
     }
 
     isInside(mouseX, mouseY) {

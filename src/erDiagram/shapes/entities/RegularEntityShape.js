@@ -1,8 +1,8 @@
 import { Shape } from "../Shape.js";
 
 export class RegularEntityShape extends Shape {
-    constructor(ctx, x, y, width, height) {
-        super(ctx, x, y, width, height);
+    constructor(ctx, x, y, width, height, isDragging, offset) {
+        super(ctx, x, y, width, height, isDragging, offset);
     }
 
     // Check if the mouse is inside the rectangle

@@ -2,10 +2,10 @@ import { Element } from "./Element.js";
 import { AttributeShape } from "../shapes/AttributeShape.js";
 
 export class Attribute extends Element {
-    constructor(name, ctx, x, y, width, height, parentElement) {
-        super(name, ctx, x, y);
+    constructor(name, ctx, x, y, width, height, isDragging, offset, parentElement) {
+        super(name, ctx, x, y, width, height, isDragging, offset);
+        this.shape = new AttributeShape(ctx, x, y, width, height, isDragging, offset);
         this.parentElement = parentElement;
-        this.shape = new AttributeShape(ctx, x, y, width, height);
         this.attributes = [];
         this.properties = {
             composite: false,
@@ -66,7 +66,17 @@ export class Attribute extends Element {
                 );
 
                 if (!inside) {
-                    let newAttribute = new Attribute(name, this.shape.ctx, x, y, width, height, this);
+                    let newAttribute = new Attribute(
+                        name,
+                        this.shape.ctx,
+                        x,
+                        y,
+                        width,
+                        height,
+                        false,
+                        { x: 0, y: 0 },
+                        this,
+                    );
                     this.attributes.push(newAttribute);
                     return newAttribute;
                 }
@@ -80,6 +90,8 @@ export class Attribute extends Element {
             this.shape.y + positions[0][1],
             width,
             height,
+            false,
+            { x: 0, y: 0 },
             this,
         );
         this.attributes.push(newAttribute);

@@ -2,9 +2,9 @@ import { LabelShape } from "../shapes/LabelShape.js";
 import { Element } from "./Element.js";
 
 export class Label extends Element {
-    constructor(name, ctx, x, y, width, height) {
-        super(name, ctx, x, y, width, height);
-        this.shape = new LabelShape(ctx, x, y, width, height);
+    constructor(name, ctx, x, y, width, height, isDragging, offset) {
+        super(name, ctx, x, y, width, height, isDragging, offset);
+        this.shape = new LabelShape(ctx, x, y, width, height, isDragging, offset);
         this.text = "";
     }
 
