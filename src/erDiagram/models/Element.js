@@ -6,7 +6,6 @@ export class Element {
         this.shape = new Shape(ctx, x, y, width, height);
         this.id = uuidv4();
         this.name = name;
-        this.ctx = ctx;
         this.active = false;
 
         this.textColor = "black";

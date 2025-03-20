@@ -54,7 +54,7 @@ export class SuperTypeEntity extends Entity {
     turnToRegularEntity() {
         return new RegularEntity(
             this.name,
-            this.ctx,
+            this.shape.ctx,
             this.shape.x,
             this.shape.y,
             this.shape.width,
@@ -67,7 +67,7 @@ export class SuperTypeEntity extends Entity {
     turnToDegenerativeEntity() {
         return new DegenerativeEntity(
             this.name,
-            this.ctx,
+            this.shape.ctx,
             this.shape.x,
             this.shape.y,
             this.shape.width,
@@ -78,7 +78,7 @@ export class SuperTypeEntity extends Entity {
     turnToWeakEntity() {
         return new WeakEntity(
             this.name,
-            this.ctx,
+            this.shape.ctx,
             this.shape.x,
             this.shape.y,
             this.shape.width,
@@ -90,7 +90,7 @@ export class SuperTypeEntity extends Entity {
     turnToAssociativeEntity() {
         return new AssociativeEntity(
             this.name,
-            this.ctx,
+            this.shape.ctx,
             this.shape.x,
             this.shape.y,
             this.shape.width,
@@ -118,16 +118,7 @@ export class SuperTypeEntity extends Entity {
                 );
 
                 if (!inside) {
-                    const newEntity = new RegularEntity(
-                        name,
-                        this.shape.ctx,
-                        x,
-                        y,
-                        width,
-                        height,
-                        [],
-                        this,
-                    );
+                    const newEntity = new RegularEntity(name, this.shape.ctx, x, y, width, height, [], this);
                     this.entities.push(newEntity);
                     const newConnection = new SuperTypeConnection(this.shape.ctx, this, newEntity);
 
@@ -143,16 +134,7 @@ export class SuperTypeEntity extends Entity {
         const fallbackX = this.shape.x + positions[0];
         const fallbackY = this.shape.y + this.shape.height + (height + this.shape.entityToCircleDistance);
 
-        const newEntity = new RegularEntity(
-            name,
-            this.shape.ctx,
-            fallbackX,
-            fallbackY,
-            width,
-            height,
-            [],
-            this,
-        );
+        const newEntity = new RegularEntity(name, this.shape.ctx, fallbackX, fallbackY, width, height, [], this);
         this.entities.push(newEntity);
         const newConnection = new SuperTypeConnection(this.shape.ctx, this, newEntity);
 

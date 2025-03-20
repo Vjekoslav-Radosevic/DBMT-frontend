@@ -15,7 +15,7 @@ export class AssociativeEntity extends Entity {
     turnToRegularEntity() {
         return new RegularEntity(
             this.name,
-            this.ctx,
+            this.shape.ctx,
             this.shape.x,
             this.shape.y,
             this.shape.width,
@@ -28,7 +28,7 @@ export class AssociativeEntity extends Entity {
     turnToDegenerativeEntity() {
         return new DegenerativeEntity(
             this.name,
-            this.ctx,
+            this.shape.ctx,
             this.shape.x,
             this.shape.y,
             this.shape.width,
@@ -39,7 +39,7 @@ export class AssociativeEntity extends Entity {
     turnToWeakEntity() {
         return new WeakEntity(
             this.name,
-            this.ctx,
+            this.shape.ctx,
             this.shape.x,
             this.shape.y,
             this.shape.width,
@@ -51,7 +51,7 @@ export class AssociativeEntity extends Entity {
     turnToSuperTypeEntity() {
         return new SuperTypeEntity(
             this.name,
-            this.ctx,
+            this.shape.ctx,
             this.shape.x,
             this.shape.y,
             this.shape.width,
