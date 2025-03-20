@@ -2,10 +2,10 @@ import { LabelShape } from "../shapes/LabelShape.js";
 import { Element } from "./Element.js";
 
 export class Label extends Element {
-    constructor(name, ctx, x, y, width, height, isDragging, offset) {
+    constructor(name, ctx, x, y, width, height, isDragging, offset, text) {
         super(name, ctx, x, y, width, height, isDragging, offset);
         this.shape = new LabelShape(ctx, x, y, width, height, isDragging, offset);
-        this.text = "";
+        this.text = text;
     }
 
     drag(mouseX, mouseY) {

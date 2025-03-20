@@ -3,9 +3,9 @@ import { Attribute } from "./Attribute.js";
 import { RelationshipShape } from "../shapes/RelationshipShape.js";
 
 export class Relationship extends Element {
-    constructor(name, ctx, x, y, width, height, isDragging, offset) {
+    constructor(name, ctx, x, y, width, height, isDragging, offset, endpoints) {
         super(name, ctx, x, y, width, height, isDragging, offset);
-        this.shape = new RelationshipShape(ctx, x, y, width, height, isDragging, offset);
+        this.shape = new RelationshipShape(ctx, x, y, width, height, isDragging, offset, endpoints);
         this.identifying = false;
         this.attributes = [];
         this.attributeSchema = null;
