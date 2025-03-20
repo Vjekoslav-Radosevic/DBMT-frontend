@@ -6,6 +6,7 @@ export class Entity extends Element {
     constructor(name, ctx, x, y, width, height, attributes = []) {
         super(name, ctx, x, y, width, height);
         this.shape = new RegularEntityShape(ctx, x, y, width, height);
+        this.type = "Entity";
         this.attributes = attributes;
         this.attributes.forEach((attribute) => (attribute.parentElement = this)); // make this Entity the parent of every attribute from it's attributes list
         this.attributeSchema = null;
@@ -50,15 +51,7 @@ export class Entity extends Element {
                 );
 
                 if (!inside) {
-                    let newAttribute = new Attribute(
-                        name,
-                        this.shape.ctx,
-                        x,
-                        y,
-                        width,
-                        height,
-                        this,
-                    );
+                    let newAttribute = new Attribute(name, this.shape.ctx, x, y, width, height, this);
                     this.attributes.push(newAttribute);
                     return newAttribute;
                 }
@@ -105,6 +98,32 @@ export class Entity extends Element {
 
     removeAttribute(attribute) {
         this.attributes = this.attributes.filter((attr) => attr.id != attribute.id);
+    }
+
+    stringify() {
+        let shape = JSON.parse(JSON.stringify(this.shape));
+        delete shape.ctx;
+
+        let attributes = [];
+        if (this.attributes) {
+            this.attributes.forEach((attr) => {
+                attributes.push(attr.stringify());
+            });
+        }
+
+        let attributeSchema = null;
+        if (this.attributeSchema) {
+            attributeSchema = this.attributeSchema.stringify();
+        }
+
+        return {
+            id: this.id,
+            name: this.name,
+            type: this.type,
+            shape,
+            attributes: [...attributes],
+            attributeSchema: attributeSchema,
+        };
     }
 
     toString() {

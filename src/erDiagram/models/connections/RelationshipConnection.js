@@ -21,4 +21,15 @@ export class RelationshipConnection extends Connection {
 
         this.connectionShape.draw(entityNearestPoint, relationshipEndpoint, entity, this.lineColor);
     }
+
+    stringify() {
+        return {
+            id: this.id,
+            type: this.type,
+            willDraw: this.willDraw,
+            element1: this.element1.id,
+            element2: this.element2.id,
+            entityText: this.entityText,
+        };
+    }
 }

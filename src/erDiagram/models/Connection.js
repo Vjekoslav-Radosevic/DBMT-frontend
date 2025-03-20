@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 export class Connection {
     constructor(ctx, element1, element2) {
         this.id = uuidv4();
+        this.type = "Connection";
         this.element1 = element1;
         this.element2 = element2;
         this.connectionShape = new ConnectionShape(ctx);
@@ -22,5 +23,15 @@ export class Connection {
         let start = this.element1.getCenter();
         let end = this.element2.getCenter();
         this.connectionShape.draw(start, end, this.lineColor);
+    }
+
+    stringify() {
+        return {
+            id: this.id,
+            type: this.type,
+            willDraw: this.willDraw,
+            element1: this.element1.id,
+            element2: this.element2.id,
+        };
     }
 }

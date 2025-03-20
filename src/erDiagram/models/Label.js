@@ -5,6 +5,7 @@ export class Label extends Element {
     constructor(name, ctx, x, y, width, height) {
         super(name, ctx, x, y, width, height);
         this.shape = new LabelShape(ctx, x, y, width, height);
+        this.type = "Label";
         this.text = "";
     }
 
@@ -20,6 +21,19 @@ export class Label extends Element {
     // eslint-disable-next-line no-unused-vars
     getAllElementsRecursive(includeMyself, includeMyAttributes) {
         return [this];
+    }
+
+    stringify() {
+        let shape = JSON.parse(JSON.stringify(this.shape));
+        delete shape.ctx;
+
+        return {
+            id: this.id,
+            name: this.name,
+            type: this.type,
+            text: this.text,
+            shape,
+        };
     }
 
     toString() {

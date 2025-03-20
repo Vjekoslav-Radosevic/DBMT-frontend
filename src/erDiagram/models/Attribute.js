@@ -5,6 +5,7 @@ export class Attribute extends Element {
     constructor(name, ctx, x, y, width, height, parentElement) {
         super(name, ctx, x, y, width, height);
         this.shape = new AttributeShape(ctx, x, y, width, height);
+        this.type = "Attribute";
         this.parentElement = parentElement;
         this.attributes = [];
         this.properties = {
@@ -66,15 +67,7 @@ export class Attribute extends Element {
                 );
 
                 if (!inside) {
-                    let newAttribute = new Attribute(
-                        name,
-                        this.shape.ctx,
-                        x,
-                        y,
-                        width,
-                        height,
-                        this,
-                    );
+                    let newAttribute = new Attribute(name, this.shape.ctx, x, y, width, height, this);
                     this.attributes.push(newAttribute);
                     return newAttribute;
                 }
@@ -118,6 +111,26 @@ export class Attribute extends Element {
         }
 
         return allElements;
+    }
+
+    stringify() {
+        let shape = JSON.parse(JSON.stringify(this.shape));
+        delete shape.ctx;
+
+        let attributes = [];
+        this.attributes.forEach((attr) => {
+            attributes.push(attr.stringify());
+        });
+
+        return {
+            id: this.id,
+            name: this.name,
+            type: this.type,
+            properties: { ...this.properties },
+            shape,
+            attributes: [...attributes],
+            willDraw: this.willDraw,
+        };
     }
 
     toString() {

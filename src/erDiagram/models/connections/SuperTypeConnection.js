@@ -12,4 +12,14 @@ export class SuperTypeConnection extends Connection {
         const end = this.element2.getCenter();
         this.connectionShape.draw(start, end, this.lineColor);
     }
+
+    stringify() {
+        return {
+            id: this.id,
+            type: this.type,
+            willDraw: this.willDraw,
+            element1: this.element1.id,
+            element2: this.element2.id,
+        };
+    }
 }

@@ -156,6 +156,37 @@ export class SuperTypeEntity extends Entity {
         this.entities.push(entity);
     }
 
+    stringify() {
+        let shape = JSON.parse(JSON.stringify(this.shape));
+        delete shape.ctx;
+
+        let attributes = [];
+        this.attributes.forEach((attr) => {
+            attributes.push(attr.stringify());
+        });
+
+        let entities = [];
+        this.entities.forEach((entity) => {
+            entities.push(entity.stringify());
+        });
+
+        let attributeSchema = null;
+        if (this.attributeSchema) {
+            attributeSchema = this.attributeSchema.stringify();
+        }
+
+        return {
+            id: this.id,
+            name: this.name,
+            type: this.type,
+            specializationType: this.specializationType,
+            shape,
+            attributes: [...attributes],
+            attributeSchema: attributeSchema,
+            entities: entities,
+        };
+    }
+
     toString() {
         return `SuperTypeEntity {id: ${this.id}, name: ${this.name}, attributes: ${this.attributes}, entities: ${this.entities}}`;
     }

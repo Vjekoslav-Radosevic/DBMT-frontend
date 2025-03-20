@@ -6,6 +6,7 @@ export class Relationship extends Element {
     constructor(name, ctx, x, y, width, height) {
         super(name, ctx, x, y, width, height);
         this.shape = new RelationshipShape(ctx, x, y, width, height);
+        this.type = "Relationship";
         this.identifying = false;
         this.attributes = [];
         this.attributeSchema = null;
@@ -173,6 +174,61 @@ export class Relationship extends Element {
 
     removeAttribute(attribute) {
         this.attributes = this.attributes.filter((attr) => attr.id != attribute.id);
+    }
+
+    stringify() {
+        let shape = JSON.parse(JSON.stringify(this.shape));
+        delete shape.ctx;
+
+        let attributes = [];
+        if (this.attributes) {
+            this.attributes.forEach((attr) => {
+                attributes.push(attr.stringify());
+            });
+        }
+
+        let attributeSchema = null;
+        if (this.attributeSchema) {
+            attributeSchema = this.attributeSchema.stringify();
+        }
+
+        let entities = {
+            entity1: {
+                text: "Entity 1",
+                entity: this.entities.entity1.entity?.id || null,
+                min: this.entities.entity1.min,
+                max: this.entities.entity1.max,
+                errorMin: this.entities.entity1.errorMin,
+                errorMax: this.entities.entity1.errorMax,
+            },
+            entity2: {
+                text: "Entity 2",
+                entity: this.entities.entity2.entity?.id || null,
+                min: this.entities.entity2.min,
+                max: this.entities.entity2.max,
+                errorMin: this.entities.entity2.errorMin,
+                errorMax: this.entities.entity2.errorMax,
+            },
+            entity3: {
+                text: "Entity 3",
+                entity: this.entities.entity3.entity?.id || null,
+                min: this.entities.entity3.min,
+                max: this.entities.entity3.max,
+                errorMin: this.entities.entity3.errorMin,
+                errorMax: this.entities.entity3.errorMax,
+            },
+        };
+
+        return {
+            id: this.id,
+            name: this.name,
+            type: this.type,
+            identifying: this.identifying,
+            shape,
+            attributes: [...attributes],
+            attributeSchema: attributeSchema,
+            entities: { ...entities },
+        };
     }
 
     toString() {
