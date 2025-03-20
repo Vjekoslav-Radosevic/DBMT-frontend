@@ -9,7 +9,7 @@ import { SuperTypeConnection } from "../connections/SuperTypeConnection.js";
 export class SuperTypeEntity extends Entity {
     constructor(name, ctx, x, y, width, height, attributes, parentElement) {
         super(name, ctx, x, y, width, height, attributes);
-        this.type = "SuperType";
+        this.subtype = "SuperType";
         this.shape = new SuperTypeEntityShape(ctx, x, y, width, height);
         this.parentElement = parentElement;
         this.specializationType = "Disjointed";
@@ -159,6 +159,8 @@ export class SuperTypeEntity extends Entity {
     stringify() {
         let shape = JSON.parse(JSON.stringify(this.shape));
         delete shape.ctx;
+        delete shape.isDragging;
+        delete shape.offset;
 
         let attributes = [];
         this.attributes.forEach((attr) => {
@@ -179,6 +181,8 @@ export class SuperTypeEntity extends Entity {
             id: this.id,
             name: this.name,
             type: this.type,
+            subtype: this.subtype,
+            isRoot: this.parentElement ? false : true,
             specializationType: this.specializationType,
             shape,
             attributes: [...attributes],

@@ -103,6 +103,8 @@ export class Entity extends Element {
     stringify() {
         let shape = JSON.parse(JSON.stringify(this.shape));
         delete shape.ctx;
+        delete shape.isDragging;
+        delete shape.offset;
 
         let attributes = [];
         if (this.attributes) {
@@ -120,6 +122,8 @@ export class Entity extends Element {
             id: this.id,
             name: this.name,
             type: this.type,
+            subtype: this.subtype,
+            isRoot: this.parentElement ? false : true,
             shape,
             attributes: [...attributes],
             attributeSchema: attributeSchema,
