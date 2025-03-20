@@ -8,7 +8,7 @@ import { SuperTypeEntity } from "./SuperTypeEntity.js";
 export class DegenerativeEntity extends Entity {
     constructor(name, ctx, x, y, width, height) {
         super(name, ctx, x, y, width, height);
-        this.type = "Degenerative";
+        this.subtype = "Degenerative";
         this.shape = new DegenerativeEntityShape(ctx, x, y, width, height);
     }
 

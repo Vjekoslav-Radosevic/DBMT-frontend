@@ -8,7 +8,7 @@ import { SuperTypeEntity } from "./SuperTypeEntity.js";
 export class RegularEntity extends Entity {
     constructor(name, ctx, x, y, width, height, attributes, parentElement) {
         super(name, ctx, x, y, width, height, attributes);
-        this.type = "Regular";
+        this.subtype = "Regular";
         this.shape = new RegularEntityShape(ctx, x, y, width, height);
         this.parentElement = parentElement;
     }

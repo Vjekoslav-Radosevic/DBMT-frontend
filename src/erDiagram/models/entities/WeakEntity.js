@@ -8,7 +8,7 @@ import { SuperTypeEntity } from "./SuperTypeEntity.js";
 export class WeakEntity extends Entity {
     constructor(name, ctx, x, y, width, height, attributes) {
         super(name, ctx, x, y, width, height, attributes);
-        this.type = "Weak";
+        this.subtype = "Weak";
         this.shape = new WeakEntityShape(ctx, x, y, width, height);
     }
 

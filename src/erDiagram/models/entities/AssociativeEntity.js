@@ -8,7 +8,7 @@ import { SuperTypeEntity } from "./SuperTypeEntity.js";
 export class AssociativeEntity extends Entity {
     constructor(name, ctx, x, y, width, height, attributes) {
         super(name, ctx, x, y, width, height, attributes);
-        this.type = "Associative";
+        this.subtype = "Associative";
         this.shape = new AssociativeEntityShape(ctx, x, y, width, height);
     }
 
