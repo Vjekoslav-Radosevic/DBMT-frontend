@@ -71,6 +71,15 @@ export class Entity extends Element {
         return newAttribute;
     }
 
+    setParentRole() {
+        if (!this.attributes) return;
+
+        this.attributes.forEach((attr) => {
+            attr.parentElement = this;
+            attr.setParentRole();
+        });
+    }
+
     removeAllAttributes() {
         this.attributes = [];
     }

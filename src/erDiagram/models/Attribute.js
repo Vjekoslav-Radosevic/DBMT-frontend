@@ -87,6 +87,13 @@ export class Attribute extends Element {
         return newAttribute;
     }
 
+    setParentRole() {
+        this.attributes.forEach((attr) => {
+            attr.parentElement = this;
+            attr.setParentRole();
+        });
+    }
+
     removeAttribute(attribute) {
         this.attributes = this.attributes.filter((attr) => attr.id != attribute.id);
     }

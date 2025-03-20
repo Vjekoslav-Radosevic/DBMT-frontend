@@ -144,6 +144,18 @@ export class SuperTypeEntity extends Entity {
         };
     }
 
+    setParentRole() {
+        this.attributes.forEach((attr) => {
+            attr.parentElement = this;
+            attr.setParentRole();
+        });
+
+        this.entities.forEach((entity) => {
+            entity.parentElement = this;
+            entity.setParentRole();
+        });
+    }
+
     removeFromParent() {
         if (this.parentElement) this.parentElement.removeEntity(this);
     }
