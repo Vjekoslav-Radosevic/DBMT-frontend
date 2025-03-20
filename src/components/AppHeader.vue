@@ -59,7 +59,7 @@ export default {
         },
         async checkForUser() {
             try {
-                const response = await fetch(`${this.apiUrl}/api/auth/me`, { credentials: "include" });
+                const response = await fetch(`${this.apiUrl}/api/users/me`, { credentials: "include" });
                 if (response.ok) {
                     this.user = await response.json();
                     this.setUser(this.user);
@@ -81,7 +81,7 @@ export default {
         async handleCredentialResponse(response) {
             const token = response.credential;
             try {
-                const response = await fetch(`${this.apiUrl}/api/auth/signup`, {
+                const response = await fetch(`${this.apiUrl}/api/users`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export default {
         },
         async signOut() {
             try {
-                const response = await fetch(`${this.apiUrl}/api/auth/signout`, {
+                const response = await fetch(`${this.apiUrl}/api/users/signout`, {
                     method: "POST",
                     credentials: "include",
                 });
@@ -119,12 +119,27 @@ export default {
                 console.error("An error occured while signing out: ", error);
             }
         },
-        deleteAccount() {
-            window.google.accounts.id.revoke(this.user.sub, (done) => {
-                console.log("jabuke");
-                console.log(done);
-            });
-            console.log("nakon poziva");
+        async deleteAccount() {
+            // DOESN'T WORK IF GOOGLE APP IS IN TESTING MODE
+            // window.google.accounts.id.revoke(this.user.sub, (done) => {
+            //     console.log(done);
+            // });
+
+            try {
+                const response = await fetch(`${this.apiUrl}/api/users`, {
+                    method: "DELETE",
+                    credentials: "include",
+                });
+                if (response.ok) {
+                    this.user = null;
+                    this.setUser(null);
+                    this.$refs.userProfileRef.closeDialog();
+                } else {
+                    console.error("Could not delete user profile");
+                }
+            } catch (error) {
+                console.error("An error occured while deleting user profile: ", error);
+            }
         },
     },
 };
