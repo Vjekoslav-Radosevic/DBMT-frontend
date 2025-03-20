@@ -70,6 +70,8 @@ export class DegenerativeEntity extends Entity {
             [],
             null,
             null,
+            "Disjointed",
+            [],
         );
     }
 

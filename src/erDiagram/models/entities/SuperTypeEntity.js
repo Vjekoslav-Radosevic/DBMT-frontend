@@ -7,13 +7,27 @@ import { DegenerativeEntity } from "./DegenerativeEntity.js";
 import { SuperTypeConnection } from "../connections/SuperTypeConnection.js";
 
 export class SuperTypeEntity extends Entity {
-    constructor(name, ctx, x, y, width, height, isDragging, offset, attributes, attributeSchema, parentElement) {
+    constructor(
+        name,
+        ctx,
+        x,
+        y,
+        width,
+        height,
+        isDragging,
+        offset,
+        attributes,
+        attributeSchema,
+        parentElement,
+        specializationType,
+        entities,
+    ) {
         super(name, ctx, x, y, width, height, isDragging, offset, attributes, attributeSchema);
         this.shape = new SuperTypeEntityShape(ctx, x, y, width, height, isDragging, offset);
         this.type = "SuperType";
         this.parentElement = parentElement;
-        this.specializationType = "Disjointed";
-        this.entities = [];
+        this.specializationType = specializationType;
+        this.entities = entities;
     }
 
     draw() {

@@ -71,6 +71,8 @@ export class AssociativeEntity extends Entity {
             this.attributes,
             this.attributeSchema,
             null,
+            "Disjointed",
+            [],
         );
     }
 

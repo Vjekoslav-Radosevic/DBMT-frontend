@@ -71,6 +71,8 @@ export class WeakEntity extends Entity {
             this.attributes,
             this.attributeSchema,
             null,
+            "Disjointed",
+            [],
         );
     }
 

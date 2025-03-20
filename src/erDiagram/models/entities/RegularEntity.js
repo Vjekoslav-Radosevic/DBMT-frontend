@@ -79,6 +79,8 @@ export class RegularEntity extends Entity {
             this.attributes,
             this.attributeSchema,
             this.parentElement,
+            "Disjointed",
+            [],
         );
 
         if (this.parentElement) {
