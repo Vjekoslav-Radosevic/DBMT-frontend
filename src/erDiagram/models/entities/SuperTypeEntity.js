@@ -7,10 +7,10 @@ import { DegenerativeEntity } from "./DegenerativeEntity.js";
 import { SuperTypeConnection } from "../connections/SuperTypeConnection.js";
 
 export class SuperTypeEntity extends Entity {
-    constructor(name, ctx, x, y, width, height, isDragging, offset, attributes, parentElement) {
-        super(name, ctx, x, y, width, height, isDragging, offset, attributes);
-        this.type = "SuperType";
+    constructor(name, ctx, x, y, width, height, isDragging, offset, attributes, attributeSchema, parentElement) {
+        super(name, ctx, x, y, width, height, isDragging, offset, attributes, attributeSchema);
         this.shape = new SuperTypeEntityShape(ctx, x, y, width, height, isDragging, offset);
+        this.type = "SuperType";
         this.parentElement = parentElement;
         this.specializationType = "Disjointed";
         this.entities = [];
@@ -62,6 +62,7 @@ export class SuperTypeEntity extends Entity {
             this.shape.isDragging,
             this.shape.offset,
             this.attributes,
+            this.attributeSchema,
             this.parentElement,
         );
     }
@@ -76,6 +77,8 @@ export class SuperTypeEntity extends Entity {
             this.shape.height,
             this.shape.isDragging,
             this.shape.offset,
+            [],
+            null,
         );
     }
 
@@ -90,6 +93,7 @@ export class SuperTypeEntity extends Entity {
             this.shape.isDragging,
             this.shape.offset,
             this.attributes,
+            this.attributeSchema,
         );
     }
 
@@ -104,6 +108,7 @@ export class SuperTypeEntity extends Entity {
             this.shape.isDragging,
             this.shape.offset,
             this.attributes,
+            this.attributeSchema,
         );
     }
 
@@ -136,6 +141,7 @@ export class SuperTypeEntity extends Entity {
                         false,
                         { x: 0, y: 0 },
                         [],
+                        null,
                         this,
                     );
                     this.entities.push(newEntity);
@@ -163,6 +169,7 @@ export class SuperTypeEntity extends Entity {
             false,
             { x: 0, y: 0 },
             [],
+            null,
             this,
         );
         this.entities.push(newEntity);
