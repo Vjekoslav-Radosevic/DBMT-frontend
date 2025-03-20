@@ -2,6 +2,7 @@
     <div class="toolbar">
         <div class="toolbar__button toolbar__button--sys" @click="openDownloadDialog">Download</div>
         <div class="toolbar__button toolbar__button--sys" @click="exportFile">Export file</div>
+        <input type="file" @change="importDiagram" accept=".json" />
         <div class="toolbar__button toolbar__button--sys">Save</div>
         <div class="toolbar__button toolbar__button--sys">Undo</div>
         <div class="toolbar__button toolbar__button--sys">Redo</div>
@@ -62,6 +63,9 @@ export default {
         },
         exportFile() {
             this.$emit("export-file");
+        },
+        importDiagram(event) {
+            this.$emit("import-diagram", event);
         },
     },
 };
