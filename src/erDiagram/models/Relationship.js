@@ -115,6 +115,14 @@ export class Relationship extends Element {
             [0, -0.75 * width],
         ];
 
+        const properties = {
+            composite: false,
+            multiValued: false,
+            unique: false,
+            optional: false,
+            derived: false,
+        };
+
         let x, y;
         for (let factor = 1; factor < 5; factor++) {
             for (let i = 0; i < positions.length; i++) {
@@ -141,7 +149,10 @@ export class Relationship extends Element {
                         height,
                         false,
                         { x: 0, y: 0 },
+                        [],
                         this,
+                        properties,
+                        true,
                     );
                     this.attributes.push(newAttribute);
                     return newAttribute;
@@ -158,7 +169,10 @@ export class Relationship extends Element {
             height,
             false,
             { x: 0, y: 0 },
+            [],
             this,
+            properties,
+            true,
         );
         this.attributes.push(newAttribute);
         return newAttribute;

@@ -2,19 +2,20 @@ import { Element } from "./Element.js";
 import { AttributeShape } from "../shapes/AttributeShape.js";
 
 export class Attribute extends Element {
-    constructor(name, ctx, x, y, width, height, isDragging, offset, parentElement) {
+    constructor(name, ctx, x, y, width, height, isDragging, offset, attributes, parentElement, properties, willDraw) {
         super(name, ctx, x, y, width, height, isDragging, offset);
         this.shape = new AttributeShape(ctx, x, y, width, height, isDragging, offset);
         this.parentElement = parentElement;
-        this.attributes = [];
+        this.attributes = attributes;
+        this.attributes.forEach((attribute) => (attribute.parentElement = this)); // make this Attribute the parent of every attribute from it's attributes list
         this.properties = {
-            composite: false,
-            multiValued: false,
-            unique: false,
-            optional: false,
-            derived: false,
+            composite: properties.composite,
+            multiValued: properties.multiValued,
+            unique: properties.unique,
+            optional: properties.optional,
+            derived: properties.derived,
         };
-        this.willDraw = true; // if parent entity attribute schema is active, this is false
+        this.willDraw = willDraw; // if parent entity attribute schema is active, this is false
     }
 
     draw() {
@@ -49,6 +50,14 @@ export class Attribute extends Element {
             [0, -0.75 * width],
         ];
 
+        const properties = {
+            composite: false,
+            multiValued: false,
+            unique: false,
+            optional: false,
+            derived: false,
+        };
+
         let x, y;
         for (let factor = 1; factor < 5; factor++) {
             for (let i = 0; i < positions.length; i++) {
@@ -75,7 +84,10 @@ export class Attribute extends Element {
                         height,
                         false,
                         { x: 0, y: 0 },
+                        [],
                         this,
+                        properties,
+                        true,
                     );
                     this.attributes.push(newAttribute);
                     return newAttribute;
@@ -92,7 +104,10 @@ export class Attribute extends Element {
             height,
             false,
             { x: 0, y: 0 },
+            [],
             this,
+            properties,
+            true,
         );
         this.attributes.push(newAttribute);
         return newAttribute;
