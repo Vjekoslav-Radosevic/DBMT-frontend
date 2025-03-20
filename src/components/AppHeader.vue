@@ -44,10 +44,10 @@ export default {
         };
     },
     mounted() {
-        this.checkForUser();
-        window.onGoogleLibraryLoad = () => {
-            this.initializeGoogleAuth();
-        };
+        // this.checkForUser();
+        // window.onGoogleLibraryLoad = () => {
+        //     this.initializeGoogleAuth();
+        // };
     },
     methods: {
         ...mapActions(useAuthStore, ["setUser"]),
