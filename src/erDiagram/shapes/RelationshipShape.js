@@ -2,14 +2,14 @@ import { Shape } from "./Shape.js";
 import { markRaw } from "vue";
 
 export class RelationshipShape extends Shape {
-    constructor(ctx, x, y, width, height, isDragging, offset) {
+    constructor(ctx, x, y, width, height, isDragging, offset, endpoints) {
         super(ctx, x, y, width, height, isDragging, offset);
 
         this.endpoints = markRaw({
-            topTaken: false,
-            rightTaken: false,
-            bottomTaken: false,
-            leftTaken: false,
+            topTaken: endpoints.topTaken,
+            rightTaken: endpoints.rightTaken,
+            bottomTaken: endpoints.bottomTaken,
+            leftTaken: endpoints.leftTaken,
         });
     }
 
