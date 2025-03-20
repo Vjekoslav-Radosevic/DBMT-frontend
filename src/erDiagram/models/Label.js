@@ -26,6 +26,8 @@ export class Label extends Element {
     stringify() {
         let shape = JSON.parse(JSON.stringify(this.shape));
         delete shape.ctx;
+        delete shape.isDragging;
+        delete shape.offset;
 
         return {
             id: this.id,

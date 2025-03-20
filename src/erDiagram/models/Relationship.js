@@ -179,6 +179,8 @@ export class Relationship extends Element {
     stringify() {
         let shape = JSON.parse(JSON.stringify(this.shape));
         delete shape.ctx;
+        delete shape.isDragging;
+        delete shape.offset;
 
         let attributes = [];
         if (this.attributes) {

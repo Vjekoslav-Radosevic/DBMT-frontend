@@ -116,6 +116,10 @@ export class Attribute extends Element {
     stringify() {
         let shape = JSON.parse(JSON.stringify(this.shape));
         delete shape.ctx;
+        delete shape.isDragging;
+        delete shape.offset;
+        delete shape.radiusX;
+        delete shape.radiusY;
 
         let attributes = [];
         this.attributes.forEach((attr) => {
