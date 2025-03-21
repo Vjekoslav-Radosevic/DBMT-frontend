@@ -79,6 +79,7 @@ export default {
             let change = {
                 oldEntity: this.oldEntities[relEntity.text].entity,
                 newEntity: relEntity.entity,
+                relationship: this.element,
                 entityText: relEntity.text,
             };
             this.$eventBus.emit("set-relationship-entity", change);
