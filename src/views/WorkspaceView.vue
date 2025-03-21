@@ -1,4 +1,12 @@
 <template>
+    <div class="buttons">
+        <Plus class="buttons__button" />
+        <label>
+            <Upload class="buttons__button" />
+            <input type="file" @change="importDiagram" accept=".json" style="display: none" />
+        </label>
+        <Trash2 class="buttons__button" />
+    </div>
     <div v-for="diagram in diagrams" :key="diagram.id" class="diagram" @click="openDiagram($event, diagram.id)">
         <div class="diagram__right">
             <Diamond class="diagram__icon" />
@@ -19,10 +27,10 @@
 </template>
 
 <script>
-import { Diamond, Menu as MenuIcon } from "lucide-vue-next";
+import { Diamond, Menu as MenuIcon, Plus, Upload, Trash2 } from "lucide-vue-next";
 export default {
     name: "WorkspaceView",
-    components: { Diamond, MenuIcon },
+    components: { Diamond, MenuIcon, Plus, Upload, Trash2 },
     data() {
         return {
             diagrams: [
@@ -42,7 +50,7 @@ export default {
                 if (response.ok) {
                     this.diagrams = await response.json();
                 } else {
-                    console.error(`Cannot fetch diagrams, server responded with status ${response.status}`);
+                    console.error("Cannot fetch diagrams, server responded with status", response.status);
                 }
             } catch (error) {
                 console.error("An error occured while fetching diagrams: ", error);
@@ -52,12 +60,74 @@ export default {
             if (event.target.classList.contains("diagram__options")) return;
             this.$router.push({ name: "diagram", params: { id: id } });
         },
+        importDiagram(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const diagramJson = e.target.result;
+                    const newDiagram = JSON.parse(diagramJson);
+                    this.diagrams.unshift(newDiagram);
+                    this.saveDiagram(diagramJson);
+                } catch (error) {
+                    console.error("Invalid JSON file:", error);
+                }
+            };
+            reader.readAsText(file);
+        },
+        async saveDiagram(diagram) {
+            try {
+                const response = await fetch(`${this.apiUrl}/api/diagrams`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: diagram,
+                });
+
+                if (response.ok) {
+                    console.log("Diagram successfully saved");
+                } else {
+                    console.error("Cannot save diagram, server responded with status", response.status);
+                }
+            } catch (error) {
+                console.error("An error occured while saving diagram: ", error);
+            }
+        },
     },
 };
 </script>
 
 <style scoped lang="scss">
 @use "@/assets/styles/variables" as *;
+
+.buttons {
+    position: absolute;
+    top: 8vh;
+    left: 0;
+    width: 15vw;
+    display: flex;
+    flex-direction: column;
+
+    &__button {
+        width: 45px;
+        height: 45px;
+        padding: 12px;
+        margin-top: 15px;
+        margin-left: 15px;
+        border-radius: 10px;
+        border: 1px solid $system-tert;
+
+        &:hover {
+            cursor: pointer;
+            color: $text-sec;
+            background-color: $system-tert;
+        }
+    }
+}
 
 .diagram {
     width: 70vw;
@@ -67,7 +137,7 @@ export default {
     align-items: center;
     margin: 20px auto;
     border-radius: 10px;
-    border: 1px solid black;
+    border: 1px solid $system-tert;
 
     &:hover {
         cursor: pointer;
@@ -100,7 +170,7 @@ export default {
         height: 42px;
         padding: 10px;
         margin: 30px;
-        border-radius: 50%;
+        border-radius: 10px;
 
         &:hover {
             background-color: $system-sec;
