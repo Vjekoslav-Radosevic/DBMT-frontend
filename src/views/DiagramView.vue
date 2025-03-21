@@ -6,7 +6,6 @@
         @create-label="createLabel"
         @open-download-dialog="openDownloadDialog"
         @export-file="exportFile"
-        @import-diagram="importDiagram"
     ></DiagramToolbar>
     <div class="page-body">
         <ElementDetails :element="activeElement" :elements="elements"></ElementDetails>
@@ -53,6 +52,10 @@ export default {
     components: { DiagramToolbar, ElementDetails, DiagramCanvas, DownloadDialog },
     data() {
         return {
+            diagram: null,
+            apiUrl: import.meta.env.VITE_API_URL,
+            diagramId: this.$route.params.id,
+
             elementWidth: 110,
             elementHeight: 55,
             elements: [],
@@ -63,9 +66,6 @@ export default {
 
             newElement: null,
             addingElement: false,
-
-            apiUrl: import.meta.env.VITE_API_URL,
-            diagramId: this.$route.params.id,
         };
     },
     created() {
@@ -387,7 +387,15 @@ export default {
                 connections.push(connection.stringify());
             });
 
-            const diagramData = { elements, connections };
+            const diagramData = {
+                id: this.diagram.id,
+                name: this.diagram.name,
+                type: this.diagram.type,
+                dateCreated: this.diagram.dateCreated,
+                lastModified: this.diagram.lastModified,
+                elements,
+                connections,
+            };
 
             const jsonString = JSON.stringify(diagramData, null, 2);
             const blob = new Blob([jsonString], { type: "application/json" });
@@ -397,21 +405,6 @@ export default {
             link.download = "er_diagram.json";
             link.click();
         },
-        importDiagram(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const jsonData = JSON.parse(e.target.result);
-                    this.populateDiagram(jsonData);
-                } catch (error) {
-                    console.error("Invalid JSON file:", error);
-                }
-            };
-            reader.readAsText(file);
-        },
         async fetchDiagram() {
             try {
                 const response = await fetch(`${this.apiUrl}/api/diagrams/${this.diagramId}`, {
@@ -419,6 +412,13 @@ export default {
                 });
                 if (response.ok) {
                     const diagramJson = await response.json();
+                    this.diagram = {
+                        id: diagramJson.id,
+                        name: diagramJson.name,
+                        type: diagramJson.type,
+                        dateCreated: diagramJson.dateCreated,
+                        lastModified: diagramJson.lastModified,
+                    };
                     this.populateDiagram(diagramJson);
                 } else if (response.status == 400) {
                     console.error("Cannot fetch diagram, diagram does not exist");
