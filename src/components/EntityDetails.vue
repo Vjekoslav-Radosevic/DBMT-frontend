@@ -1,16 +1,16 @@
 <template>
     <div class="entity">
-        <div v-for="type in entityTypes" :key="type" class="entity__prop">
+        <div v-for="subtype in entitySubtypes" :key="subtype" class="entity__prop">
             <input
                 type="radio"
-                :id="type"
-                :value="type"
-                v-model="element.type"
+                :id="subtype"
+                :value="subtype"
+                v-model="element.subtype"
                 class="entity__input"
                 @change="changeEntityType"
-                :disabled="isDisabled(type)"
+                :disabled="isDisabled(subtype)"
             />
-            <label :for="type">{{ type }}</label>
+            <label :for="subtype">{{ subtype }}</label>
         </div>
     </div>
     <SuperTypeEntityDetails v-if="entityIsSuperType" :element="element" />
@@ -27,7 +27,7 @@ export default {
     components: { SuperTypeEntityDetails, AttributeSchemaButtons },
     data() {
         return {
-            entityTypes: ["Regular", "Degenerative", "Weak", "Associative", "SuperType"],
+            entitySubtypes: ["Regular", "Degenerative", "Weak", "Associative", "SuperType"],
             specializationTypes: ["Disjointed", "Overlapping"],
         };
     },
@@ -44,10 +44,10 @@ export default {
     },
     methods: {
         changeEntityType() {
-            this.$eventBus.emit("change-entity-type", this.element.type);
+            this.$eventBus.emit("change-entity-type", this.element.subtype);
         },
-        isDisabled(type) {
-            return (type === "Degenerative" || type === "Weak" || type === "Associative") && this.parentIsSuperType;
+        isDisabled(subtype) {
+            return (subtype === "Degenerative" || subtype === "Weak" || subtype === "Associative") && this.parentIsSuperType;
         },
     },
 };
