@@ -533,6 +533,8 @@ export default {
                 null,
             );
             newAttribute.id = attribute.id;
+            newAttribute.willDraw = attribute.willDraw;
+            newAttribute.properties = JSON.parse(JSON.stringify(attribute.properties));
             newAttribute.attributes = this.parseAttributes(attribute.attributes);
             newAttribute.setParentRole();
             this.elements.push(newAttribute);
