@@ -46,6 +46,7 @@ import { AttributeSchema } from "@/erDiagram/models/AttributeSchema";
 import { changeEntityType } from "../utils/changeType";
 import { useCanvasStore } from "../stores/index";
 import { mapState } from "pinia";
+import { SuperTypeConnection } from "@/erDiagram/models/connections/SuperTypeConnection";
 
 export default {
     name: "DiagramView",
@@ -422,8 +423,15 @@ export default {
             });
 
             //relationships
+            const relationships = jsonData.elements.filter((element) => element.type === "Relationship");
+            relationships.forEach((relationship) => {
+                this.parseRelationship(relationship);
+            });
 
             //konekcije
+            jsonData.connections.forEach((connection) => {
+                this.parseConnection(connection);
+            });
         },
         parseEntity(entity) {
             let newEntity;
@@ -474,7 +482,7 @@ export default {
             newEntity.attributes = this.parseAttributes(entity.attributes);
             newEntity.setParentRole();
             if (entity.attributeSchema) {
-                newEntity.attributeSchema = this.parseAttributeSchema(entity.attributeSchema, entity);
+                newEntity.attributeSchema = this.parseAttributeSchema(entity.attributeSchema, newEntity);
             }
             this.elements.push(newEntity);
             return newEntity;
@@ -496,7 +504,7 @@ export default {
             newEntity.entities = this.parseEntities(entity.entities);
             newEntity.setParentRole();
             if (entity.attributeSchema) {
-                newEntity.attributeSchema = this.parseAttributeSchema(entity.attributeSchema, entity);
+                newEntity.attributeSchema = this.parseAttributeSchema(entity.attributeSchema, newEntity);
             }
             this.elements.push(newEntity);
             return newEntity;
@@ -566,6 +574,57 @@ export default {
             newLabel.id = label.id;
             newLabel.text = label.text;
             this.elements.push(newLabel);
+        },
+        parseRelationship(relationship) {
+            let newRelationship = new Relationship(
+                relationship.name,
+                this.getContext,
+                relationship.shape.x,
+                relationship.shape.y,
+                relationship.shape.width,
+                relationship.shape.height,
+            );
+            newRelationship.id = relationship.id;
+            newRelationship.identifying = relationship.identifying;
+            newRelationship.attributes = this.parseAttributes(relationship.attributes);
+            newRelationship.setParentRole();
+
+            if (relationship.attributeSchema) {
+                newRelationship.attributeSchema = this.parseAttributeSchema(
+                    relationship.attributeSchema,
+                    newRelationship,
+                );
+            }
+
+            newRelationship.entities = JSON.parse(JSON.stringify(relationship.entities));
+            Object.values(newRelationship.entities).forEach((value) => {
+                if (value.entity) {
+                    let realEntity = this.elements.filter((element) => element.id === value.entity)[0];
+                    value.entity = realEntity;
+                }
+            });
+
+            this.elements.push(newRelationship);
+            return newRelationship;
+        },
+        parseConnection(connection) {
+            const element1 = this.elements.filter((element) => element.id === connection.element1)[0];
+            const element2 = this.elements.filter((element) => element.id === connection.element2)[0];
+
+            let newConnection;
+            if (connection.type === "RegularConnection") {
+                newConnection = new Connection(this.getContext, element1, element2);
+            } else if (connection.type === "RelationshipConnection") {
+                newConnection = new RelationshipConnection(this.getContext, element1, element2, connection.entityText);
+            } else {
+                newConnection = new SuperTypeConnection(this.getContext, element1, element2);
+            }
+
+            newConnection.id = connection.id;
+            newConnection.willDraw = connection.willDraw;
+
+            this.connections.push(newConnection);
+            return newConnection;
         },
     },
 };
