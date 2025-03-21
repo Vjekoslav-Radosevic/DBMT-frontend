@@ -63,6 +63,9 @@ export default {
 
             newElement: null,
             addingElement: false,
+
+            apiUrl: import.meta.env.VITE_API_URL,
+            diagramId: this.$route.params.id,
         };
     },
     created() {
@@ -75,6 +78,9 @@ export default {
         this.$eventBus.on("delete-element", () => this.deleteElement());
         this.$eventBus.on("add-attribute", () => this.addAttribute());
         this.$eventBus.on("download-image", (transparentBack) => this.downloadImage(transparentBack));
+    },
+    mounted() {
+        // this.fetchDiagram();
     },
     computed: {
         ...mapState(useCanvasStore, ["getContext", "getCanvasWidth", "getCanvasHeight"]),
@@ -187,7 +193,7 @@ export default {
         setNewEntity(change) {
             // set new entity to relationship
             let connection;
-            let { newEntity, oldEntity, entityText } = change;
+            let { newEntity, oldEntity, relationship, entityText } = change;
 
             // if user chose 'None' as new entity
             if (!newEntity) {
@@ -195,46 +201,46 @@ export default {
                 this.connections = this.connections.filter(
                     (connection) =>
                         !(
-                            connection.element1.id === this.activeElement.id &&
+                            connection.element1.id === relationship.id &&
                             connection.element2.id === oldEntity.id &&
                             connection.entityText === entityText
                         ),
                 );
-                this.activeElement.resetEntity(entityText, true);
+                relationship.resetEntity(entityText, true);
                 this.$refs.diagramCanvasRef.redrawCanvas();
                 return;
             }
 
             if (!oldEntity) {
-                connection = new RelationshipConnection(this.getContext, this.activeElement, newEntity, entityText);
+                connection = new RelationshipConnection(this.getContext, relationship, newEntity, entityText);
                 this.connections.push(connection);
             } else {
                 connection = this.connections.filter(
                     (connection) =>
-                        connection.element1.id === this.activeElement.id &&
+                        connection.element1.id === relationship.id &&
                         connection.element2.id === oldEntity.id &&
                         connection.entityText === entityText,
                 )[0];
-                connection.updateConnection(this.activeElement, newEntity);
-                this.activeElement.resetEntity(entityText, false);
+                connection.updateConnection(relationship, newEntity);
+                relationship.resetEntity(entityText, false);
             }
 
-            const reflexiveEntity = this.activeElement.isReflexive();
+            const reflexiveEntity = relationship.isReflexive();
             if (reflexiveEntity) {
                 // if relationship is reflexive, remove other connected entity that is connected only once
-                Object.values(this.activeElement.entities).forEach((entity) => {
+                Object.values(relationship.entities).forEach((entity) => {
                     if (entity.entity && entity.entity.id !== reflexiveEntity.entity.id) {
                         // remove that entity's connection
                         this.connections = this.connections.filter(
                             (connection) =>
                                 !(
-                                    connection.element1.id === this.activeElement.id &&
+                                    connection.element1.id === relationship.id &&
                                     connection.element2.id === entity.entity.id
                                 ),
                         );
 
                         // reset relationship's entity props
-                        this.activeElement.resetEntity(entity.text, true);
+                        relationship.resetEntity(entity.text, true);
                     }
                 });
             }
@@ -310,9 +316,10 @@ export default {
                     if (entity.entity === this.activeElement) {
                         entity.entity = element;
                         this.setNewEntity({
-                            relationship: relationship,
-                            newEntity: element,
                             oldEntity: this.activeElement,
+                            newEntity: element,
+                            relationship: relationship,
+                            entityText: entity.text,
                         });
                     }
                 });
@@ -405,15 +412,32 @@ export default {
             };
             reader.readAsText(file);
         },
-        populateDiagram(jsonData) {
-            //labele
-            const labels = jsonData.elements.filter((element) => element.type === "Label");
+        async fetchDiagram() {
+            try {
+                const response = await fetch(`${this.apiUrl}/api/diagrams/${this.diagramId}`, {
+                    credentials: "include",
+                });
+                if (response.ok) {
+                    const diagramJson = await response.json();
+                    this.populateDiagram(diagramJson);
+                } else if (response.status == 400) {
+                    console.error("Cannot fetch diagram, diagram does not exist");
+                } else {
+                    console.error(`Cannot fetch diagram, server responded with status ${response.status}`);
+                }
+            } catch (error) {
+                console.error("An error occured while fetching diagram: ", error);
+            }
+        },
+        populateDiagram(diagramJson) {
+            //labels
+            const labels = diagramJson.elements.filter((element) => element.type === "Label");
             labels.forEach((label) => {
                 this.parseLabel(label);
             });
 
-            //entiteti
-            const entities = jsonData.elements.filter((element) => element.type === "Entity");
+            //entities
+            const entities = diagramJson.elements.filter((element) => element.type === "Entity");
             entities.forEach((entity) => {
                 if (entity.subtype === "SuperType") {
                     this.parseSuperTypeEntity(entity);
@@ -423,13 +447,13 @@ export default {
             });
 
             //relationships
-            const relationships = jsonData.elements.filter((element) => element.type === "Relationship");
+            const relationships = diagramJson.elements.filter((element) => element.type === "Relationship");
             relationships.forEach((relationship) => {
                 this.parseRelationship(relationship);
             });
 
-            //konekcije
-            jsonData.connections.forEach((connection) => {
+            //connections
+            diagramJson.connections.forEach((connection) => {
                 this.parseConnection(connection);
             });
         },
