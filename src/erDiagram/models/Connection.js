@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 export class Connection {
     constructor(ctx, element1, element2) {
         this.id = uuidv4();
-        this.type = "Connection";
+        this.type = "RegularConnection";
         this.element1 = element1;
         this.element2 = element2;
         this.connectionShape = new ConnectionShape(ctx);
