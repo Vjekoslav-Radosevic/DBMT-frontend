@@ -18,7 +18,7 @@ const router = createRouter({
             component: WorkspaceView,
         },
         {
-            path: "/diagram",
+            path: "/diagram/:id",
             name: "diagram",
             component: DiagramView,
         },
