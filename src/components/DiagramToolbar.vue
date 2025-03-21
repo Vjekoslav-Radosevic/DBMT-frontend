@@ -1,42 +1,26 @@
 <template>
     <div class="toolbar">
-        <div class="toolbar__button toolbar__button--sys" @click="openDownloadDialog">Download</div>
-        <div class="toolbar__button toolbar__button--sys" @click="exportFile">Export file</div>
-        <input type="file" @change="importDiagram" accept=".json" />
-        <div class="toolbar__button toolbar__button--sys">Save</div>
-        <div class="toolbar__button toolbar__button--sys">Undo</div>
-        <div class="toolbar__button toolbar__button--sys">Redo</div>
-        <div
-            class="toolbar__button toolbar__button--add"
-            :class="{ 'toolbar__button--active': isEntity }"
-            @click="createEntity"
-        >
-            Entity
-        </div>
-        <div
-            class="toolbar__button toolbar__button--add"
-            :class="{ 'toolbar__button--active': isRelationship }"
-            @click="createRelationship"
-        >
+        <Download class="toolbar__icon" @click="download" />
+        <Save class="toolbar__icon" />
+        <Undo class="toolbar__icon" />
+        <Redo class="toolbar__icon" />
+        <div class="toolbar__text" :class="{ 'toolbar__text--active': isEntity }" @click="createEntity">Entity</div>
+        <div class="toolbar__text" :class="{ 'toolbar__text--active': isRelationship }" @click="createRelationship">
             Relationship
         </div>
-        <div
-            class="toolbar__button toolbar__button--add"
-            :class="{ 'toolbar__button--active': isLabel }"
-            @click="createLabel"
-        >
-            Label
-        </div>
+        <div class="toolbar__text" :class="{ 'toolbar__text--active': isLabel }" @click="createLabel">Label</div>
     </div>
 </template>
 
 <script>
+import { Download, Save, Undo, Redo } from "lucide-vue-next";
 import { Entity } from "@/erDiagram/models/Entity.js";
 import { Label } from "@/erDiagram/models/Label";
 import { Relationship } from "@/erDiagram/models/Relationship.js";
 export default {
     name: "diagramToolbar",
     props: ["newElement"],
+    components: { Download, Save, Undo, Redo },
     computed: {
         isEntity() {
             return this.newElement instanceof Entity;
@@ -82,36 +66,38 @@ export default {
     justify-content: flex-start;
     align-items: center;
 
-    &__button {
+    &__icon {
+        height: 75%;
+        width: auto;
+        aspect-ratio: 1;
+        margin-left: 5px;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid $system-tert;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $system-tert;
+            color: $text-sec;
+        }
+    }
+
+    &__text {
+        height: 75%;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 3px 3px;
-        padding: 8px;
+        margin-left: 5px;
+        border-radius: 5px;
+        padding: 0 6px;
         font-size: 12px;
-        border-radius: 3px;
+        color: $accept-prim;
+        border: 1px solid $accept-prim;
 
         &:hover {
             cursor: pointer;
             color: $text-sec;
-        }
-
-        &--sys {
-            color: $system-tert;
-            border: 1px solid $system-tert;
-
-            &:hover {
-                background-color: $system-tert;
-            }
-        }
-
-        &--add {
-            color: $accept-prim;
-            border: 1px solid $accept-prim;
-
-            &:hover {
-                background-color: $accept-prim;
-            }
+            background-color: $accept-prim;
         }
 
         &--active {
