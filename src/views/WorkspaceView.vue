@@ -1,6 +1,6 @@
 <template>
     <div class="buttons">
-        <Plus class="buttons__button" />
+        <Plus class="buttons__button" @click="this.$refs.createDiagramModalRef.show()" />
         <label>
             <Upload class="buttons__button" />
             <input type="file" @change="importDiagram" accept=".json" style="display: none" />
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="diagram__left">
-            <p class="diagram__date">{{ diagram.dateCreated }}</p>
+            <p class="diagram__date">{{ diagram.dateTimeCreated }}</p>
             <MenuIcon class="diagram__options" />
         </div>
     </div>
@@ -24,19 +24,18 @@
         <h1 class="no-diagrams__title">No diagrams yet</h1>
         <p class="no-diagrams__description">When you create some, they will appear here.</p>
     </div>
+    <CreateDiagramModal ref="createDiagramModalRef" @create-diagram="createDiagram" />
 </template>
 
 <script>
 import { Diamond, Menu as MenuIcon, Plus, Upload, Trash2 } from "lucide-vue-next";
+import CreateDiagramModal from "@/components/CreateDiagramModal.vue";
 export default {
     name: "WorkspaceView",
-    components: { Diamond, MenuIcon, Plus, Upload, Trash2 },
+    components: { Diamond, MenuIcon, Plus, Upload, Trash2, CreateDiagramModal },
     data() {
         return {
-            diagrams: [
-                { id: "1", name: "Moj prvi ER dijagram", type: "ER diagram", dateCreated: "2025-03-14T12:23:40" },
-                { id: "2", name: "Drugi dijagram", type: "ER diagram", dateCreated: "2025-03-14T12:23:40" },
-            ],
+            diagrams: [],
             apiUrl: import.meta.env.VITE_API_URL,
         };
     },
@@ -59,6 +58,10 @@ export default {
         openDiagram(event, id) {
             if (event.target.classList.contains("diagram__options")) return;
             this.$router.push({ name: "diagram", params: { id: id } });
+        },
+        createDiagram(newDiagram) {
+            this.diagrams.unshift(newDiagram);
+            this.saveDiagram(JSON.stringify(newDiagram));
         },
         importDiagram(event) {
             const file = event.target.files[0];
