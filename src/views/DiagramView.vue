@@ -391,7 +391,7 @@ export default {
                 id: this.diagram.id,
                 name: this.diagram.name,
                 type: this.diagram.type,
-                dateCreated: this.diagram.dateCreated,
+                dateTimeCreated: this.diagram.dateTimeCreated,
                 lastModified: this.diagram.lastModified,
                 elements,
                 connections,
@@ -402,7 +402,7 @@ export default {
             const link = document.createElement("a");
 
             link.href = URL.createObjectURL(blob);
-            link.download = "er_diagram.json";
+            link.download = `${this.diagram.name}.json`;
             link.click();
         },
         async fetchDiagram() {
@@ -416,7 +416,7 @@ export default {
                         id: diagramJson.id,
                         name: diagramJson.name,
                         type: diagramJson.type,
-                        dateCreated: diagramJson.dateCreated,
+                        dateTimeCreated: diagramJson.dateTimeCreated,
                         lastModified: diagramJson.lastModified,
                     };
                     this.populateDiagram(diagramJson);
